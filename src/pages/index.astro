@@ -1,11 +1,154 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const categories = [
+	{ emoji: '🏠', label: 'Comprar vivienda', href: '#' },
+	{ emoji: '💳', label: 'Pagar una deuda', href: '#' },
+	{ emoji: '🚗', label: 'Comprar carro', href: '#' },
+	{ emoji: '💰', label: 'Ahorrar', href: '#' },
+	{ emoji: '📈', label: 'Invertir', href: '#' },
+	{ emoji: '📊', label: 'Entender tu patrimonio', href: '#' },
+];
+
+const popularTools = [
+	{
+		title: 'Cuota de crédito hipotecario',
+		description: 'Simula tu cuota mensual con el sistema UVR o en pesos.',
+	},
+	{
+		title: 'Capacidad de endeudamiento',
+		description: 'Calcula cuánto puedes pedir prestado sin ahogar tu presupuesto.',
+	},
+	{
+		title: 'Tasa de usura vigente',
+		description: 'Compara la tasa que te ofrecen contra el límite de la Superfinanciera.',
+	},
+	{
+		title: 'Retención en la fuente',
+		description: 'Estima tu retención según tus ingresos y deducciones.',
+	},
+];
+
+const economicData = [
+	{ label: 'Tasa de usura', value: '—' },
+	{ label: 'DTF', value: '—' },
+	{ label: 'IPC anual', value: '—' },
+	{ label: 'UVR', value: '—' },
+	{ label: 'Tasa BanRep', value: '—' },
+	{ label: 'Salario mínimo', value: '—' },
+];
+
+const learnArticles = [
+	{
+		title: '¿Qué es la UVR y cómo afecta tu crédito hipotecario?',
+		excerpt: 'Entiende cómo se ajusta tu deuda en vivienda mes a mes.',
+	},
+	{
+		title: 'Tasa de usura: el límite legal que pocos revisan',
+		excerpt: 'Aprende a identificar cuándo una tasa de interés es ilegal en Colombia.',
+	},
+	{
+		title: 'Ahorrar vs. invertir: por dónde empezar',
+		excerpt: 'Una guía práctica para decidir qué hacer con tu primer millón.',
+	},
+];
 ---
 
 <Layout>
-	<Welcome />
+	<section id="calculadoras" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+		<h1 class="font-serif text-3xl font-semibold tracking-tight text-ink sm:text-4xl lg:text-5xl">
+			¿Qué quieres calcular?
+		</h1>
+		<p class="mt-3 max-w-2xl text-base text-ink/70">
+			Elige una categoría y encuentra la calculadora hecha para las reglas financieras de
+			Colombia.
+		</p>
+
+		<div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				categories.map((category) => (
+					<a
+						href={category.href}
+						class="group flex items-center gap-4 rounded-2xl bg-surface p-5 shadow-sm ring-1 ring-primary/10 transition-all hover:-translate-y-0.5 hover:shadow-md"
+					>
+						<span class="text-3xl" aria-hidden="true">
+							{category.emoji}
+						</span>
+						<span class="font-medium text-ink group-hover:text-primary">{category.label}</span>
+					</a>
+				))
+			}
+		</div>
+	</section>
+
+	<section id="herramientas" class="bg-surface py-16">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+			<h2 class="font-serif text-2xl font-semibold text-ink sm:text-3xl">Herramientas populares</h2>
+			<p class="mt-3 max-w-2xl text-base text-ink/70">
+				Las calculadoras que más usan los colombianos para tomar decisiones de plata.
+			</p>
+
+			<div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+				{
+					popularTools.map((tool) => (
+						<a
+							href="#"
+							class="flex flex-col gap-2 rounded-2xl bg-base p-6 ring-1 ring-primary/10 transition-all hover:-translate-y-0.5 hover:shadow-md"
+						>
+							<h3 class="font-semibold text-primary">{tool.title}</h3>
+							<p class="text-sm text-ink/70">{tool.description}</p>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section id="datos" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+		<h2 class="font-serif text-2xl font-semibold text-ink sm:text-3xl">
+			Datos económicos de Colombia
+		</h2>
+		<p class="mt-3 max-w-2xl text-base text-ink/70">
+			Los indicadores que mueven tus créditos, ahorros e inversiones, actualizados.
+		</p>
+
+		<div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+			{
+				economicData.map((item) => (
+					<div class="rounded-2xl bg-surface p-5 text-center ring-1 ring-primary/10">
+						<p class="font-serif text-2xl font-semibold text-primary">{item.value}</p>
+						<p class="mt-1 text-xs font-medium uppercase tracking-wide text-ink/60">
+							{item.label}
+						</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section id="aprende" class="bg-primary py-16">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+			<h2 class="font-serif text-2xl font-semibold text-surface sm:text-3xl">
+				Aprende a tomar mejores decisiones
+			</h2>
+			<p class="mt-3 max-w-2xl text-base text-surface/70">
+				Contenido práctico, sin relleno, para entender el sistema financiero colombiano.
+			</p>
+
+			<div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+				{
+					learnArticles.map((article) => (
+						<a
+							href="#"
+							class="flex flex-col gap-3 rounded-2xl bg-surface p-6 transition-all hover:-translate-y-0.5 hover:shadow-md"
+						>
+							<h3 class="font-semibold text-ink">{article.title}</h3>
+							<p class="text-sm text-ink/70">{article.excerpt}</p>
+							<span class="mt-auto text-sm font-medium text-primary">Leer más →</span>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
 </Layout>
