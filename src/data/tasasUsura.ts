@@ -10,4 +10,5 @@ export const modalidadesCredito: ModalidadCredito[] = [
 	{ id: 'consumo', label: 'Consumo y ordinario', tasaUsuraEA: 0.2577 },
 	{ id: 'comercial', label: 'Comercial', tasaUsuraEA: 0.1554 },
 	{ id: 'microcredito', label: 'Microcrédito', tasaUsuraEA: 0.3796 },
+	{ id: 'vivienda', label: 'Vivienda', tasaUsuraEA: 0.1554 },
 ];

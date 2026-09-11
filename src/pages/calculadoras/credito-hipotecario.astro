@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CreditoHipotecarioCalculator from '../../components/calculadoras/CreditoHipotecarioCalculator';
+---
+
+<Layout
+	title="Calculadora de crédito hipotecario — Taza Fix"
+	description="Calcula la cuota de tu crédito hipotecario en pesos colombianos: capital, interés, seguro de vida y seguro del inmueble, con validación contra la tasa de usura vigente."
+>
+	<section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+		<a href="/" class="text-sm font-medium text-primary hover:underline">← Volver al inicio</a>
+
+		<h1 class="mt-4 font-serif text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+			Calculadora de crédito hipotecario
+		</h1>
+		<p class="mt-3 max-w-2xl text-base text-ink/70">
+			Simula la cuota de tu crédito de vivienda en pesos, separando la cuota de
+			capital e interés de los seguros obligatorios. Para créditos en UVR usa la calculadora
+			específica de UVR (próximamente).
+		</p>
+
+		<CreditoHipotecarioCalculator client:load />
+	</section>
+</Layout>
