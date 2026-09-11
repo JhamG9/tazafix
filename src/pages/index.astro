@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 
 const categories = [
 	{ emoji: '🏠', label: 'Comprar vivienda', href: '#' },
-	{ emoji: '💳', label: 'Pagar una deuda', href: '#' },
+	{ emoji: '💳', label: 'Libre destino', href: '/calculadoras/cuota-credito' },
 	{ emoji: '🚗', label: 'Comprar carro', href: '#' },
 	{ emoji: '💰', label: 'Ahorrar', href: '#' },
 	{ emoji: '📈', label: 'Invertir', href: '#' },
@@ -12,20 +12,24 @@ const categories = [
 
 const popularTools = [
 	{
-		title: 'Cuota de crédito hipotecario',
-		description: 'Simula tu cuota mensual con el sistema UVR o en pesos.',
+		title: 'Crédito de libre inversión',
+		description: 'Simula tu cuota mensual con el sistema francés y valida contra la tasa de usura.',
+		href: '/calculadoras/cuota-credito',
 	},
 	{
 		title: 'Capacidad de endeudamiento',
 		description: 'Calcula cuánto puedes pedir prestado sin ahogar tu presupuesto.',
+		href: '#',
 	},
 	{
 		title: 'Tasa de usura vigente',
 		description: 'Compara la tasa que te ofrecen contra el límite de la Superfinanciera.',
+		href: '#',
 	},
 	{
 		title: 'Retención en la fuente',
 		description: 'Estima tu retención según tus ingresos y deducciones.',
+		href: '#',
 	},
 ];
 
@@ -92,7 +96,7 @@ const learnArticles = [
 				{
 					popularTools.map((tool) => (
 						<a
-							href="#"
+							href={tool.href}
 							class="flex flex-col gap-2 rounded-2xl bg-base p-6 ring-1 ring-primary/10 transition-all hover:-translate-y-0.5 hover:shadow-md"
 						>
 							<h3 class="font-semibold text-primary">{tool.title}</h3>
