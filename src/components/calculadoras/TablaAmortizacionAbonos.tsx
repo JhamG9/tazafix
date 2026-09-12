@@ -76,37 +76,39 @@ export default function TablaAmortizacionAbonos({
 				</div>
 			)}
 
-			<div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-				<p className="text-sm font-medium text-ink">
-					Al agregar un abono a capital, ¿qué prefieres?
-				</p>
-				<div className="inline-flex w-fit rounded-lg bg-surface p-1 ring-1 ring-primary/10">
-					<button
-						type="button"
-						onClick={() => onModoAbonoChange('reducir-plazo')}
-						className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-							modoAbono === 'reducir-plazo' ? 'bg-primary text-surface' : 'text-ink/70'
-						}`}
-					>
-						Reducir plazo
-					</button>
-					<button
-						type="button"
-						onClick={() => onModoAbonoChange('reducir-cuota')}
-						className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-							modoAbono === 'reducir-cuota' ? 'bg-primary text-surface' : 'text-ink/70'
-						}`}
-					>
-						Reducir cuota
-					</button>
+			<div className="mt-10 rounded-2xl bg-surface p-6 ring-1 ring-primary/10 sm:p-8">
+				<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+					<h3 className="font-serif text-2xl font-semibold text-ink sm:text-3xl">
+						Al agregar un abono a capital, ¿qué prefieres?
+					</h3>
+					<div className="inline-flex w-fit rounded-lg bg-base p-1 ring-1 ring-primary/10">
+						<button
+							type="button"
+							onClick={() => onModoAbonoChange('reducir-plazo')}
+							className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+								modoAbono === 'reducir-plazo' ? 'bg-primary text-surface' : 'text-ink/70'
+							}`}
+						>
+							Reducir plazo
+						</button>
+						<button
+							type="button"
+							onClick={() => onModoAbonoChange('reducir-cuota')}
+							className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+								modoAbono === 'reducir-cuota' ? 'bg-primary text-surface' : 'text-ink/70'
+							}`}
+						>
+							Reducir cuota
+						</button>
+					</div>
 				</div>
-			</div>
 
-			{abonos.length === 0 && (
-				<p className="mt-3 text-xs text-ink/50">
-					Haz clic en cualquier mes de la tabla para simular un abono a capital ese mes.
-				</p>
-			)}
+				{abonos.length === 0 && (
+					<p className="mt-3 text-base text-ink/70">
+						Haz clic en cualquier mes de la tabla para simular un abono a capital ese mes.
+					</p>
+				)}
+			</div>
 
 			<div className="mt-3 overflow-hidden rounded-2xl ring-1 ring-primary/10">
 				<div className="max-h-[28rem] overflow-auto">
