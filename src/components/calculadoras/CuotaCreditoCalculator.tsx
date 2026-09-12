@@ -1,7 +1,10 @@
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { calcularCredito, eaAMensual, mensualAEA, type ResultadoCredito } from '../../lib/credito';
+import { eaAMensual, mensualAEA } from '../../lib/credito';
+import { currency } from '../../lib/format';
 import { modalidadesCredito } from '../../data/tasasUsura';
+import { useCreditoConAbonos, type BaseCredito } from './useCreditoConAbonos';
+import TablaAmortizacionAbonos from './TablaAmortizacionAbonos';
 
 interface FormValues {
 	monto: string;
@@ -12,11 +15,6 @@ interface FormValues {
 	modalidad: string;
 }
 
-const currency = new Intl.NumberFormat('es-CO', {
-	style: 'currency',
-	currency: 'COP',
-	maximumFractionDigits: 0,
-});
 const percent = new Intl.NumberFormat('es-CO', {
 	style: 'percent',
 	minimumFractionDigits: 2,
@@ -36,9 +34,24 @@ export default function CuotaCreditoCalculator() {
 		},
 	});
 
-	const [resultado, setResultado] = useState<ResultadoCredito | null>(null);
+	const [baseCredito, setBaseCredito] = useState<BaseCredito | null>(null);
 	const [alerta, setAlerta] = useState<string | null>(null);
 	const resultadosRef = useRef<HTMLDivElement>(null);
+
+	const {
+		abonos,
+		modoAbono,
+		setModoAbono,
+		filaEditando,
+		setFilaEditando,
+		abonoInputValor,
+		setAbonoInputValor,
+		resultadoSinAbonos,
+		resultadoConAbonos,
+		ahorroIntereses,
+		handleAgregarAbono,
+		handleQuitarAbono,
+	} = useCreditoConAbonos(baseCredito);
 
 	const onSubmit = (data: FormValues) => {
 		const monto = Number(data.monto.replace(/\D/g, ''));
@@ -50,7 +63,7 @@ export default function CuotaCreditoCalculator() {
 		const iMensual = data.tasaTipo === 'EA' ? eaAMensual(tasaValor) : tasaValor;
 		const eaEquivalente = data.tasaTipo === 'EA' ? tasaValor : mensualAEA(tasaValor);
 
-		setResultado(calcularCredito(monto, iMensual, n));
+		setBaseCredito({ monto, iMensual, n });
 
 		const modalidad = modalidadesCredito.find((item) => item.id === data.modalidad);
 		if (modalidad && eaEquivalente > modalidad.tasaUsuraEA) {
@@ -173,7 +186,7 @@ export default function CuotaCreditoCalculator() {
 				</div>
 			</form>
 
-			{resultado && (
+			{resultadoConAbonos && baseCredito && (
 				<div ref={resultadosRef}>
 					{alerta && (
 						<div className="mb-6 rounded-xl bg-alert/10 p-4 text-sm text-alert ring-1 ring-alert/30">
@@ -185,14 +198,14 @@ export default function CuotaCreditoCalculator() {
 						<div className="rounded-2xl bg-primary p-6 sm:col-span-3">
 							<p className="text-sm font-medium text-surface/70">Cuota mensual</p>
 							<p className="mt-1 font-serif text-4xl font-semibold text-surface sm:text-5xl">
-								{currency.format(resultado.cuotaMensual)}
+								{currency.format(resultadoConAbonos.cuotaMensualInicial)}
 							</p>
 						</div>
 
 						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
 							<p className="text-xs font-medium uppercase tracking-wide text-ink/60">Capital</p>
 							<p className="mt-1 font-serif text-xl font-semibold text-ink">
-								{currency.format(resultado.capitalTotal)}
+								{currency.format(baseCredito.monto)}
 							</p>
 						</div>
 						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
@@ -200,7 +213,7 @@ export default function CuotaCreditoCalculator() {
 								Interés total
 							</p>
 							<p className="mt-1 font-serif text-xl font-semibold text-alert">
-								{currency.format(resultado.interesTotal)}
+								{currency.format(resultadoConAbonos.interesTotal)}
 							</p>
 						</div>
 						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
@@ -208,37 +221,25 @@ export default function CuotaCreditoCalculator() {
 								Total pagado
 							</p>
 							<p className="mt-1 font-serif text-xl font-semibold text-ink">
-								{currency.format(resultado.totalPagado)}
+								{currency.format(resultadoConAbonos.totalPagado)}
 							</p>
 						</div>
 					</div>
 
-					<div className="mt-8 overflow-hidden rounded-2xl ring-1 ring-primary/10">
-						<div className="max-h-[28rem] overflow-auto">
-							<table className="w-full min-w-[36rem] text-sm">
-								<thead className="sticky top-0 bg-primary text-surface">
-									<tr>
-										<th className="px-3 py-3 text-center font-medium">Mes</th>
-										<th className="px-3 py-3 text-right font-medium">Saldo inicial</th>
-										<th className="px-3 py-3 text-right font-medium">Interés</th>
-										<th className="px-3 py-3 text-right font-medium">Capital</th>
-										<th className="px-3 py-3 text-right font-medium">Saldo final</th>
-									</tr>
-								</thead>
-								<tbody className="bg-surface text-ink">
-									{resultado.tablaAmortizacion.map((fila) => (
-										<tr key={fila.mes} className="border-b border-primary/10 last:border-0 even:bg-base/50">
-											<td className="px-3 py-2 text-center">{fila.mes}</td>
-											<td className="px-3 py-2 text-right">{currency.format(fila.saldoInicial)}</td>
-											<td className="px-3 py-2 text-right">{currency.format(fila.interes)}</td>
-											<td className="px-3 py-2 text-right">{currency.format(fila.capital)}</td>
-											<td className="px-3 py-2 text-right">{currency.format(fila.saldoFinal)}</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-					</div>
+					<TablaAmortizacionAbonos
+						resultadoConAbonos={resultadoConAbonos}
+						resultadoSinAbonos={resultadoSinAbonos}
+						abonos={abonos}
+						modoAbono={modoAbono}
+						onModoAbonoChange={setModoAbono}
+						filaEditando={filaEditando}
+						onFilaEditandoChange={setFilaEditando}
+						abonoInputValor={abonoInputValor}
+						onAbonoInputValorChange={setAbonoInputValor}
+						onAgregarAbono={handleAgregarAbono}
+						onQuitarAbono={handleQuitarAbono}
+						ahorroIntereses={ahorroIntereses}
+					/>
 				</div>
 			)}
 		</div>

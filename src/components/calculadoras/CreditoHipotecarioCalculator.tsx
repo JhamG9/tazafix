@@ -1,18 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-	calcularCreditoConAbonos,
-	eaAMensual,
-	mensualAEA,
-	type AbonoExtra,
-	type ModoAbono,
-} from '../../lib/credito';
+import { eaAMensual, mensualAEA } from '../../lib/credito';
+import { currency, miles } from '../../lib/format';
 import { modalidadesCredito } from '../../data/tasasUsura';
 import {
 	cuotaInicialMinimaRecomendada,
 	seguroInmueblePorcentajeMensual,
 	seguroVidaPorcentajeMensual,
 } from '../../data/segurosHipotecario';
+import { useCreditoConAbonos, type BaseCredito } from './useCreditoConAbonos';
+import TablaAmortizacionAbonos from './TablaAmortizacionAbonos';
 
 interface FormValues {
 	valorVivienda: string;
@@ -34,23 +31,11 @@ interface Resumen {
 	seguroInmuebleMensual: number;
 }
 
-interface BaseCredito {
-	monto: number;
-	iMensual: number;
-	n: number;
-}
-
-const currency = new Intl.NumberFormat('es-CO', {
-	style: 'currency',
-	currency: 'COP',
-	maximumFractionDigits: 0,
-});
 const percent = new Intl.NumberFormat('es-CO', {
 	style: 'percent',
 	minimumFractionDigits: 1,
 	maximumFractionDigits: 1,
 });
-const miles = new Intl.NumberFormat('es-CO');
 
 const modalidadVivienda = modalidadesCredito.find((item) => item.id === 'vivienda');
 
@@ -96,42 +81,24 @@ export default function CreditoHipotecarioCalculator() {
 
 	const [resumen, setResumen] = useState<Resumen | null>(null);
 	const [baseCredito, setBaseCredito] = useState<BaseCredito | null>(null);
-	const [abonos, setAbonos] = useState<AbonoExtra[]>([]);
-	const [modoAbono, setModoAbono] = useState<ModoAbono>('reducir-plazo');
-	const [filaEditando, setFilaEditando] = useState<number | null>(null);
-	const [abonoInputValor, setAbonoInputValor] = useState('');
 	const [alertaCuotaInicial, setAlertaCuotaInicial] = useState<string | null>(null);
 	const [alertaUsura, setAlertaUsura] = useState<string | null>(null);
 	const resultadosRef = useRef<HTMLDivElement>(null);
 
-	const resultadoSinAbonos = useMemo(
-		() =>
-			baseCredito
-				? calcularCreditoConAbonos(baseCredito.monto, baseCredito.iMensual, baseCredito.n, [], 'reducir-plazo')
-				: null,
-		[baseCredito]
-	);
-
-	const resultadoConAbonos = useMemo(
-		() =>
-			baseCredito
-				? calcularCreditoConAbonos(baseCredito.monto, baseCredito.iMensual, baseCredito.n, abonos, modoAbono)
-				: null,
-		[baseCredito, abonos, modoAbono]
-	);
-
-	const handleAgregarAbono = (mes: number) => {
-		const monto = Number(abonoInputValor.replace(/\D/g, ''));
-		if (monto > 0) {
-			setAbonos((prev) => [...prev, { mes, monto }]);
-		}
-		setFilaEditando(null);
-		setAbonoInputValor('');
-	};
-
-	const handleQuitarAbono = (mes: number) => {
-		setAbonos((prev) => prev.filter((abono) => abono.mes !== mes));
-	};
+	const {
+		abonos,
+		modoAbono,
+		setModoAbono,
+		filaEditando,
+		setFilaEditando,
+		abonoInputValor,
+		setAbonoInputValor,
+		resultadoSinAbonos,
+		resultadoConAbonos,
+		ahorroIntereses,
+		handleAgregarAbono,
+		handleQuitarAbono,
+	} = useCreditoConAbonos(baseCredito);
 
 	const onSubmit = (data: FormValues) => {
 		const valor = parseMonto(data.valorVivienda);
@@ -149,9 +116,6 @@ export default function CreditoHipotecarioCalculator() {
 		const eaEquivalente = data.tasaTipo === 'EA' ? tasaValor : mensualAEA(tasaValor);
 
 		setBaseCredito({ monto: montoFinanciado, iMensual, n });
-		setAbonos([]);
-		setModoAbono('reducir-plazo');
-		setFilaEditando(null);
 		setResumen({
 			valorVivienda: valor,
 			cuotaInicialMonto,
@@ -181,11 +145,6 @@ export default function CreditoHipotecarioCalculator() {
 	const cuotaTotalConSeguros =
 		resultadoConAbonos && resumen
 			? resultadoConAbonos.cuotaMensualInicial + resumen.seguroVidaMensual + resumen.seguroInmuebleMensual
-			: 0;
-
-	const ahorroIntereses =
-		resultadoSinAbonos && resultadoConAbonos
-			? resultadoSinAbonos.interesTotal - resultadoConAbonos.interesTotal
 			: 0;
 
 
@@ -413,189 +372,21 @@ export default function CreditoHipotecarioCalculator() {
 						</div>
 					</div>
 
-					{abonos.length > 0 && resultadoSinAbonos && (
-						<div className="mt-8 rounded-2xl bg-primary p-6 shadow-sm sm:p-8">
-							<p className="text-sm font-medium text-surface/70">
-								Impacto de tus abonos a capital
-							</p>
-							<div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
-								<div>
-									<p className="text-xs font-medium uppercase tracking-wide text-surface/50">
-										Sin abonos
-									</p>
-									<p className="mt-1 font-serif text-2xl font-semibold text-surface/80">
-										Mes {resultadoSinAbonos.mesesFinales}
-									</p>
-									<p className="text-sm text-surface/60">
-										Interés total {currency.format(resultadoSinAbonos.interesTotal)}
-									</p>
-								</div>
-								<div>
-									<p className="text-xs font-medium uppercase tracking-wide text-surface/70">
-										Con tus abonos
-									</p>
-									<p className="mt-1 font-serif text-3xl font-semibold text-surface sm:text-4xl">
-										Mes {resultadoConAbonos.mesesFinales}
-									</p>
-									<p className="text-sm text-surface/80">
-										Interés total {currency.format(resultadoConAbonos.interesTotal)}
-									</p>
-								</div>
-							</div>
-							<p className="mt-6 font-serif text-3xl font-semibold text-positive sm:text-4xl">
-								Ahorro: {currency.format(ahorroIntereses)}
-							</p>
-							{resultadoConAbonos.mesesFinales < resultadoSinAbonos.mesesFinales && (
-								<p className="mt-1 text-sm text-surface/70">
-									Terminas de pagar{' '}
-									{resultadoSinAbonos.mesesFinales - resultadoConAbonos.mesesFinales} meses antes.
-								</p>
-							)}
-						</div>
-					)}
-
-					<div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-						<p className="text-sm font-medium text-ink">
-							Al agregar un abono a capital, ¿qué prefieres?
-						</p>
-						<div className="inline-flex w-fit rounded-lg bg-surface p-1 ring-1 ring-primary/10">
-							<button
-								type="button"
-								onClick={() => setModoAbono('reducir-plazo')}
-								className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-									modoAbono === 'reducir-plazo' ? 'bg-primary text-surface' : 'text-ink/70'
-								}`}
-							>
-								Reducir plazo
-							</button>
-							<button
-								type="button"
-								onClick={() => setModoAbono('reducir-cuota')}
-								className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-									modoAbono === 'reducir-cuota' ? 'bg-primary text-surface' : 'text-ink/70'
-								}`}
-							>
-								Reducir cuota
-							</button>
-						</div>
-					</div>
-
-					{abonos.length === 0 && (
-						<p className="mt-3 text-xs text-ink/50">
-							Haz clic en cualquier mes de la tabla para simular un abono a capital ese mes.
-						</p>
-					)}
-
-					<div className="mt-3 overflow-hidden rounded-2xl ring-1 ring-primary/10">
-						<div className="max-h-[28rem] overflow-auto">
-							<table className="w-full min-w-[46rem] text-sm">
-								<thead className="sticky top-0 bg-primary text-surface">
-									<tr>
-										<th className="px-3 py-3 text-center font-medium">Mes</th>
-										<th className="px-3 py-3 text-right font-medium">Cuota</th>
-										<th className="px-3 py-3 text-right font-medium">Saldo inicial</th>
-										<th className="px-3 py-3 text-right font-medium">Interés</th>
-										<th className="px-3 py-3 text-right font-medium">Capital</th>
-										<th className="px-3 py-3 text-right font-medium">Saldo final</th>
-										<th className="px-3 py-3 text-right font-medium">Abono</th>
-									</tr>
-								</thead>
-								<tbody className="bg-surface text-ink">
-									{resultadoConAbonos.tablaAmortizacion.map((fila) => {
-										const tieneAbono = fila.abono > 0;
-										const editando = filaEditando === fila.mes;
-
-										return (
-											<tr
-												key={fila.mes}
-												onClick={() => {
-													if (!tieneAbono) {
-														setFilaEditando(editando ? null : fila.mes);
-														setAbonoInputValor('');
-													}
-												}}
-												className={`border-b border-primary/10 last:border-0 even:bg-base/50 ${
-													tieneAbono ? '' : 'cursor-pointer hover:bg-primary/5'
-												}`}
-											>
-												<td
-													className={`px-3 py-2 text-center ${
-														tieneAbono ? 'border-l-4 border-positive' : ''
-													}`}
-												>
-													{fila.mes}
-												</td>
-												<td className="px-3 py-2 text-right">{currency.format(fila.cuota)}</td>
-												<td className="px-3 py-2 text-right">
-													{currency.format(fila.saldoInicial)}
-												</td>
-												<td className="px-3 py-2 text-right">{currency.format(fila.interes)}</td>
-												<td className="px-3 py-2 text-right">{currency.format(fila.capital)}</td>
-												<td className="px-3 py-2 text-right">
-													{currency.format(fila.saldoFinal)}
-												</td>
-												<td
-													className="px-3 py-2 text-right"
-													onClick={(event) => event.stopPropagation()}
-												>
-													{tieneAbono ? (
-														<span className="inline-flex items-center gap-2">
-															<span className="font-medium text-positive">
-																{currency.format(fila.abono)}
-															</span>
-															<button
-																type="button"
-																onClick={() => handleQuitarAbono(fila.mes)}
-																className="text-xs text-alert hover:underline"
-															>
-																Quitar
-															</button>
-														</span>
-													) : editando ? (
-														<span className="inline-flex items-center gap-1">
-															<input
-																autoFocus
-																type="text"
-																inputMode="numeric"
-																value={abonoInputValor}
-																placeholder="$"
-																onChange={(event) => {
-																	const digits = event.target.value.replace(/\D/g, '');
-																	setAbonoInputValor(digits ? miles.format(Number(digits)) : '');
-																}}
-																onKeyDown={(event) => {
-																	if (event.key === 'Enter') {
-																		event.preventDefault();
-																		handleAgregarAbono(fila.mes);
-																	}
-																	if (event.key === 'Escape') {
-																		setFilaEditando(null);
-																	}
-																}}
-																className="w-24 rounded-md px-2 py-1 text-right text-ink outline-none ring-1 ring-primary/30 focus:ring-2 focus:ring-primary"
-															/>
-															<button
-																type="button"
-																onClick={() => handleAgregarAbono(fila.mes)}
-																className="text-xs font-medium text-primary hover:underline"
-															>
-																Agregar
-															</button>
-														</span>
-													) : (
-														<span className="text-ink/30">—</span>
-													)}
-												</td>
-											</tr>
-										);
-									})}
-								</tbody>
-							</table>
-						</div>
-						<p className="bg-surface px-3 py-2 text-xs text-ink/50">
-							Los seguros no afectan el saldo del crédito y no están incluidos en esta tabla.
-						</p>
-					</div>
+					<TablaAmortizacionAbonos
+						resultadoConAbonos={resultadoConAbonos}
+						resultadoSinAbonos={resultadoSinAbonos}
+						abonos={abonos}
+						modoAbono={modoAbono}
+						onModoAbonoChange={setModoAbono}
+						filaEditando={filaEditando}
+						onFilaEditandoChange={setFilaEditando}
+						abonoInputValor={abonoInputValor}
+						onAbonoInputValorChange={setAbonoInputValor}
+						onAgregarAbono={handleAgregarAbono}
+						onQuitarAbono={handleQuitarAbono}
+						ahorroIntereses={ahorroIntereses}
+						notaPie="Los seguros no afectan el saldo del crédito y no están incluidos en esta tabla."
+					/>
 				</div>
 			)}
 		</div>
