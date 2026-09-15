@@ -4,9 +4,9 @@ import Layout from '../layouts/Layout.astro';
 const categories = [
 	{ emoji: '🏠', label: 'Comprar vivienda', href: '/calculadoras/credito-hipotecario' },
 	{ emoji: '💳', label: 'Libre destino', href: '/calculadoras/cuota-credito' },
-	{ emoji: '🚗', label: 'Comprar carro', href: '#' },
-	{ emoji: '💰', label: 'Ahorrar', href: '#' },
-	{ emoji: '📈', label: 'Invertir', href: '#' },
+	{ emoji: '🚗', label: 'Comprar carro', href: '/calculadoras/costo-carro' },
+	{ emoji: '💰', label: 'Ahorrar', href: '/calculadoras/fondo-emergencia' },
+	{ emoji: '📈', label: 'Invertir', href: '/calculadoras/interes-compuesto' },
 	{ emoji: '📊', label: 'Entender tu patrimonio', href: '#' },
 ];
 
@@ -25,6 +25,21 @@ const popularTools = [
 		title: 'Comprar vs. arrendar vivienda',
 		description: 'Compara el patrimonio que acumularías comprando frente a arrendar e invertir.',
 		href: '/calculadoras/comprar-vs-arrendar',
+	},
+	{
+		title: 'Interés compuesto',
+		description: 'Simula cómo crece tu dinero con aportes mensuales en el tiempo.',
+		href: '/calculadoras/interes-compuesto',
+	},
+	{
+		title: 'Fondo de emergencia',
+		description: 'Calcula tu meta de ahorro para imprevistos y en cuántos meses puedes lograrla.',
+		href: '/calculadoras/fondo-emergencia',
+	},
+	{
+		title: 'Costo real de tener un carro',
+		description: 'Descubre cuánto te cuesta tu carro al mes sumando todos los gastos asociados.',
+		href: '/calculadoras/costo-carro',
 	},
 	{
 		title: 'Tasa de usura vigente',
