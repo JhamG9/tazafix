@@ -2,15 +2,29 @@
 const columns = [
 	{
 		title: 'Calculadoras',
-		links: ['Comprar vivienda', 'Pagar una deuda', 'Comprar carro', 'Ahorrar', 'Invertir'],
+		links: [
+			{ label: 'Comprar vivienda', href: '/calculadoras/credito-hipotecario' },
+			{ label: 'Pagar una deuda', href: '/calculadoras/cuota-credito' },
+			{ label: 'Comprar carro', href: '/calculadoras/costo-carro' },
+			{ label: 'Ahorrar', href: '/calculadoras/fondo-emergencia' },
+			{ label: 'Invertir', href: '/calculadoras/interes-compuesto' },
+		],
 	},
 	{
 		title: 'Recursos',
-		links: ['Datos económicos de Colombia', 'Aprende', 'Glosario financiero'],
+		links: [
+			{ label: 'Aprende', href: '/#aprende' },
+			{ label: 'Glosario financiero', href: '#' },
+		],
 	},
 	{
 		title: 'Taza Fix',
-		links: ['Sobre nosotros', 'Contacto', 'Términos y condiciones', 'Privacidad'],
+		links: [
+			{ label: 'Sobre nosotros', href: '#' },
+			{ label: 'Contacto', href: '#' },
+			{ label: 'Términos y condiciones', href: '#' },
+			{ label: 'Privacidad', href: '#' },
+		],
 	},
 ];
 
@@ -37,8 +51,11 @@ const year = new Date().getFullYear();
 						<ul class="mt-4 space-y-2">
 							{column.links.map((link) => (
 								<li>
-									<a href="#" class="text-sm text-surface/80 transition-colors hover:text-surface">
-										{link}
+									<a
+										href={link.href}
+										class="text-sm text-surface/80 transition-colors hover:text-surface"
+									>
+										{link.label}
 									</a>
 								</li>
 							))}

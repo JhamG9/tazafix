@@ -1,0 +1,138 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const destacadas = [
+	{
+		title: 'Calculadora de cuota de crédito',
+		description: 'Simula tu cuota mensual y valida contra la tasa de usura.',
+		href: '/calculadoras/cuota-credito',
+	},
+	{
+		title: 'Comprar vs. arrendar vivienda',
+		description: 'Compara el patrimonio que acumularías comprando frente a arrendar e invertir.',
+		href: '/calculadoras/comprar-vs-arrendar',
+	},
+	{
+		title: 'Calculadora de capacidad de endeudamiento',
+		description: 'Calcula cuánto puedes pedir prestado sin ahogar tu presupuesto.',
+		href: '/calculadoras/capacidad-endeudamiento',
+	},
+];
+
+const categorias = [
+	{
+		title: 'Créditos y deudas',
+		herramientas: [
+			{
+				title: 'Calculadora de cuota de crédito',
+				description: 'Simula tu cuota mensual y valida contra la tasa de usura.',
+				href: '/calculadoras/cuota-credito',
+			},
+			{
+				title: 'Calculadora de capacidad de endeudamiento',
+				description: 'Calcula cuánto puedes pedir prestado sin ahogar tu presupuesto.',
+				href: '/calculadoras/capacidad-endeudamiento',
+			},
+		],
+	},
+	{
+		title: 'Vivienda',
+		herramientas: [
+			{
+				title: 'Calculadora de crédito hipotecario',
+				description: 'Calcula tu cuota mensual de crédito hipotecario en pesos, capital e interés.',
+				href: '/calculadoras/credito-hipotecario',
+			},
+			{
+				title: 'Comprar vs. arrendar vivienda',
+				description: 'Compara el patrimonio que acumularías comprando frente a arrendar e invertir.',
+				href: '/calculadoras/comprar-vs-arrendar',
+			},
+		],
+	},
+	{
+		title: 'Ahorro',
+		herramientas: [
+			{
+				title: 'Calculadora de fondo de emergencia',
+				description: 'Calcula tu meta de ahorro para imprevistos y en cuántos meses puedes lograrla.',
+				href: '/calculadoras/fondo-emergencia',
+			},
+		],
+	},
+	{
+		title: 'Inversión',
+		herramientas: [
+			{
+				title: 'Calculadora de interés compuesto',
+				description: 'Simula cómo crece tu dinero con aportes mensuales en el tiempo.',
+				href: '/calculadoras/interes-compuesto',
+			},
+		],
+	},
+	{
+		title: 'Carro',
+		herramientas: [
+			{
+				title: 'Costo real mensual de tener un carro',
+				description: 'Descubre cuánto te cuesta tu carro al mes sumando todos los gastos asociados.',
+				href: '/calculadoras/costo-carro',
+			},
+		],
+	},
+];
+---
+
+<Layout
+	title="Calculadoras financieras — Taza Fix"
+	description="Todas las calculadoras de Taza Fix agrupadas por categoría: créditos, vivienda, ahorro, inversión y carro."
+>
+	<section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+		<a href="/" class="text-sm font-medium text-primary hover:underline">← Volver al inicio</a>
+
+		<h1 class="mt-4 font-serif text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+			Calculadoras financieras
+		</h1>
+		<p class="mt-3 max-w-2xl text-base text-ink/70">
+			Simula tus decisiones financieras antes de tomarlas.
+		</p>
+
+		<div class="mt-10">
+			<h2 class="font-serif text-xl font-semibold text-ink sm:text-2xl">Más usadas</h2>
+			<div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+				{
+					destacadas.map((tool) => (
+						<a
+							href={tool.href}
+							class="flex flex-col gap-2 rounded-2xl bg-primary p-7 shadow-sm ring-1 ring-primary/10 transition-all hover:-translate-y-0.5 hover:shadow-md"
+						>
+							<h3 class="font-serif text-lg font-semibold text-surface">{tool.title}</h3>
+							<p class="text-sm text-surface/80">{tool.description}</p>
+						</a>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="mt-16 space-y-14">
+			{
+				categorias.map((categoria) => (
+					<div>
+						<h2 class="font-serif text-xl font-semibold text-ink sm:text-2xl">{categoria.title}</h2>
+						<div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+							{categoria.herramientas.map((tool) => (
+								<a
+									href={tool.href}
+									class="flex flex-col gap-2 rounded-2xl bg-surface p-6 ring-1 ring-primary/10 transition-all hover:-translate-y-0.5 hover:shadow-md"
+								>
+									<h3 class="font-semibold text-ink">{tool.title}</h3>
+									<p class="text-sm text-ink/70">{tool.description}</p>
+								</a>
+							))}
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</section>
+</Layout>
