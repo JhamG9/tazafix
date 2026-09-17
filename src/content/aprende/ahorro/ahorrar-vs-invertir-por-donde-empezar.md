@@ -3,7 +3,7 @@ title: "Ahorrar vs. invertir: por dónde empezar"
 excerpt: "Una guía práctica para decidir qué hacer con tu primer millón."
 category: "ahorro"
 categoryLabel: "Ahorro"
-metaTitle: "Ahorrar vs. invertir: por dónde empezar | Taza Fix"
+metaTitle: "Ahorrar vs. invertir: por dónde empezar | Cifras y Finanzas"
 metaDescription: "La diferencia práctica entre ahorrar e invertir, y por qué el orden importa. Con dos herramientas para dar tu primer paso concreto."
 keywords:
   - "ahorrar vs invertir"

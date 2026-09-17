@@ -3,7 +3,7 @@ title: "Tasa de usura: el límite legal que pocos revisan"
 excerpt: "Aprende a identificar cuándo una tasa de interés es ilegal en Colombia."
 category: "creditos"
 categoryLabel: "Créditos"
-metaTitle: "Tasa de usura en Colombia: cómo verificarla | Taza Fix"
+metaTitle: "Tasa de usura en Colombia: cómo verificarla | Cifras y Finanzas"
 metaDescription: "Qué es la tasa de usura, quién la certifica y cómo saber si la tasa de tu crédito supera el límite legal en Colombia."
 keywords:
   - "tasa de usura"
@@ -71,4 +71,4 @@ La Superintendencia Financiera certifica la tasa de usura trimestralmente, así 
 
 ## Verifica tu tasa
 
-Antes de firmar o de seguir pagando sin revisar, confirma la modalidad exacta de tu crédito y compara tu tasa (convertida a efectiva anual) contra el certificado vigente de la Superintendencia Financiera para esa modalidad. Pronto tendremos en Taza Fix una calculadora para hacer esta comparación al instante.
+Antes de firmar o de seguir pagando sin revisar, confirma la modalidad exacta de tu crédito y compara tu tasa (convertida a efectiva anual) contra el certificado vigente de la Superintendencia Financiera para esa modalidad. Pronto tendremos en Cifras y Finanzas una calculadora para hacer esta comparación al instante.

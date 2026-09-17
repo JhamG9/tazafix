@@ -1,4 +1,4 @@
-Taza Fix — Plataforma de Finanzas Personales para Colombia
+Cifras y Finanzas — Plataforma de Finanzas Personales para Colombia
 
 1. Concepto general:
 Un sitio web que combina contenido financiero práctico + calculadoras específicas + enlaces cruzados entre ambos, enfocado en decisiones financieras concretas de colombianos de clase media (deuda, vivienda, carro, ahorro, inversión). No es un blog. No es un banco. Es una "capa de claridad" entre la información financiera confusa (bancos, noticias, redes sociales) y la decisión que la persona necesita tomar.
