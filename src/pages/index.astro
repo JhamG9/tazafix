@@ -2,12 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 
 const categories = [
-	{ emoji: '🏠', label: 'Comprar vivienda', href: '/calculadoras/credito-hipotecario' },
-	{ emoji: '💳', label: 'Libre destino', href: '/calculadoras/cuota-credito' },
-	{ emoji: '🚗', label: 'Comprar carro', href: '/calculadoras/costo-carro' },
-	{ emoji: '💰', label: 'Ahorrar', href: '/calculadoras/fondo-emergencia' },
-	{ emoji: '📈', label: 'Invertir', href: '/calculadoras/interes-compuesto' },
-	{ emoji: '📊', label: 'Entender tu patrimonio', href: '#' },
+	{ label: 'Comprar vivienda', href: '/calculadoras/credito-hipotecario' },
+	{ label: 'Libre destino', href: '/calculadoras/cuota-credito' },
+	{ label: 'Comprar carro', href: '/calculadoras/costo-carro' },
+	{ label: 'Ahorrar', href: '/calculadoras/fondo-emergencia' },
+	{ label: 'Invertir', href: '/calculadoras/interes-compuesto' },
+	{ label: 'Entender tu patrimonio', href: '#' },
 ];
 
 const popularTools = [
@@ -79,9 +79,6 @@ const learnArticles = [
 						href={category.href}
 						class="group flex items-center gap-4 rounded-2xl bg-surface p-5 shadow-sm ring-1 ring-primary/10 transition-all hover:-translate-y-0.5 hover:shadow-md"
 					>
-						<span class="text-3xl" aria-hidden="true">
-							{category.emoji}
-						</span>
 						<span class="font-medium text-ink group-hover:text-primary">{category.label}</span>
 					</a>
 				))
