@@ -17,6 +17,11 @@ const destacadas = [
 		description: 'Calcula cuánto puedes pedir prestado sin ahogar tu presupuesto.',
 		href: '/calculadoras/capacidad-endeudamiento',
 	},
+	{
+		title: 'Calculadora del 4x1000',
+		description: 'Calcula cuánto pagas de 4x1000 en un retiro o transferencia.',
+		href: '/calculadoras/4x1000',
+	},
 ];
 
 const categorias = [
@@ -32,6 +37,11 @@ const categorias = [
 				title: 'Calculadora de capacidad de endeudamiento',
 				description: 'Calcula cuánto puedes pedir prestado sin ahogar tu presupuesto.',
 				href: '/calculadoras/capacidad-endeudamiento',
+			},
+			{
+				title: 'Calculadora del 4x1000',
+				description: 'Calcula cuánto pagas de 4x1000 en un retiro o transferencia.',
+				href: '/calculadoras/4x1000',
 			},
 		],
 	},
@@ -99,7 +109,7 @@ const categorias = [
 
 		<div class="mt-10">
 			<h2 class="font-serif text-xl font-semibold text-ink sm:text-2xl">Más usadas</h2>
-			<div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+			<div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 				{
 					destacadas.map((tool) => (
 						<a
