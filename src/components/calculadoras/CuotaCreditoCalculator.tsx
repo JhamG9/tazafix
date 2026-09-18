@@ -5,6 +5,8 @@ import { currency } from '../../lib/format';
 import { modalidadesCredito } from '../../data/tasasUsura';
 import { useCreditoConAbonos, type BaseCredito } from './useCreditoConAbonos';
 import TablaAmortizacionAbonos from './TablaAmortizacionAbonos';
+import CalculatorHint from './CalculatorHint';
+import ExportButtons from './ExportButtons';
 
 interface FormValues {
 	monto: string;
@@ -50,6 +52,7 @@ export default function CuotaCreditoCalculator() {
 		resultadoConAbonos,
 		ahorroIntereses,
 		handleAgregarAbono,
+		handleAplicarAbonoRango,
 		handleQuitarAbono,
 	} = useCreditoConAbonos(baseCredito);
 
@@ -85,6 +88,7 @@ export default function CuotaCreditoCalculator() {
 				onSubmit={handleSubmit(onSubmit)}
 				className="h-fit rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-primary/10"
 			>
+				<CalculatorHint>ingresa el monto, plazo y tasa que te ofrecieron. El resultado incluye la cuota, intereses y total pagado.</CalculatorHint>
 				<div className="space-y-5">
 					<div>
 						<label htmlFor="monto" className="block text-sm font-medium text-ink">
@@ -187,7 +191,7 @@ export default function CuotaCreditoCalculator() {
 			</form>
 
 			{resultadoConAbonos && baseCredito && (
-				<div ref={resultadosRef}>
+				<div id="resultado-cuota-credito" ref={resultadosRef}>
 					{alerta && (
 						<div className="mb-6 rounded-xl bg-alert/10 p-4 text-sm text-alert ring-1 ring-alert/30">
 							{alerta}
@@ -225,6 +229,7 @@ export default function CuotaCreditoCalculator() {
 							</p>
 						</div>
 					</div>
+					<ExportButtons targetId="resultado-cuota-credito" title="Resultado de cuota de crédito" />
 
 					<TablaAmortizacionAbonos
 						resultadoConAbonos={resultadoConAbonos}
@@ -237,6 +242,7 @@ export default function CuotaCreditoCalculator() {
 						abonoInputValor={abonoInputValor}
 						onAbonoInputValorChange={setAbonoInputValor}
 						onAgregarAbono={handleAgregarAbono}
+						onAplicarAbonoRango={handleAplicarAbonoRango}
 						onQuitarAbono={handleQuitarAbono}
 						ahorroIntereses={ahorroIntereses}
 					/>

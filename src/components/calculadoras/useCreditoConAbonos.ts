@@ -24,6 +24,7 @@ export interface UseCreditoConAbonosResult {
 	resultadoConAbonos: ResultadoCreditoConAbonos | null;
 	ahorroIntereses: number;
 	handleAgregarAbono: (mes: number) => void;
+	handleAplicarAbonoRango: (mesInicio: number, mesFin: number, monto: number) => void;
 	handleQuitarAbono: (mes: number) => void;
 }
 
@@ -72,6 +73,23 @@ export function useCreditoConAbonos(baseCredito: BaseCredito | null): UseCredito
 		setAbonos((prev) => prev.filter((abono) => abono.mes !== mes));
 	};
 
+	const handleAplicarAbonoRango = (mesInicio: number, mesFin: number, monto: number) => {
+		if (monto <= 0 || mesFin < mesInicio) return;
+
+		setAbonos((prev) => {
+			const mesesExistentes = new Set(prev.map((abono) => abono.mes));
+			const nuevosAbonos = [...prev];
+
+			for (let mes = mesInicio; mes <= mesFin; mes += 1) {
+				if (!mesesExistentes.has(mes)) {
+					nuevosAbonos.push({ mes, monto });
+				}
+			}
+
+			return nuevosAbonos;
+		});
+	};
+
 	const ahorroIntereses =
 		resultadoSinAbonos && resultadoConAbonos
 			? resultadoSinAbonos.interesTotal - resultadoConAbonos.interesTotal
@@ -89,6 +107,7 @@ export function useCreditoConAbonos(baseCredito: BaseCredito | null): UseCredito
 		resultadoConAbonos,
 		ahorroIntereses,
 		handleAgregarAbono,
+		handleAplicarAbonoRango,
 		handleQuitarAbono,
 	};
 }

@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { currency, miles } from '../../lib/format';
+import CalculatorHint from './CalculatorHint';
+import ExportButtons from './ExportButtons';
 
 const TASA_GMF = 0.004;
 
@@ -29,6 +31,7 @@ export default function GravamenMovimientosCalculator() {
 	return (
 		<div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,26rem)_1fr]">
 			<div className="h-fit rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-primary/10">
+				<CalculatorHint>indica cuánto vas a mover y si tu cuenta está marcada como exenta.</CalculatorHint>
 				<div className="space-y-5">
 					<div>
 						<label htmlFor="monto" className="block text-sm font-medium text-ink">
@@ -95,7 +98,7 @@ export default function GravamenMovimientosCalculator() {
 				</div>
 			</div>
 
-			<div>
+			<div id="resultado-4x1000">
 				{esExenta ? (
 					<div className="rounded-2xl bg-primary p-6 sm:p-8">
 						<p className="text-sm font-medium text-surface/70">Resultado</p>
@@ -111,6 +114,7 @@ export default function GravamenMovimientosCalculator() {
 						</p>
 					</div>
 				)}
+				<ExportButtons targetId="resultado-4x1000" title="Resultado de calculadora 4x1000" />
 
 				<div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
 					<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">

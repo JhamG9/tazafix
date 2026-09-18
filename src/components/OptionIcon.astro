@@ -1,0 +1,62 @@
+---
+interface Props {
+	name: string;
+	class?: string;
+}
+
+const { name, class: className = 'h-12 w-12' } = Astro.props;
+---
+
+<svg
+	aria-hidden="true"
+	viewBox="0 0 48 48"
+	fill="none"
+	stroke="currentColor"
+	stroke-width="2.4"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	class={className}
+>
+	{ name === 'home' && <>
+		<path d="m7 22 17-14 17 14" />
+		<path d="M11 20v20h26V20" />
+		<path d="M20 40V27h8v13" />
+		<path d="M33 15V9h5v10" />
+	</> }
+	{ name === 'loan' && <>
+		<rect x="8" y="11" width="25" height="29" rx="3" />
+		<path d="M15 18h11M15 24h11M15 30h6" />
+		<circle cx="35" cy="31" r="7" fill="currentColor" stroke="none" />
+		<path d="M35 27v8M32.5 29.5c0-1.2 5-1.2 5 0s-5 1.2-5 2.5 5 1.2 5 0" stroke="white" />
+	</> }
+	{ name === 'car' && <>
+		<path d="m9 29 4-11h22l4 11" />
+		<path d="M7 29h34v8H7z" />
+		<path d="M15 18 18 12h12l3 6M12 37v3M36 37v3" />
+		<circle cx="14" cy="29" r="2" fill="currentColor" />
+		<circle cx="34" cy="29" r="2" fill="currentColor" />
+	</> }
+	{ name === 'save' && <>
+		<path d="M24 8v27M16 18l8-10 8 10" />
+		<path d="M12 29v9h24v-9" />
+		<path d="M8 38h32" />
+	</> }
+	{ name === 'invest' && <>
+		<path d="M9 35 20 24l7 6 12-17" />
+		<path d="M30 13h9v9" />
+		<circle cx="11" cy="38" r="2" fill="currentColor" stroke="none" />
+	</> }
+	{ name === 'balance' && <>
+		<path d="M24 9v29M15 14h18M10 40h28" />
+		<path d="m15 14-7 12h14l-7-12ZM33 14l-7 12h14l-7-12Z" />
+	</> }
+	{ name === 'tax' && <>
+		<rect x="10" y="7" width="28" height="34" rx="3" />
+		<path d="M16 14h16M16 20h4M24 20h4M16 27h4M24 27h4M16 34h4M24 34h4" />
+	</> }
+	{ name === 'interest' && <>
+		<path d="m16 34 16-20M15 15h.01M33 33h.01" />
+		<circle cx="15" cy="15" r="5" />
+		<circle cx="33" cy="33" r="5" />
+	</> }
+</svg>

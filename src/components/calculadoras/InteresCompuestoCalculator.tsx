@@ -13,6 +13,8 @@ import {
 import { Line } from 'react-chartjs-2';
 import { currency, currencyAbreviado, miles } from '../../lib/format';
 import { calcularInteresCompuesto, type ResultadoInteresCompuesto } from '../../lib/interesCompuesto';
+import CalculatorHint from './CalculatorHint';
+import ExportButtons from './ExportButtons';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
@@ -137,6 +139,7 @@ export default function InteresCompuestoCalculator() {
 				onSubmit={handleSubmit(onSubmit)}
 				className="h-fit rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-primary/10"
 			>
+				<CalculatorHint>puedes empezar en cero: combina un monto inicial, aportes mensuales y una rentabilidad anual estimada.</CalculatorHint>
 				<div className="space-y-5">
 					<div>
 						<label htmlFor="montoInicial" className="block text-sm font-medium text-ink">
@@ -227,7 +230,7 @@ export default function InteresCompuestoCalculator() {
 			</form>
 
 			{resultado && (
-				<div ref={resultadosRef}>
+				<div id="resultado-interes-compuesto" ref={resultadosRef}>
 					<div className="rounded-2xl bg-primary p-6 sm:p-10">
 						<p className="font-serif text-3xl font-semibold leading-tight text-surface sm:text-4xl lg:text-5xl">
 							En {anios} años tendrías {currency.format(resultado.saldoFinal)}
@@ -238,6 +241,7 @@ export default function InteresCompuestoCalculator() {
 							{percent.format(resultado.porcentajeInteres)} de tu resultado final.
 						</p>
 					</div>
+					<ExportButtons targetId="resultado-interes-compuesto" title="Resultado de interés compuesto" />
 
 					<div className="mt-8 rounded-2xl bg-surface p-4 ring-1 ring-primary/10 sm:p-6">
 						<div className="h-72 sm:h-80">
