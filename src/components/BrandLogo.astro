@@ -8,16 +8,17 @@ const { showName = true, class: className = '' } = Astro.props;
 ---
 
 <a href="/" class={`inline-flex items-center gap-3 ${className}`} aria-label="Cifras y Finanzas, inicio">
-	<svg aria-hidden="true" viewBox="0 0 92 72" fill="none" class="h-10 w-[3.2rem] shrink-0">
+	<svg aria-hidden="true" viewBox="0 0 96 64" fill="none" class="h-10 w-[3.6rem] shrink-0">
 		<defs>
 			<linearGradient id="brand-gradient" x1="8" y1="60" x2="82" y2="10" gradientUnits="userSpaceOnUse">
-				<stop stop-color="#1F3A8A" />
-				<stop offset="1" stop-color="#7628C9" />
+				<stop stop-color="#78B8F0" />
+				<stop offset="0.52" stop-color="#8498E8" />
+				<stop offset="1" stop-color="#A85BE0" />
 			</linearGradient>
 		</defs>
-		<path d="M45 16C37 10 26 10 18 16c-10 8-10 23 0 31 8 6 19 6 27-1" stroke="#1F3A8A" stroke-width="11" stroke-linecap="round" />
-		<path d="M35 51 51 19c2-4 5-6 10-6h18" stroke="url(#brand-gradient)" stroke-width="11" stroke-linecap="butt" />
-		<path d="M55 37h21" stroke="url(#brand-gradient)" stroke-width="11" stroke-linecap="butt" />
+		<path d="M46 15C37 9 25 11 18 19c-8 9-7 22 1 30 8 8 21 9 30 2" stroke="url(#brand-gradient)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+		<path d="M44 49 61 19c1-3 4-5 8-5h14" stroke="url(#brand-gradient)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+		<path d="M65 36h18" stroke="url(#brand-gradient)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
 	</svg>
 	{showName && (
 		<span class="font-serif text-xl font-bold tracking-tight text-[#1F3A8A]">

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 100" role="img" aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">Cifras y Finanzas</title>
+  <desc id="logo-desc">Logo de Cifras y Finanzas con símbolo azul y morado</desc>
+  <defs>
+    <linearGradient id="brand-gradient" x1="10" y1="54" x2="84" y2="12" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#78B8F0" />
+      <stop offset="0.52" stop-color="#8498E8" />
+      <stop offset="1" stop-color="#A85BE0" />
+    </linearGradient>
+  </defs>
+  <g transform="translate(8 18)" fill="none" stroke="url(#brand-gradient)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46 15C37 9 25 11 18 19c-8 9-7 22 1 30 8 8 21 9 30 2" />
+    <path d="M44 49 61 19c1-3 4-5 8-5h14" />
+    <path d="M65 36h18" />
+  </g>
+  <text x="112" y="69" fill="#1F3A8A" font-family="Google Sans, Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="-1.2">Cifras <tspan fill="#7628C9">y Finanzas</tspan></text>
+</svg>
