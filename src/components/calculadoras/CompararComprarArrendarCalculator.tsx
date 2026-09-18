@@ -6,6 +6,8 @@ import {
 	supuestosPorDefecto,
 	type ResultadoComprarVsArrendar,
 } from '../../lib/comprarVsArrendar';
+import CalculatorHint from './CalculatorHint';
+import ExportButtons from './ExportButtons';
 
 interface FormValues {
 	valorVivienda: string;
@@ -102,6 +104,7 @@ export default function CompararComprarArrendarCalculator() {
 				onSubmit={handleSubmit(onSubmit)}
 				className="h-fit rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-primary/10"
 			>
+				<CalculatorHint>compara una vivienda similar: valor, cuota inicial y arriendo. Los supuestos avanzados ya tienen referencias editables.</CalculatorHint>
 				<div className="space-y-5">
 					<div>
 						<label htmlFor="valorVivienda" className="block text-sm font-medium text-ink">
@@ -313,7 +316,7 @@ export default function CompararComprarArrendarCalculator() {
 			</form>
 
 			{resultado && (
-				<div ref={resultadosRef}>
+				<div id="resultado-comprar-arrendar" ref={resultadosRef}>
 					<div className="rounded-2xl bg-primary p-6 sm:p-10">
 						{esNeutral ? (
 							<p className="font-serif text-2xl font-semibold leading-tight text-surface sm:text-3xl lg:text-4xl">
@@ -340,6 +343,7 @@ export default function CompararComprarArrendarCalculator() {
 							</p>
 						)}
 					</div>
+					<ExportButtons targetId="resultado-comprar-arrendar" title="Resultado de comprar versus arrendar" />
 
 					<div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div className="rounded-2xl bg-surface p-6 ring-1 ring-primary/10">

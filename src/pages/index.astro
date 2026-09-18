@@ -1,45 +1,52 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import OptionIcon from '../components/OptionIcon.astro';
 
 const categories = [
-	{ label: 'Comprar vivienda', href: '/calculadoras/credito-hipotecario' },
-	{ label: 'Libre destino', href: '/calculadoras/cuota-credito' },
-	{ label: 'Comprar carro', href: '/calculadoras/costo-carro' },
-	{ label: 'Ahorrar', href: '/calculadoras/fondo-emergencia' },
-	{ label: 'Invertir', href: '/calculadoras/interes-compuesto' },
-	{ label: 'Entender tu patrimonio', href: '#' },
+	{ label: 'Comprar vivienda', detail: 'Mi primer techo', icon: 'home', color: 'bg-alert', href: '/calculadoras/credito-hipotecario' },
+	{ label: 'Préstamo libre', detail: 'Vivir más tranquilo', icon: 'loan', color: 'bg-primary', href: '/calculadoras/cuota-credito' },
+	{ label: 'Comprar carro', detail: 'Rodar en grande', icon: 'car', color: 'bg-[#d9a32d]', href: '/calculadoras/costo-carro' },
+	{ label: 'Ahorrar', detail: 'Cosechar calma', icon: 'save', color: 'bg-positive', href: '/calculadoras/fondo-emergencia' },
+	{ label: 'Invertir', detail: 'Ver crecer tu plata', icon: 'invest', color: 'bg-[#6b4bc1]', href: '/calculadoras/interes-compuesto' },
+	{ label: 'Tu patrimonio', detail: 'Tu combo financiero', icon: 'balance', color: 'bg-ink', href: '/calculadoras' },
 ];
 
 const popularTools = [
 	{
-		title: 'Crédito de libre inversión',
-		description: 'Simula tu cuota mensual y valida contra la tasa de usura.',
+		title: '4x1000',
+		description: 'Calcula el gravamen de tus movimientos.',
+		icon: 'tax',
+		href: '/calculadoras/4x1000',
+	},
+	{
+		title: 'Tasa de interés',
+		description: 'Entiende cuánto estás pagando realmente.',
+		icon: 'interest',
 		href: '/calculadoras/cuota-credito',
 	},
 	{
-		title: 'Capacidad de endeudamiento',
-		description: 'Calcula cuánto puedes pedir prestado sin ahogar tu presupuesto.',
+		title: 'Calcula tu quincena',
+		description: 'Organiza tus ingresos y gastos del mes.',
+		icon: 'balance',
 		href: '/calculadoras/capacidad-endeudamiento',
 	},
 	{
-		title: 'Comprar vs. arrendar vivienda',
-		description: 'Compara el patrimonio que acumularías comprando frente a arrendar e invertir.',
+		title: 'Calcula tu crédito',
+		description: 'Simula cuotas y descubre tu capacidad.',
+		icon: 'loan',
 		href: '/calculadoras/comprar-vs-arrendar',
 	},
 	{
-		title: 'Interés compuesto',
-		description: 'Simula cómo crece tu dinero con aportes mensuales en el tiempo.',
+		title: 'Calcula tu balanza',
+		description: 'Mira cómo respira tu presupuesto.',
+		icon: 'invest',
 		href: '/calculadoras/interes-compuesto',
 	},
 	{
-		title: 'Fondo de emergencia',
-		description: 'Calcula tu meta de ahorro para imprevistos y en cuántos meses puedes lograrla.',
+		title: 'Calcula tu crédito',
+		description: 'Compara opciones antes de firmar.',
+		icon: 'home',
 		href: '/calculadoras/fondo-emergencia',
-	},
-	{
-		title: 'Costo real de tener un carro',
-		description: 'Descubre cuánto te cuesta tu carro al mes sumando todos los gastos asociados.',
-		href: '/calculadoras/costo-carro',
 	},
 ];
 
@@ -63,49 +70,64 @@ const learnArticles = [
 ---
 
 <Layout>
-	<section id="calculadoras" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-		<h1 class="font-serif text-3xl font-semibold tracking-tight text-ink sm:text-4xl lg:text-5xl">
-			¿Qué quieres calcular?
-		</h1>
-		<p class="mt-3 max-w-2xl text-base text-ink/70">
-			Elige una categoría y encuentra la calculadora hecha para las reglas financieras de
-			Colombia.
-		</p>
+	<section id="calculadoras" class="mx-auto max-w-7xl px-5 pb-16 pt-12 sm:px-8 lg:px-10 lg:pt-16">
+		<div class="mb-10 flex items-end justify-between gap-6">
+			<div>
+				<p class="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-primary">Tu plata, a tu ritmo</p>
+				<h1 class="max-w-3xl font-serif text-4xl font-bold leading-[1.05] tracking-tight text-ink sm:text-6xl">
+					¿Qué quieres planear hoy?
+				</h1>
+				<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+					Diseña tu futuro financiero con reglas claras, números aterrizados y herramientas hechas para Colombia.
+				</p>
+			</div>
+			<div class="hidden rounded-2xl border border-ink/10 bg-white px-5 py-4 shadow-sm lg:block">
+				<p class="text-xs font-bold uppercase tracking-wider text-ink/45">Hoy es un buen día</p>
+				<p class="mt-1 text-sm font-semibold text-ink">para poner tus finanzas en orden ✦</p>
+			</div>
+		</div>
 
-		<div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		<section id="herramientas" class="border-y border-ink/5 bg-white/70 py-10 sm:py-12">
+			<div class="mx-auto max-w-7xl px-0">
+				<div class="flex items-end justify-between gap-4">
+					<div>
+						<p class="text-sm font-bold uppercase tracking-[0.18em] text-ink/45">Para empezar</p>
+						<h2 class="mt-2 font-serif text-3xl font-bold text-ink sm:text-4xl">Herramientas populares</h2>
+					</div>
+					<a href="/calculadoras" class="hidden text-sm font-bold text-primary hover:underline sm:block">Ver todas →</a>
+				</div>
+
+				<div class="mt-6 grid grid-cols-1 gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+					{
+						popularTools.map((tool) => (
+							<a
+								href={tool.href}
+								class="group flex items-center gap-4 border-b border-ink/10 py-4 transition-colors hover:border-primary"
+							>
+								<span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white"><OptionIcon name={tool.icon} class="h-7 w-7" /></span>
+								<span><h3 class="font-semibold text-ink group-hover:text-primary">{tool.title}</h3><p class="mt-1 text-sm text-ink/55">{tool.description}</p></span>
+							</a>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<div class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
 			{
 				categories.map((category) => (
 					<a
 						href={category.href}
-						class="group flex items-center gap-4 rounded-2xl bg-surface p-5 shadow-sm ring-1 ring-primary/10 transition-all hover:-translate-y-0.5 hover:shadow-md"
+						class={`group relative flex min-h-40 flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl ${category.color} p-4 text-center text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:min-h-44 sm:p-5`}
 					>
-						<span class="font-medium text-ink group-hover:text-primary">{category.label}</span>
+						<span class="opacity-95 transition-transform duration-300 group-hover:scale-110"><OptionIcon name={category.icon} class="h-16 w-16 sm:h-20 sm:w-20" /></span>
+						<span>
+							<strong class="block text-sm font-bold leading-tight sm:text-base">{category.label}</strong>
+							<small class="mt-1 block text-[11px] leading-tight text-white/70 sm:text-xs">({category.detail})</small>
+						</span>
 					</a>
 				))
 			}
-		</div>
-	</section>
-
-	<section id="herramientas" class="bg-surface py-16">
-		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-			<h2 class="font-serif text-2xl font-semibold text-ink sm:text-3xl">Herramientas populares</h2>
-			<p class="mt-3 max-w-2xl text-base text-ink/70">
-				Las calculadoras que más usan los colombianos para tomar decisiones de plata.
-			</p>
-
-			<div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{
-					popularTools.map((tool) => (
-						<a
-							href={tool.href}
-							class="flex flex-col gap-2 rounded-2xl bg-base p-6 ring-1 ring-primary/10 transition-all hover:-translate-y-0.5 hover:shadow-md"
-						>
-							<h3 class="font-semibold text-primary">{tool.title}</h3>
-							<p class="text-sm text-ink/70">{tool.description}</p>
-						</a>
-					))
-				}
-			</div>
 		</div>
 	</section>
 

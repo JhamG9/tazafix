@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { nivelesCobertura } from '../../data/nivelesCobertura';
 import { currency, miles } from '../../lib/format';
+import CalculatorHint from './CalculatorHint';
+import ExportButtons from './ExportButtons';
 
 interface FormValues {
 	gastoMensual: string;
@@ -49,6 +51,7 @@ export default function FondoEmergenciaCalculator() {
 				onSubmit={handleSubmit(onSubmit)}
 				className="h-fit rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-primary/10"
 			>
+				<CalculatorHint>parte de tus gastos esenciales, elige cuántos meses quieres cubrir y define un plazo alcanzable.</CalculatorHint>
 				<div className="space-y-5">
 					<div>
 						<label htmlFor="gastoMensual" className="block text-sm font-medium text-ink">
@@ -132,7 +135,7 @@ export default function FondoEmergenciaCalculator() {
 			</form>
 
 			{montoObjetivo !== null && ahorroMensual !== null && (
-				<div>
+				<div id="resultado-fondo-emergencia">
 					<div className="rounded-2xl bg-primary p-6 sm:p-10">
 						<p className="font-serif text-3xl font-semibold leading-tight text-surface sm:text-4xl lg:text-5xl">
 							Necesitas ahorrar {currency.format(montoObjetivo)} para tu fondo de emergencia
@@ -142,6 +145,7 @@ export default function FondoEmergenciaCalculator() {
 							meses.
 						</p>
 					</div>
+					<ExportButtons targetId="resultado-fondo-emergencia" title="Resultado de fondo de emergencia" />
 
 					<div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">

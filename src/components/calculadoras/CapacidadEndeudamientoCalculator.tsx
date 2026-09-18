@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { currency, miles } from '../../lib/format';
 import { nivelesEndeudamiento, type NivelEndeudamiento } from '../../data/nivelesEndeudamiento';
+import CalculatorHint from './CalculatorHint';
+import ExportButtons from './ExportButtons';
 
 interface FormValues {
 	ingresos: string;
@@ -64,6 +66,7 @@ export default function CapacidadEndeudamientoCalculator() {
 				onSubmit={handleSubmit(onSubmit)}
 				className="h-fit rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-primary/10"
 			>
+				<CalculatorHint>usa tus ingresos netos y la suma de las cuotas que ya pagas. Te mostraremos tres niveles de referencia.</CalculatorHint>
 				<div className="space-y-5">
 					<div>
 						<label htmlFor="ingresos" className="block text-sm font-medium text-ink">
@@ -123,7 +126,7 @@ export default function CapacidadEndeudamientoCalculator() {
 			</form>
 
 			{resultado && (
-				<div ref={resultadosRef}>
+				<div id="resultado-capacidad" ref={resultadosRef}>
 					<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
 						<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							<div>
@@ -144,6 +147,7 @@ export default function CapacidadEndeudamientoCalculator() {
 							</div>
 						</div>
 					</div>
+					<ExportButtons targetId="resultado-capacidad" title="Resultado de capacidad de endeudamiento" />
 
 					<div className="mt-6 grid grid-cols-1 gap-6">
 						{resultado.porNivel.map(({ nivel, cupoDisponible }) => {

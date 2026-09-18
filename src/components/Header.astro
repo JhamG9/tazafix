@@ -5,10 +5,11 @@ const navLinks = [
 ];
 ---
 
-<header class="sticky top-0 z-50 border-b border-primary/10 bg-base/90 backdrop-blur">
-	<div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-		<a href="/" class="font-serif text-2xl font-semibold tracking-tight text-primary">
-			Cifras y Finanzas
+<header class="sticky top-0 z-50 border-b border-ink/10 bg-white/85 backdrop-blur-xl">
+	<div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-10">
+		<a href="/" class="flex items-center gap-3 font-serif text-xl font-bold tracking-tight text-ink">
+			<span class="grid h-9 w-9 place-items-center rounded-xl bg-primary text-lg font-black text-white shadow-lg shadow-primary/20">F</span>
+			<span>Cifras <span class="text-primary">y Finanzas</span></span>
 		</a>
 
 		<nav class="hidden items-center gap-8 md:flex">
@@ -16,7 +17,7 @@ const navLinks = [
 				navLinks.map((link) => (
 					<a
 						href={link.href}
-						class="text-sm font-medium text-ink/80 transition-colors hover:text-primary"
+						class="text-sm font-semibold text-ink/70 transition-colors hover:text-primary"
 					>
 						{link.label}
 					</a>

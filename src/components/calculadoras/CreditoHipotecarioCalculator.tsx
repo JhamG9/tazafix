@@ -10,6 +10,8 @@ import {
 } from '../../data/segurosHipotecario';
 import { useCreditoConAbonos, type BaseCredito } from './useCreditoConAbonos';
 import TablaAmortizacionAbonos from './TablaAmortizacionAbonos';
+import CalculatorHint from './CalculatorHint';
+import ExportButtons from './ExportButtons';
 
 interface FormValues {
 	valorVivienda: string;
@@ -97,6 +99,7 @@ export default function CreditoHipotecarioCalculator() {
 		resultadoConAbonos,
 		ahorroIntereses,
 		handleAgregarAbono,
+		handleAplicarAbonoRango,
 		handleQuitarAbono,
 	} = useCreditoConAbonos(baseCredito);
 
@@ -154,6 +157,7 @@ export default function CreditoHipotecarioCalculator() {
 				onSubmit={handleSubmit(onSubmit)}
 				className="h-fit rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-primary/10"
 			>
+				<CalculatorHint>empieza por el valor de la vivienda y tu cuota inicial. La cuota total incluye capital, intereses y seguros.</CalculatorHint>
 				<div className="space-y-5">
 					<div>
 						<label htmlFor="valorVivienda" className="block text-sm font-medium text-ink">
@@ -293,7 +297,7 @@ export default function CreditoHipotecarioCalculator() {
 			</form>
 
 			{resultadoConAbonos && resumen && (
-				<div ref={resultadosRef}>
+				<div id="resultado-credito-hipotecario" ref={resultadosRef}>
 					{alertaCuotaInicial && (
 						<div className="mb-4 rounded-xl bg-primary/5 p-4 text-sm text-ink ring-1 ring-primary/20">
 							ℹ️ {alertaCuotaInicial}
@@ -305,34 +309,36 @@ export default function CreditoHipotecarioCalculator() {
 						</div>
 					)}
 
-					<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10 sm:col-span-3">
-							<p className="text-xs font-medium uppercase tracking-wide text-ink/60">
-								Monto a financiar
-							</p>
-							<p className="mt-1 font-serif text-2xl font-semibold text-ink">
-								{currency.format(resumen.montoFinanciado)}
-							</p>
-							<p className="mt-1 text-xs text-ink/50">
-								Valor vivienda {currency.format(resumen.valorVivienda)} − cuota inicial{' '}
-								{currency.format(resumen.cuotaInicialMonto)} (
-								{percent.format(resumen.cuotaInicialPorcentaje)})
-							</p>
+					<div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+						<div className="grid grid-cols-1 gap-3 sm:col-span-3 sm:grid-cols-2">
+							<div className="rounded-2xl bg-surface p-4 ring-1 ring-primary/10">
+								<p className="text-xs font-medium uppercase tracking-wide text-ink/60">
+									Monto a financiar
+								</p>
+								<p className="mt-1 font-serif text-xl font-semibold text-ink">
+									{currency.format(resumen.montoFinanciado)}
+								</p>
+								<p className="mt-1 text-xs text-ink/50">
+									Valor vivienda {currency.format(resumen.valorVivienda)} − cuota inicial{' '}
+									{currency.format(resumen.cuotaInicialMonto)} (
+									{percent.format(resumen.cuotaInicialPorcentaje)})
+								</p>
+							</div>
+
+							<div className="rounded-2xl bg-surface p-4 ring-1 ring-primary/10">
+								<p className="text-sm font-medium text-ink/60">Cuota de capital + interés</p>
+								<p className="mt-1 font-serif text-2xl font-semibold text-ink sm:text-3xl">
+									{currency.format(resultadoConAbonos.cuotaMensualInicial)}
+								</p>
+							</div>
 						</div>
 
-						<div className="rounded-2xl bg-surface p-6 ring-1 ring-primary/10 sm:col-span-3">
-							<p className="text-sm font-medium text-ink/60">Cuota de capital + interés</p>
-							<p className="mt-1 font-serif text-3xl font-semibold text-ink sm:text-4xl">
-								{currency.format(resultadoConAbonos.cuotaMensualInicial)}
-							</p>
-						</div>
-
-						<div className="rounded-2xl bg-primary p-6 sm:col-span-3">
+						<div className="rounded-2xl bg-primary p-4 sm:col-span-3 sm:p-5">
 							<p className="text-sm font-medium text-surface/70">Cuota total con seguros</p>
-							<p className="mt-1 font-serif text-4xl font-semibold text-surface sm:text-5xl">
+							<p className="mt-1 font-serif text-3xl font-semibold text-surface sm:text-4xl">
 								{currency.format(cuotaTotalConSeguros)}
 							</p>
-							<dl className="mt-4 space-y-1 text-sm text-surface/80">
+							<dl className="mt-2 space-y-0.5 text-xs text-surface/80 sm:text-sm">
 								<div className="flex justify-between">
 									<dt>Capital + interés</dt>
 									<dd>{currency.format(resultadoConAbonos.cuotaMensualInicial)}</dd>
@@ -348,29 +354,30 @@ export default function CreditoHipotecarioCalculator() {
 							</dl>
 						</div>
 
-						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
+						<div className="rounded-2xl bg-surface p-4 ring-1 ring-primary/10">
 							<p className="text-xs font-medium uppercase tracking-wide text-ink/60">
 								Interés total
 							</p>
-							<p className="mt-1 font-serif text-xl font-semibold text-alert">
+							<p className="mt-1 font-serif text-lg font-semibold text-alert">
 								{currency.format(resultadoConAbonos.interesTotal)}
 							</p>
 						</div>
-						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
+						<div className="rounded-2xl bg-surface p-4 ring-1 ring-primary/10">
 							<p className="text-xs font-medium uppercase tracking-wide text-ink/60">Capital</p>
-							<p className="mt-1 font-serif text-xl font-semibold text-ink">
+							<p className="mt-1 font-serif text-lg font-semibold text-ink">
 								{currency.format(resumen.montoFinanciado)}
 							</p>
 						</div>
-						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
+						<div className="rounded-2xl bg-surface p-4 ring-1 ring-primary/10">
 							<p className="text-xs font-medium uppercase tracking-wide text-ink/60">
 								Total pagado (crédito)
 							</p>
-							<p className="mt-1 font-serif text-xl font-semibold text-ink">
+							<p className="mt-1 font-serif text-lg font-semibold text-ink">
 								{currency.format(resultadoConAbonos.totalPagado)}
 							</p>
 						</div>
 					</div>
+					<ExportButtons targetId="resultado-credito-hipotecario" title="Resultado de crédito hipotecario" />
 
 					<TablaAmortizacionAbonos
 						resultadoConAbonos={resultadoConAbonos}
@@ -383,6 +390,7 @@ export default function CreditoHipotecarioCalculator() {
 						abonoInputValor={abonoInputValor}
 						onAbonoInputValorChange={setAbonoInputValor}
 						onAgregarAbono={handleAgregarAbono}
+						onAplicarAbonoRango={handleAplicarAbonoRango}
 						onQuitarAbono={handleQuitarAbono}
 						ahorroIntereses={ahorroIntereses}
 						notaPie="Los seguros no afectan el saldo del crédito y no están incluidos en esta tabla."

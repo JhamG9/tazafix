@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { calcularCredito, eaAMensual } from '../../lib/credito';
 import { currency, miles } from '../../lib/format';
 import { supuestosCostoCarro } from '../../data/costoCarro';
+import CalculatorHint from './CalculatorHint';
+import ExportButtons from './ExportButtons';
 
 interface FormValues {
 	valorCarro: string;
@@ -138,6 +140,7 @@ export default function CostoCarroCalculator() {
 				onSubmit={handleSubmit(onSubmit)}
 				className="h-fit rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-primary/10"
 			>
+				<CalculatorHint>incluye los gastos que sí conoces; los valores opcionales en cero no se suman. Si financias, también calcularemos la cuota.</CalculatorHint>
 				<div className="space-y-5">
 					<div>
 						<label htmlFor="valorCarro" className="block text-sm font-medium text-ink">
@@ -399,7 +402,7 @@ export default function CostoCarroCalculator() {
 			</form>
 
 			{resultado && (
-				<div ref={resultadosRef}>
+				<div id="resultado-costo-carro" ref={resultadosRef}>
 					<div className="rounded-2xl bg-primary p-6 sm:p-10">
 						<p className="font-serif text-3xl font-semibold leading-tight text-surface sm:text-4xl lg:text-5xl">
 							Tu carro te cuesta realmente {currency.format(resultado.costoMensualTotal)} al mes
@@ -417,6 +420,7 @@ export default function CostoCarroCalculator() {
 							</p>
 						)}
 					</div>
+					<ExportButtons targetId="resultado-costo-carro" title="Resultado de costo mensual del carro" />
 
 					<div className="mt-8 rounded-2xl bg-surface p-6 ring-1 ring-primary/10">
 						<p className="text-sm font-medium text-ink">Desglose del costo mensual</p>
