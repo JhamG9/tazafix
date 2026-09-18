@@ -12,7 +12,7 @@ const { name, class: className = 'h-12 w-12' } = Astro.props;
 	viewBox="0 0 48 48"
 	fill="none"
 	stroke="currentColor"
-	stroke-width="2.4"
+	stroke-width="2"
 	stroke-linecap="round"
 	stroke-linejoin="round"
 	class={className}
@@ -24,7 +24,7 @@ const { name, class: className = 'h-12 w-12' } = Astro.props;
 		<path d="M33 15V9h5v10" />
 	</> }
 	{ name === 'loan' && <>
-		<rect x="8" y="11" width="25" height="29" rx="3" />
+		<rect x="8" y="11" width="25" height="29" rx="6" />
 		<path d="M15 18h11M15 24h11M15 30h6" />
 		<circle cx="35" cy="31" r="7" fill="currentColor" stroke="none" />
 		<path d="M35 27v8M32.5 29.5c0-1.2 5-1.2 5 0s-5 1.2-5 2.5 5 1.2 5 0" stroke="white" />
@@ -51,7 +51,7 @@ const { name, class: className = 'h-12 w-12' } = Astro.props;
 		<path d="m15 14-7 12h14l-7-12ZM33 14l-7 12h14l-7-12Z" />
 	</> }
 	{ name === 'tax' && <>
-		<rect x="10" y="7" width="28" height="34" rx="3" />
+		<rect x="10" y="7" width="28" height="34" rx="6" />
 		<path d="M16 14h16M16 20h4M24 20h4M16 27h4M24 27h4M16 34h4M24 34h4" />
 	</> }
 	{ name === 'interest' && <>

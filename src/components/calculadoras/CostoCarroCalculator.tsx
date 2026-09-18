@@ -446,7 +446,7 @@ export default function CostoCarroCalculator() {
 
 					{resultado.usoSupuestosPorDefecto && (
 						<p className="mt-4 text-xs text-ink/50">
-							Este resultado usa valores de referencia para SOAT, tecnomecánica y depreciación —
+							Este resultado usa valores de referencia para SOAT, tecnomecánica y depreciación.
 							ajústalos en "Ajustar supuestos" para tu caso.
 						</p>
 					)}

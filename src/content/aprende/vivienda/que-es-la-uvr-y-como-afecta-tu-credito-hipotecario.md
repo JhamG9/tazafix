@@ -26,7 +26,7 @@ Si tienes o estás por tomar un crédito hipotecario en Colombia, es probable qu
 
 ## ¿Qué es la UVR?
 
-UVR significa Unidad de Valor Real. Es, en la práctica, una unidad de medida —como podría ser un dólar o un gramo de oro— cuyo valor en pesos cambia todos los días según la inflación. El Banco de la República calcula y publica ese valor.
+UVR significa Unidad de Valor Real. Es, en la práctica, una unidad de medida, como podría ser un dólar o un gramo de oro, cuyo valor en pesos cambia todos los días según la inflación. El Banco de la República calcula y publica ese valor.
 
 Algunos créditos hipotecarios en Colombia no se pactan en pesos, sino en UVR: le debes al banco una cantidad de UVR, no una cantidad fija de pesos. Cada mes, esa cantidad de UVR se convierte a pesos usando el valor vigente de la UVR ese día.
 
@@ -36,7 +36,7 @@ En un crédito en pesos, tu saldo baja únicamente por lo que pagas. Si debes $1
 
 En un crédito en UVR, tu saldo está denominado en UVR, no en pesos. Aunque pagues tu cuota completa y a tiempo, si el valor de la UVR sube (porque hubo inflación en ese periodo), tu saldo en pesos puede subir también.
 
-Un ejemplo simple: supón que debes 1.000 UVR. Si la UVR vale $350, tu deuda equivale a $350.000. Si al mes siguiente la UVR sube a $360 —porque hubo inflación en ese periodo— tu misma deuda de 1.000 UVR ahora equivale a $360.000 en pesos. No dejaste de pagar, no te atrasaste: tu saldo en pesos subió porque la unidad en la que está denominada tu deuda se ajustó.
+Un ejemplo simple: supón que debes 1.000 UVR. Si la UVR vale $350, tu deuda equivale a $350.000. Si al mes siguiente la UVR sube a $360 porque hubo inflación en ese periodo, tu misma deuda de 1.000 UVR ahora equivale a $360.000 en pesos. No dejaste de pagar, no te atrasaste: tu saldo en pesos subió porque la unidad en la que está denominada tu deuda se ajustó.
 
 ## Un poco de contexto histórico
 
@@ -49,7 +49,7 @@ No hay una respuesta única, pero sí hay escenarios donde cada modalidad tiende
 - **Crédito en pesos**: tu cuota y tu saldo son más predecibles en términos absolutos porque no dependen de la inflación. Suele ser más fácil de proyectar mes a mes.
 - **Crédito en UVR**: la cuota inicial suele ser más baja que en pesos para un mismo monto y plazo, porque el ajuste por inflación se va reflejando gradualmente en el saldo en lugar de estar totalmente incorporado en la cuota desde el inicio. Esto puede convenir si esperas que tus ingresos crezcan a un ritmo similar o mayor que la inflación.
 
-La decisión depende de tu tolerancia a la variabilidad, tu horizonte de pago y tus expectativas sobre tus propios ingresos futuros. Aquí no te decimos cuál elegir — la idea es que entiendas la mecánica antes de comparar ofertas.
+La decisión depende de tu tolerancia a la variabilidad, tu horizonte de pago y tus expectativas sobre tus propios ingresos futuros. Aquí no te decimos cuál elegir. La idea es que entiendas la mecánica antes de comparar ofertas.
 
 ## Preguntas frecuentes
 

@@ -320,7 +320,7 @@ export default function CompararComprarArrendarCalculator() {
 					<div className="rounded-2xl bg-primary p-6 sm:p-10">
 						{esNeutral ? (
 							<p className="font-serif text-2xl font-semibold leading-tight text-surface sm:text-3xl lg:text-4xl">
-								Ambos escenarios son financieramente muy similares en este plazo — la decisión
+								Ambos escenarios son financieramente muy similares en este plazo. La decisión
 								depende más de tu situación personal.
 							</p>
 						) : resultado.diferenciaPatrimonio > 0 ? (
@@ -338,7 +338,7 @@ export default function CompararComprarArrendarCalculator() {
 
 						{usoSupuestosPorDefecto && (
 							<p className="mt-4 text-sm text-surface/70">
-								Este resultado usa supuestos estándar de valorización y rentabilidad — ajústalos
+								Este resultado usa supuestos estándar de valorización y rentabilidad. Ajústalos
 								para tu caso en "Ajustar supuestos".
 							</p>
 						)}

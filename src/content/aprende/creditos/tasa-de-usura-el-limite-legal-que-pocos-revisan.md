@@ -28,7 +28,7 @@ La mayoría de personas firma un crédito sin saber que existe un límite legal 
 
 Es el límite máximo de interés que una entidad puede cobrar legalmente en Colombia, certificado por la Superintendencia Financiera. No es una simple recomendación: cobrar por encima de ese límite es usura, y la usura es un delito en Colombia, no solo una falta administrativa.
 
-Esto no significa que cualquier tasa alta sea ilegal — los créditos de consumo, por ejemplo, suelen tener tasas más altas que un crédito hipotecario porque el riesgo y el límite certificado son distintos. Lo que importa es comparar tu tasa contra el límite de tu modalidad específica.
+Esto no significa que cualquier tasa alta sea ilegal. Los créditos de consumo, por ejemplo, suelen tener tasas más altas que un crédito hipotecario porque el riesgo y el límite certificado son distintos. Lo que importa es comparar tu tasa contra el límite de tu modalidad específica.
 
 ## ¿Quién define este límite y cada cuánto cambia?
 
@@ -49,11 +49,11 @@ La diferencia entre ambos casos no siempre es obvia a simple vista, porque las t
 
 Si al comparar tu tasa notas que supera el límite vigente para tu modalidad, estos son los pasos generales a considerar:
 
-1. **Verifica el dato oficial.** Confirma la modalidad exacta de tu crédito y el certificado vigente de la Superintendencia Financiera para ese trimestre — no te quedes solo con lo que calculaste aquí.
+1. **Verifica el dato oficial.** Confirma la modalidad exacta de tu crédito y el certificado vigente de la Superintendencia Financiera para ese trimestre. No te quedes solo con lo que calculaste aquí.
 2. **Consulta directamente con tu entidad.** Puede haber una explicación (por ejemplo, que la tasa incluye seguros u otros conceptos que no son interés puro) que vale la pena aclarar antes de sacar conclusiones.
 3. **Considera reportar ante la Superintendencia Financiera.** Si después de verificar sigues considerando que la tasa excede el límite legal, existe la posibilidad de presentar tu caso ante la entidad reguladora.
 
-Esto es orientación informativa general, no asesoría legal específica para tu caso — cada situación puede tener particularidades que conviene revisar con más detalle.
+Esto es orientación informativa general, no asesoría legal específica para tu caso. Cada situación puede tener particularidades que conviene revisar con más detalle.
 
 ## Preguntas frecuentes
 

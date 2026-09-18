@@ -74,7 +74,7 @@ export default function FondoEmergenciaCalculator() {
 							/>
 						</div>
 						<p className="mt-1 text-xs text-ink/50">
-							Incluye arriendo/cuota, servicios, alimentación, transporte y deudas — lo que
+							Incluye arriendo/cuota, servicios, alimentación, transporte y deudas. Es lo que
 							necesitarías cubrir aunque dejaras de recibir ingresos.
 						</p>
 					</div>
