@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="mark-title mark-desc" fill="none">
+  <title id="mark-title">Cifras y Finanzas</title>
+  <desc id="mark-desc">Símbolo C y F en degradado azul y morado</desc>
+  <defs>
+    <linearGradient id="mark-gradient" x1="70" y1="260" x2="430" y2="70" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#78B8F0" />
+      <stop offset="0.5" stop-color="#8498E8" />
+      <stop offset="1" stop-color="#A85BE0" />
+    </linearGradient>
+  </defs>
+  <g stroke="url(#mark-gradient)" stroke-width="42" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M246 82C195 43 123 49 78 96c-51 53-48 137 6 186 50 45 126 46 178 3" />
+    <path d="M205 255 292 91c11-21 28-32 51-32h91" />
+    <path d="M324 160h109" />
+  </g>
+</svg>
