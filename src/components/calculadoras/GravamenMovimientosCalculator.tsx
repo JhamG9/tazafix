@@ -8,7 +8,7 @@ const TASA_GMF = 0.004;
 type TipoTransaccion = 'normal' | 'exenta';
 
 export default function GravamenMovimientosCalculator() {
-	const [montoInput, setMontoInput] = useState('');
+	const [montoInput, setMontoInput] = useState('1.000.000');
 	const [tipo, setTipo] = useState<TipoTransaccion>('normal');
 
 	const monto = Number(montoInput.replace(/\D/g, '')) || 0;

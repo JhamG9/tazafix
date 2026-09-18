@@ -48,7 +48,7 @@ function parseMonto(value: string): number {
 export default function CreditoHipotecarioCalculator() {
 	const { register, handleSubmit, setValue, watch, formState } = useForm<FormValues>({
 		defaultValues: {
-			valorVivienda: '',
+			valorVivienda: '300.000.000',
 			cuotaInicialValor: 20,
 			cuotaInicialTipo: 'porcentaje',
 			plazoAnios: 20,
@@ -144,6 +144,13 @@ export default function CreditoHipotecarioCalculator() {
 			resultadosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		});
 	};
+
+	useEffect(() => {
+		onSubmit({
+			valorVivienda: '300.000.000', cuotaInicialValor: 20, cuotaInicialTipo: 'porcentaje', plazoAnios: 20,
+			tasaValor: 12, tasaTipo: 'EA', seguroVidaMensual: 0, seguroInmuebleMensual: 0,
+		});
+	}, []);
 
 	const cuotaTotalConSeguros =
 		resultadoConAbonos && resumen

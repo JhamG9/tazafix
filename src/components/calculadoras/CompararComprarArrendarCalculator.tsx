@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { currency, miles } from '../../lib/format';
 import {
@@ -38,9 +38,9 @@ function parseMonto(value: string): number {
 export default function CompararComprarArrendarCalculator() {
 	const { register, handleSubmit, setValue, formState } = useForm<FormValues>({
 		defaultValues: {
-			valorVivienda: '',
-			cuotaInicial: '',
-			arriendoMensual: '',
+			valorVivienda: '300.000.000',
+			cuotaInicial: '60.000.000',
+			arriendoMensual: '1.500.000',
 			aniosHorizonte: 10,
 			tasaCreditoEA: supuestosPorDefecto.tasaCreditoEA * 100,
 			plazoCreditoAnios: supuestosPorDefecto.plazoCreditoAnios,
@@ -89,6 +89,21 @@ export default function CompararComprarArrendarCalculator() {
 			resultadosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		});
 	};
+
+	useEffect(() => {
+		onSubmit({
+			valorVivienda: '300.000.000',
+			cuotaInicial: '60.000.000',
+			arriendoMensual: '1.500.000',
+			aniosHorizonte: 10,
+			tasaCreditoEA: supuestosPorDefecto.tasaCreditoEA * 100,
+			plazoCreditoAnios: supuestosPorDefecto.plazoCreditoAnios,
+			valorizacionAnual: supuestosPorDefecto.valorizacionAnual * 100,
+			rentabilidadAnual: supuestosPorDefecto.rentabilidadAnual * 100,
+			gastosMantenimientoPct: supuestosPorDefecto.gastosMantenimientoPct * 100,
+			costosCompraPct: supuestosPorDefecto.costosCompraPct * 100,
+		});
+	}, []);
 
 	const mayorPatrimonio = resultado
 		? Math.max(Math.abs(resultado.patrimonioComprando), Math.abs(resultado.patrimonioArrendando))

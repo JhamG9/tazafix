@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
 	CategoryScale,
@@ -37,8 +37,8 @@ function parseMonto(value: string): number {
 export default function InteresCompuestoCalculator() {
 	const { register, handleSubmit, setValue } = useForm<FormValues>({
 		defaultValues: {
-			montoInicial: '',
-			aporteMensual: '',
+			montoInicial: '5.000.000',
+			aporteMensual: '200.000',
 			tasaAnual: 8,
 			anios: 10,
 		},
@@ -63,6 +63,10 @@ export default function InteresCompuestoCalculator() {
 			resultadosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		});
 	};
+
+	useEffect(() => {
+		onSubmit({ montoInicial: '5.000.000', aporteMensual: '200.000', tasaAnual: 8, anios: 10 });
+	}, []);
 
 	// Si hay pocos años se muestra un punto por mes; si hay muchos, un punto por año para no
 	// saturar el eje X del gráfico.

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { calcularCredito, eaAMensual } from '../../lib/credito';
 import { currency, miles } from '../../lib/format';
@@ -45,15 +45,15 @@ function parseMonto(value: string): number {
 export default function CostoCarroCalculator() {
 	const { register, handleSubmit, setValue, watch, formState } = useForm<FormValues>({
 		defaultValues: {
-			valorCarro: '',
+			valorCarro: '100.000.000',
 			formaPago: 'credito',
-			cuotaInicial: '',
+			cuotaInicial: '20.000.000',
 			plazoMeses: 60,
 			tasaValor: 18,
 			tasaTipo: 'EA',
-			seguroMensual: '',
-			combustibleMensual: '',
-			mantenimientoMensual: '',
+			seguroMensual: '180.000',
+			combustibleMensual: '300.000',
+			mantenimientoMensual: '100.000',
 			tieneMasDeSeisAnios: false,
 			soatAnual: supuestosCostoCarro.soatAnual,
 			tecnomecanicaAnual: supuestosCostoCarro.tecnomecanicaAnual,
@@ -128,6 +128,15 @@ export default function CostoCarroCalculator() {
 			resultadosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		});
 	};
+
+	useEffect(() => {
+		onSubmit({
+			valorCarro: '100.000.000', formaPago: 'credito', cuotaInicial: '20.000.000', plazoMeses: 60,
+			tasaValor: 18, tasaTipo: 'EA', seguroMensual: '180.000', combustibleMensual: '300.000',
+			mantenimientoMensual: '100.000', tieneMasDeSeisAnios: false, soatAnual: supuestosCostoCarro.soatAnual,
+			tecnomecanicaAnual: supuestosCostoCarro.tecnomecanicaAnual, depreciacionAnualPct: supuestosCostoCarro.depreciacionAnualPct * 100,
+		});
+	}, []);
 
 	const maxItemValor = useMemo(
 		() => (resultado ? Math.max(...resultado.items.map((item) => item.valor)) : 0),

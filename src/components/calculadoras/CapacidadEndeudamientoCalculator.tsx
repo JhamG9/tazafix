@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { currency, miles } from '../../lib/format';
 import { nivelesEndeudamiento, type NivelEndeudamiento } from '../../data/nivelesEndeudamiento';
@@ -34,8 +34,8 @@ function parseMonto(value: string): number {
 export default function CapacidadEndeudamientoCalculator() {
 	const { register, handleSubmit, setValue } = useForm<FormValues>({
 		defaultValues: {
-			ingresos: '',
-			deudas: '',
+			ingresos: '3.500.000',
+			deudas: '800.000',
 		},
 	});
 
@@ -59,6 +59,10 @@ export default function CapacidadEndeudamientoCalculator() {
 			resultadosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		});
 	};
+
+	useEffect(() => {
+		onSubmit({ ingresos: '3.500.000', deudas: '800.000' });
+	}, []);
 
 	return (
 		<div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,26rem)_1fr]">

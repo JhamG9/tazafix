@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { nivelesCobertura } from '../../data/nivelesCobertura';
 import { currency, miles } from '../../lib/format';
@@ -20,7 +20,7 @@ function parseMonto(value: string): number {
 export default function FondoEmergenciaCalculator() {
 	const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
 		defaultValues: {
-			gastoMensual: '',
+			gastoMensual: '2.500.000',
 			nivelId: 'recomendado',
 			plazoMeses: 12,
 		},
@@ -44,6 +44,10 @@ export default function FondoEmergenciaCalculator() {
 		setMontoObjetivo(gastoMensual * nivel.meses);
 		setPlazoMeses(data.plazoMeses);
 	};
+
+	useEffect(() => {
+		onSubmit({ gastoMensual: '2.500.000', nivelId: 'recomendado', plazoMeses: 12 });
+	}, []);
 
 	return (
 		<div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,26rem)_1fr]">
