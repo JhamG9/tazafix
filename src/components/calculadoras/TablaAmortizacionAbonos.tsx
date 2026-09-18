@@ -244,7 +244,7 @@ export default function TablaAmortizacionAbonos({
 													</button>
 												</span>
 											) : (
-												<span className="text-ink/30">—</span>
+														<span className="text-ink/30">-</span>
 											)}
 										</td>
 										<td className="w-20 bg-positive/5 px-1 py-2">
@@ -283,7 +283,7 @@ export default function TablaAmortizacionAbonos({
 													</button>
 												</div>
 											) : (
-												<span className="block text-center text-ink/30">—</span>
+												<span className="block text-center text-ink/30">-</span>
 											)}
 										</td>
 										<td className="px-3 py-2 text-right">{currency.format(fila.saldoInicial)}</td>

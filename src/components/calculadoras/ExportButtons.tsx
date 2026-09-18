@@ -71,10 +71,10 @@ export default function ExportButtons({ targetId, title }: Props) {
 				<meta charset="utf-8" />
 				<title>${title}</title>
 				<style>
-					body { color: #172033; font-family: Arial, sans-serif; margin: 40px auto; max-width: 820px; }
-					h1 { color: #2142b7; font-size: 24px; margin-bottom: 28px; }
+					body { color: #17213d; font-family: Arial, sans-serif; margin: 40px auto; max-width: 820px; }
+					h1 { color: #2947b8; font-size: 24px; margin-bottom: 28px; }
 					* { box-sizing: border-box; }
-					.bg-primary { background: #2142b7 !important; color: white !important; padding: 24px; border-radius: 12px; }
+					.bg-primary { background: #2947b8 !important; color: white !important; padding: 24px; border-radius: 12px; }
 					.bg-surface { background: white !important; border: 1px solid #dfe3ed; padding: 18px; border-radius: 12px; }
 					p { line-height: 1.5; }
 				</style>

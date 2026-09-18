@@ -1,0 +1,27 @@
+---
+interface Props {
+	showName?: boolean;
+	class?: string;
+}
+
+const { showName = true, class: className = '' } = Astro.props;
+---
+
+<a href="/" class={`inline-flex items-center gap-3 ${className}`} aria-label="Cifras y Finanzas, inicio">
+	<svg aria-hidden="true" viewBox="0 0 92 72" fill="none" class="h-10 w-[3.2rem] shrink-0">
+		<defs>
+			<linearGradient id="brand-gradient" x1="8" y1="60" x2="82" y2="10" gradientUnits="userSpaceOnUse">
+				<stop stop-color="#1F3A8A" />
+				<stop offset="1" stop-color="#7628C9" />
+			</linearGradient>
+		</defs>
+		<path d="M45 16C37 10 26 10 18 16c-10 8-10 23 0 31 8 6 19 6 27-1" stroke="#1F3A8A" stroke-width="11" stroke-linecap="round" />
+		<path d="M35 51 51 19c2-4 5-6 10-6h18" stroke="url(#brand-gradient)" stroke-width="11" stroke-linecap="butt" />
+		<path d="M55 37h21" stroke="url(#brand-gradient)" stroke-width="11" stroke-linecap="butt" />
+	</svg>
+	{showName && (
+		<span class="font-serif text-xl font-bold tracking-tight text-[#1F3A8A]">
+			Cifras <span class="text-[#7628C9]">y Finanzas</span>
+		</span>
+	)}
+</a>

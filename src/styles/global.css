@@ -2,11 +2,11 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-	--color-primary: #2142b7;
-	--color-ink: #172033;
-	--color-base: #f5f7fb;
-	--color-positive: #2f8f68;
-	--color-alert: #d76a4b;
+	--color-primary: #2947b8;
+	--color-ink: #17213d;
+	--color-base: #f7f8fc;
+	--color-positive: #5aa36a;
+	--color-alert: #ed9188;
 	--color-surface: #ffffff;
 
 	--font-serif: "Google Sans", ui-sans-serif, system-ui, sans-serif;
@@ -17,11 +17,11 @@ body {
 	font-family: var(--font-sans);
 	font-optical-sizing: auto;
 	font-variation-settings: "GRAD" 0;
-	background-image: radial-gradient(circle at 15% 0%, rgba(33, 66, 183, 0.07), transparent 28rem),
-		linear-gradient(135deg, #f5f7fb 0%, #ffffff 48%, #fff8f2 100%);
+	background-image: radial-gradient(circle at 15% 0%, rgba(41, 71, 184, 0.045), transparent 28rem),
+		linear-gradient(135deg, #f7f8fc 0%, #ffffff 62%, #fbf8ff 100%);
 }
 
 ::selection {
 	background: #f5b94c;
-	color: #172033;
+	color: #17213d;
 }

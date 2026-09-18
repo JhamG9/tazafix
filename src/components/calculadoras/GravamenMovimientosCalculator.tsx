@@ -8,7 +8,7 @@ const TASA_GMF = 0.004;
 type TipoTransaccion = 'normal' | 'exenta';
 
 export default function GravamenMovimientosCalculator() {
-	const [montoInput, setMontoInput] = useState('');
+	const [montoInput, setMontoInput] = useState('1.000.000');
 	const [tipo, setTipo] = useState<TipoTransaccion>('normal');
 
 	const monto = Number(montoInput.replace(/\D/g, '')) || 0;
@@ -98,7 +98,9 @@ export default function GravamenMovimientosCalculator() {
 				</div>
 			</div>
 
-			<div id="resultado-4x1000">
+			<div>
+				{monto > 0 ? (
+				<div id="resultado-4x1000">
 				{esExenta ? (
 					<div className="rounded-2xl bg-primary p-6 sm:p-8">
 						<p className="text-sm font-medium text-surface/70">Resultado</p>
@@ -140,6 +142,15 @@ export default function GravamenMovimientosCalculator() {
 					transferencias entre cuentas de distinto titular. La tarifa es del 0,4% y está fijada
 					por ley.
 				</p>
+				</div>
+				) : (
+					<div className="rounded-2xl border border-dashed border-primary/20 bg-primary/5 p-6 sm:p-8">
+						<p className="text-sm font-semibold text-primary">Tu resultado aparecerá aquí</p>
+						<p className="mt-2 text-sm leading-6 text-ink/60">
+							Ingresa el monto de la transacción para ver el impuesto y cuánto recibirías neto.
+						</p>
+					</div>
+				)}
 			</div>
 		</div>
 	);

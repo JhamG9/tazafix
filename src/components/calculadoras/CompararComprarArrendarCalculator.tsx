@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { currency, miles } from '../../lib/format';
 import {
@@ -38,9 +38,9 @@ function parseMonto(value: string): number {
 export default function CompararComprarArrendarCalculator() {
 	const { register, handleSubmit, setValue, formState } = useForm<FormValues>({
 		defaultValues: {
-			valorVivienda: '',
-			cuotaInicial: '',
-			arriendoMensual: '',
+			valorVivienda: '300.000.000',
+			cuotaInicial: '60.000.000',
+			arriendoMensual: '1.500.000',
 			aniosHorizonte: 10,
 			tasaCreditoEA: supuestosPorDefecto.tasaCreditoEA * 100,
 			plazoCreditoAnios: supuestosPorDefecto.plazoCreditoAnios,
@@ -89,6 +89,21 @@ export default function CompararComprarArrendarCalculator() {
 			resultadosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		});
 	};
+
+	useEffect(() => {
+		onSubmit({
+			valorVivienda: '300.000.000',
+			cuotaInicial: '60.000.000',
+			arriendoMensual: '1.500.000',
+			aniosHorizonte: 10,
+			tasaCreditoEA: supuestosPorDefecto.tasaCreditoEA * 100,
+			plazoCreditoAnios: supuestosPorDefecto.plazoCreditoAnios,
+			valorizacionAnual: supuestosPorDefecto.valorizacionAnual * 100,
+			rentabilidadAnual: supuestosPorDefecto.rentabilidadAnual * 100,
+			gastosMantenimientoPct: supuestosPorDefecto.gastosMantenimientoPct * 100,
+			costosCompraPct: supuestosPorDefecto.costosCompraPct * 100,
+		});
+	}, []);
 
 	const mayorPatrimonio = resultado
 		? Math.max(Math.abs(resultado.patrimonioComprando), Math.abs(resultado.patrimonioArrendando))
@@ -320,7 +335,7 @@ export default function CompararComprarArrendarCalculator() {
 					<div className="rounded-2xl bg-primary p-6 sm:p-10">
 						{esNeutral ? (
 							<p className="font-serif text-2xl font-semibold leading-tight text-surface sm:text-3xl lg:text-4xl">
-								Ambos escenarios son financieramente muy similares en este plazo — la decisión
+								Ambos escenarios son financieramente muy similares en este plazo. La decisión
 								depende más de tu situación personal.
 							</p>
 						) : resultado.diferenciaPatrimonio > 0 ? (
@@ -338,7 +353,7 @@ export default function CompararComprarArrendarCalculator() {
 
 						{usoSupuestosPorDefecto && (
 							<p className="mt-4 text-sm text-surface/70">
-								Este resultado usa supuestos estándar de valorización y rentabilidad — ajústalos
+								Este resultado usa supuestos estándar de valorización y rentabilidad. Ajústalos
 								para tu caso en "Ajustar supuestos".
 							</p>
 						)}

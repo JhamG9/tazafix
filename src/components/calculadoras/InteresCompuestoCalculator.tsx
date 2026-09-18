@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
 	CategoryScale,
@@ -37,8 +37,8 @@ function parseMonto(value: string): number {
 export default function InteresCompuestoCalculator() {
 	const { register, handleSubmit, setValue } = useForm<FormValues>({
 		defaultValues: {
-			montoInicial: '',
-			aporteMensual: '',
+			montoInicial: '5.000.000',
+			aporteMensual: '200.000',
 			tasaAnual: 8,
 			anios: 10,
 		},
@@ -64,6 +64,10 @@ export default function InteresCompuestoCalculator() {
 		});
 	};
 
+	useEffect(() => {
+		onSubmit({ montoInicial: '5.000.000', aporteMensual: '200.000', tasaAnual: 8, anios: 10 });
+	}, []);
+
 	// Si hay pocos años se muestra un punto por mes; si hay muchos, un punto por año para no
 	// saturar el eje X del gráfico.
 	const puntosGrafico = useMemo(() => {
@@ -83,8 +87,8 @@ export default function InteresCompuestoCalculator() {
 				{
 					label: 'Total aportado',
 					data: puntosGrafico.map((fila) => fila.totalAportadoAcumulado),
-					borderColor: '#241f1c',
-					backgroundColor: 'rgba(36, 31, 28, 0.15)',
+					borderColor: '#17213d',
+					backgroundColor: 'rgba(23, 33, 61, 0.15)',
 					fill: true,
 					stack: 'total',
 					tension: 0.3,
@@ -93,8 +97,8 @@ export default function InteresCompuestoCalculator() {
 				{
 					label: 'Interés generado',
 					data: puntosGrafico.map((fila) => fila.interesGeneradoAcumulado),
-					borderColor: '#4e9f3d',
-					backgroundColor: 'rgba(78, 159, 61, 0.35)',
+					borderColor: '#5aa36a',
+					backgroundColor: 'rgba(90, 163, 106, 0.35)',
 					fill: true,
 					stack: 'total',
 					tension: 0.3,
@@ -111,7 +115,7 @@ export default function InteresCompuestoCalculator() {
 		plugins: {
 			legend: {
 				position: 'bottom' as const,
-				labels: { color: '#241f1c', usePointStyle: true, boxHeight: 8 },
+				labels: { color: '#17213d', usePointStyle: true, boxHeight: 8 },
 			},
 			tooltip: {
 				callbacks: {
@@ -121,12 +125,12 @@ export default function InteresCompuestoCalculator() {
 			},
 		},
 		scales: {
-			x: { stacked: true, grid: { display: false }, ticks: { color: '#241f1c99' } },
+			x: { stacked: true, grid: { display: false }, ticks: { color: '#17213d99' } },
 			y: {
 				stacked: true,
-				grid: { color: '#1b433215' },
+				grid: { color: '#2947b815' },
 				ticks: {
-					color: '#241f1c99',
+					color: '#17213d99',
 					callback: (value: string | number) => currencyAbreviado(Number(value)),
 				},
 			},
@@ -237,7 +241,7 @@ export default function InteresCompuestoCalculator() {
 						</p>
 						<p className="mt-4 text-base text-surface/80">
 							De ese total, tú aportaste {currency.format(resultado.totalAportado)} y el interés
-							generó {currency.format(resultado.interesGenerado)} — el{' '}
+							generó {currency.format(resultado.interesGenerado)}, que representa el{' '}
 							{percent.format(resultado.porcentajeInteres)} de tu resultado final.
 						</p>
 					</div>
