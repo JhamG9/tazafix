@@ -45,11 +45,11 @@ function parseMonto(value: string): number {
 export default function CostoCarroCalculator() {
 	const { register, handleSubmit, setValue, watch, formState } = useForm<FormValues>({
 		defaultValues: {
-			valorCarro: '100.000.000',
+			valorCarro: '0',
 			formaPago: 'credito',
-			cuotaInicial: '20.000.000',
+			cuotaInicial: '0',
 			plazoMeses: 60,
-			tasaValor: 18,
+			tasaValor: 12,
 			tasaTipo: 'EA',
 			seguroMensual: '180.000',
 			combustibleMensual: '300.000',
@@ -129,14 +129,6 @@ export default function CostoCarroCalculator() {
 		});
 	};
 
-	useEffect(() => {
-		onSubmit({
-			valorCarro: '100.000.000', formaPago: 'credito', cuotaInicial: '20.000.000', plazoMeses: 60,
-			tasaValor: 18, tasaTipo: 'EA', seguroMensual: '180.000', combustibleMensual: '300.000',
-			mantenimientoMensual: '100.000', tieneMasDeSeisAnios: false, soatAnual: supuestosCostoCarro.soatAnual,
-			tecnomecanicaAnual: supuestosCostoCarro.tecnomecanicaAnual, depreciacionAnualPct: supuestosCostoCarro.depreciacionAnualPct * 100,
-		});
-	}, []);
 
 	const maxItemValor = useMemo(
 		() => (resultado ? Math.max(...resultado.items.map((item) => item.valor)) : 0),

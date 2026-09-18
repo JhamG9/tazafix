@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { eaAMensual, mensualAEA } from '../../lib/credito';
 import { currency } from '../../lib/format';
@@ -27,7 +27,7 @@ const miles = new Intl.NumberFormat('es-CO');
 export default function CuotaCreditoCalculator() {
 	const { register, handleSubmit, setValue } = useForm<FormValues>({
 		defaultValues: {
-			monto: '50.000.000',
+			monto: '',
 			plazoValor: 60,
 			plazoUnidad: 'meses',
 			tasaValor: 12,
@@ -81,10 +81,6 @@ export default function CuotaCreditoCalculator() {
 			resultadosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		});
 	};
-
-	useEffect(() => {
-		onSubmit({ monto: '50.000.000', plazoValor: 60, plazoUnidad: 'meses', tasaValor: 12, tasaTipo: 'EA', modalidad: modalidadesCredito[0].id });
-	}, []);
 
 	return (
 		<div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,26rem)_1fr]">

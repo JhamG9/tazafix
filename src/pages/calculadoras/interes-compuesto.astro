@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
 import InteresCompuestoCalculator from '../../components/calculadoras/InteresCompuestoCalculator';
 ---
 
@@ -8,7 +9,7 @@ import InteresCompuestoCalculator from '../../components/calculadoras/InteresCom
 	description="Simula cuánto podría crecer tu dinero con aportes mensuales e interés compuesto a lo largo del tiempo."
 >
 	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-		<a href="/calculadoras" class="inline-flex rounded-full bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/15">← Todas las calculadoras</a>
+		<BackLink />
 
 		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
 			Calculadora de interés compuesto

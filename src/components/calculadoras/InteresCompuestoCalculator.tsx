@@ -37,8 +37,8 @@ function parseMonto(value: string): number {
 export default function InteresCompuestoCalculator() {
 	const { register, handleSubmit, setValue } = useForm<FormValues>({
 		defaultValues: {
-			montoInicial: '5.000.000',
-			aporteMensual: '200.000',
+			montoInicial: '',
+			aporteMensual: '',
 			tasaAnual: 8,
 			anios: 10,
 		},
@@ -64,9 +64,6 @@ export default function InteresCompuestoCalculator() {
 		});
 	};
 
-	useEffect(() => {
-		onSubmit({ montoInicial: '5.000.000', aporteMensual: '200.000', tasaAnual: 8, anios: 10 });
-	}, []);
 
 	// Si hay pocos años se muestra un punto por mes; si hay muchos, un punto por año para no
 	// saturar el eje X del gráfico.

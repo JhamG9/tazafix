@@ -38,9 +38,9 @@ function parseMonto(value: string): number {
 export default function CompararComprarArrendarCalculator() {
 	const { register, handleSubmit, setValue, formState } = useForm<FormValues>({
 		defaultValues: {
-			valorVivienda: '300.000.000',
-			cuotaInicial: '60.000.000',
-			arriendoMensual: '1.500.000',
+			valorVivienda: '',
+			cuotaInicial: '',
+			arriendoMensual: '',
 			aniosHorizonte: 10,
 			tasaCreditoEA: supuestosPorDefecto.tasaCreditoEA * 100,
 			plazoCreditoAnios: supuestosPorDefecto.plazoCreditoAnios,
@@ -92,9 +92,9 @@ export default function CompararComprarArrendarCalculator() {
 
 	useEffect(() => {
 		onSubmit({
-			valorVivienda: '300.000.000',
-			cuotaInicial: '60.000.000',
-			arriendoMensual: '1.500.000',
+			valorVivienda: '',
+			cuotaInicial: '',
+			arriendoMensual: '',
 			aniosHorizonte: 10,
 			tasaCreditoEA: supuestosPorDefecto.tasaCreditoEA * 100,
 			plazoCreditoAnios: supuestosPorDefecto.plazoCreditoAnios,

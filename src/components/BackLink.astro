@@ -1,0 +1,30 @@
+---
+---
+
+<a
+	id="back-link"
+	href="/calculadoras"
+	class="inline-flex rounded-full bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/15"
+>← Todas las calculadoras</a>
+
+<script>
+	const link = document.getElementById('back-link');
+
+	if (link) {
+		let cameFromInternalPage = false;
+		try {
+			cameFromInternalPage =
+				Boolean(document.referrer) && new URL(document.referrer).origin === window.location.origin;
+		} catch {
+			cameFromInternalPage = false;
+		}
+
+		if (cameFromInternalPage && window.history.length > 1) {
+			link.textContent = '← Atrás';
+			link.addEventListener('click', (event) => {
+				event.preventDefault();
+				window.history.back();
+			});
+		}
+	}
+</script>

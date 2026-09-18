@@ -34,8 +34,8 @@ function parseMonto(value: string): number {
 export default function CapacidadEndeudamientoCalculator() {
 	const { register, handleSubmit, setValue } = useForm<FormValues>({
 		defaultValues: {
-			ingresos: '3.500.000',
-			deudas: '800.000',
+			ingresos: '',
+			deudas: '',
 		},
 	});
 
@@ -61,7 +61,6 @@ export default function CapacidadEndeudamientoCalculator() {
 	};
 
 	useEffect(() => {
-		onSubmit({ ingresos: '3.500.000', deudas: '800.000' });
 	}, []);
 
 	return (
