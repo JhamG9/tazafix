@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import AportesIndependienteCalculator from '../../components/calculadoras/AportesIndependienteCalculator';
+---
+
+<Layout
+	title="Calculadora de aportes de contratistas independientes gratis | Cifras y Finanzas"
+	description="Calcula el ingreso base de cotización y los aportes a salud, pensión y ARL de un contratista independiente en Colombia."
+>
+	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+		<BackLink />
+
+		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+			Calculadora de aportes de contratistas independientes gratis
+		</h1>
+		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+			Calcula el ingreso base de cotización (IBC) y los aportes mensuales a salud, pensión y ARL
+			de un contratista independiente por prestación de servicios.
+		</p>
+
+		<AportesIndependienteCalculator client:load />
+	</section>
+</Layout>

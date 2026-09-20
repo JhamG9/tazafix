@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import IndemnizacionDespidoCalculator from '../../components/calculadoras/IndemnizacionDespidoCalculator';
+---
+
+<Layout
+	title="Calculadora de indemnización por despido gratis | Cifras y Finanzas"
+	description="Calcula la indemnización por terminación de contrato sin justa causa en Colombia, para contratos a término indefinido o fijo."
+>
+	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+		<BackLink />
+
+		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+			Calculadora de indemnización por despido gratis
+		</h1>
+		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+			Estima la indemnización por despido sin justa causa según el artículo 64 del Código
+			Sustantivo del Trabajo, para contratos a término indefinido o fijo.
+		</p>
+
+		<IndemnizacionDespidoCalculator client:load />
+	</section>
+</Layout>

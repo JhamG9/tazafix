@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import CostoLiquidacionEmpleadorCalculator from '../../components/calculadoras/CostoLiquidacionEmpleadorCalculator';
+---
+
+<Layout
+	title="Calculadora de costo de liquidación para el empleador gratis | Cifras y Finanzas"
+	description="Calcula cuánto le cuesta a la empresa liquidar a un trabajador: lo que recibe (cesantías, prima, vacaciones) más los aportes patronales del período, con la exoneración Ley 1819."
+>
+	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+		<BackLink />
+
+		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+			Calculadora de costo de liquidación para el empleador gratis
+		</h1>
+		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+			Calcula cuánto le cuesta a la empresa liquidar a un trabajador: lo que le corresponde a él
+			(cesantías, intereses, prima y vacaciones) más los aportes patronales a seguridad social y
+			parafiscales del mismo período.
+		</p>
+
+		<CostoLiquidacionEmpleadorCalculator client:load />
+	</section>
+</Layout>

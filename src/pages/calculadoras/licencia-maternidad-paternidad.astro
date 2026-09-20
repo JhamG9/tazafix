@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import LicenciaMaternidadCalculator from '../../components/calculadoras/LicenciaMaternidadCalculator';
+---
+
+<Layout
+	title="Calculadora de licencia de maternidad y paternidad gratis | Cifras y Finanzas"
+	description="Calcula las semanas y el valor de la licencia de maternidad o paternidad en Colombia, a cargo de la EPS, incluyendo parto múltiple y parto prematuro."
+>
+	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+		<BackLink />
+
+		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+			Calculadora de licencia de maternidad y paternidad gratis
+		</h1>
+		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+			Calcula las semanas y el valor de la licencia de maternidad o paternidad en Colombia, a
+			cargo de la EPS, incluyendo las semanas adicionales por parto múltiple o parto prematuro.
+		</p>
+
+		<LicenciaMaternidadCalculator client:load />
+	</section>
+</Layout>

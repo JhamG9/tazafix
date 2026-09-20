@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import NominaMensualDiasCalculator from '../../components/calculadoras/NominaMensualDiasCalculator';
+---
+
+<Layout
+	title="Calculadora de nómina mensual por días gratis | Cifras y Finanzas"
+	description="Calcula el costo mensual completo de un trabajador que labora por días: salario, prestaciones sociales, seguridad social, parafiscales y exoneración Ley 1819."
+>
+	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+		<BackLink />
+
+		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+			Calculadora de nómina mensual por días gratis
+		</h1>
+		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+			Calcula el costo mensual completo de un trabajador que labora por días dentro de un mes:
+			salario, provisión de prestaciones sociales, aportes a seguridad social, parafiscales y la
+			exoneración de la Ley 1819 de 2016.
+		</p>
+
+		<NominaMensualDiasCalculator client:load />
+	</section>
+</Layout>

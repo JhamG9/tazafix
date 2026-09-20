@@ -11,10 +11,100 @@ const categories = [
 	{ label: 'Tu patrimonio', detail: 'Tu combo financiero', icon: 'balance', color: 'bg-[#a8d8d8]', href: '/calculadoras' },
 ];
 
+const gruposEmpresas = [
+	{
+		title: 'Terminación de contrato',
+		items: [
+			{
+				label: 'Liquidar un empleado',
+				detail: 'Cuánto te cuesta cerrar',
+				icon: 'work',
+				color: 'bg-[#e8d4b8]',
+				href: '/calculadoras/costo-liquidacion-empleador',
+			},
+			{
+				label: 'Indemnización',
+				detail: 'Cierre justo y claro',
+				icon: 'balance',
+				color: 'bg-[#a8d8d8]',
+				href: '/calculadoras/indemnizacion-despido',
+			},
+		],
+	},
+	{
+		title: 'Nómina y pagos',
+		items: [
+			{
+				label: 'Horas extra',
+				detail: 'Paga cada recargo bien',
+				icon: 'clock',
+				color: 'bg-[#f6e1a0]',
+				href: '/calculadoras/horas-extra',
+			},
+			{
+				label: 'Retención en la fuente',
+				detail: 'Sin sorpresas con la DIAN',
+				icon: 'tax',
+				color: 'bg-[#d7eff1]',
+				href: '/calculadoras/retencion-fuente',
+			},
+			{
+				label: 'Nómina por días',
+				detail: 'Cuadra el mes al centavo',
+				icon: 'loan',
+				color: 'bg-[#b9dfea]',
+				href: '/calculadoras/nomina-mensual-dias',
+			},
+		],
+	},
+	{
+		title: 'Prestaciones y beneficios',
+		items: [
+			{
+				label: 'Incapacidad laboral',
+				detail: '¿Quién paga cada día?',
+				icon: 'medical',
+				color: 'bg-[#f9d1ce]',
+				href: '/calculadoras/incapacidad-laboral',
+			},
+			{
+				label: 'Dotación',
+				detail: '¿Tiene derecho?',
+				icon: 'save',
+				color: 'bg-[#d5e8bd]',
+				href: '/calculadoras/dotacion',
+			},
+			{
+				label: 'Licencia de maternidad',
+				detail: 'Recibe a tu bebé tranquilo',
+				icon: 'medical',
+				color: 'bg-[#f0cadb]',
+				href: '/calculadoras/licencia-maternidad-paternidad',
+			},
+		],
+	},
+];
+
+const aportesIndependientesCard = {
+	label: 'Aportes de independientes',
+	detail: 'Seguridad social al día',
+	icon: 'work',
+	color: 'bg-[#d7c0e8]',
+	href: '/calculadoras/aportes-independientes',
+};
+
+const liquidacionLaboralCard = {
+	label: 'Liquidación laboral',
+	detail: 'Calcula tu liquidación',
+	icon: 'work',
+	color: 'bg-[#e8d4b8]',
+	href: '/calculadoras/liquidacion-laboral',
+};
+
 const categoryGroups = [
 	{ title: 'Ahorro e Inversión', items: categories.slice(0, 2) },
 	{ title: 'Finanzas Personales', items: categories.slice(2, 4) },
-	{ title: 'Servicios', items: categories.slice(4, 6) },
+	{ title: 'Servicios', items: [...categories.slice(4, 6), aportesIndependientesCard, liquidacionLaboralCard] },
 ];
 
 const popularTools = [
@@ -31,34 +121,6 @@ const popularTools = [
 		icon: 'interest',
 		tone: 'bg-[#f9d1ce] text-[#b94e5d]',
 		href: '/calculadoras/cuota-credito',
-	},
-	{
-		title: 'Capacidad de endeudamiento',
-		description: 'Descubre cuánto cupo tienes para una nueva cuota.',
-		icon: 'balance',
-		tone: 'bg-[#f7e5a8] text-[#a47915]',
-		href: '/calculadoras/capacidad-endeudamiento',
-	},
-	{
-		title: 'Comprar vs. arrendar',
-		description: 'Compara el patrimonio que acumularías con cada opción.',
-		icon: 'home',
-		tone: 'bg-[#d6ebcb] text-[#4a9255]',
-		href: '/calculadoras/comprar-vs-arrendar',
-	},
-	{
-		title: 'Interés compuesto',
-		description: 'Mira cuánto podría crecer tu dinero con aportes mensuales.',
-		icon: 'invest',
-		tone: 'bg-[#dfc8ee] text-[#7951a5]',
-		href: '/calculadoras/interes-compuesto',
-	},
-	{
-		title: 'Fondo de emergencia',
-		description: 'Define tu meta de ahorro y en cuántos meses lograrla.',
-		icon: 'save',
-		tone: 'bg-[#f0cadb] text-[#b64d81]',
-		href: '/calculadoras/fondo-emergencia',
 	},
 ];
 
@@ -83,20 +145,15 @@ const learnArticles = [
 
 <Layout>
 	<section id="calculadoras" class="mx-auto max-w-7xl px-5 pb-16 pt-12 sm:px-8 lg:px-10 lg:pt-16">
-		<div class="mb-10 flex items-end justify-between gap-6">
-			<div>
-				<p class="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-primary">Tu plata, a tu ritmo</p>
-				<h1 class="max-w-3xl font-serif text-4xl font-bold leading-[1.05] tracking-tight text-ink sm:text-6xl">
-					¿Qué quieres planear hoy?
-				</h1>
-				<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
-					Diseña tu futuro financiero con reglas claras, números aterrizados y herramientas hechas para Colombia.
-				</p>
-			</div>
-			<div class="hidden rounded-2xl border border-ink/10 bg-white px-5 py-4 shadow-sm lg:block">
-				<p class="text-xs font-bold uppercase tracking-wider text-ink/45">Hoy es un buen día</p>
-				<p class="mt-1 text-sm font-semibold text-ink">para poner tus finanzas en orden ✦</p>
-			</div>
+		<div class="mb-10">
+			<p class="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-primary">Tu plata, a tu ritmo</p>
+			<h1 class="max-w-3xl font-serif text-4xl font-bold leading-[1.05] tracking-tight text-ink sm:text-6xl">
+				¿Qué quieres planear hoy?
+			</h1>
+			<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+				Diseña tu futuro financiero con calculadoras gratis, reglas claras y números aterrizados,
+				hechas para Colombia.
+			</p>
 		</div>
 
 		<section id="herramientas" class="border-y border-ink/5 bg-white/70 py-10 sm:py-12">
@@ -125,28 +182,58 @@ const learnArticles = [
 			</div>
 		</section>
 
-		<div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-			{
-				categoryGroups.map((group) => (
-					<div>
-						<h2 class="font-serif text-xl font-bold text-ink sm:text-2xl">{group.title}</h2>
-						<div class="mt-4 grid grid-cols-2 gap-3">
-							{group.items.map((category) => (
-								<a
-									href={category.href}
-									class={`group flex min-h-40 flex-col items-center justify-center gap-3 rounded-2xl ${category.color} p-3 text-center text-ink shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:min-h-44 sm:p-4`}
-								>
-									<span class="opacity-90 transition-transform duration-300 group-hover:scale-110"><OptionIcon name={category.icon} class="h-14 w-14 sm:h-16 sm:w-16" /></span>
-									<span>
-										<strong class="block text-xs font-bold leading-tight sm:text-sm">{category.label}</strong>
-										<small class="mt-1 block text-[10px] leading-tight text-ink/65 sm:text-[11px]">({category.detail})</small>
-									</span>
-								</a>
-							))}
+		<div class="mt-12">
+			<h2 class="font-serif text-xl font-bold text-ink sm:text-2xl">Finanzas para personas</h2>
+			<div class="mt-6 space-y-8">
+				{
+					categoryGroups.map((group) => (
+						<div>
+							<h3 class="text-sm font-bold uppercase tracking-[0.1em] text-ink/45">{group.title}</h3>
+							<div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+								{group.items.map((category) => (
+									<a
+										href={category.href}
+										class={`group flex min-h-40 flex-col items-center justify-center gap-3 rounded-2xl ${category.color} p-3 text-center text-ink shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:min-h-44 sm:p-4`}
+									>
+										<span class="opacity-90 transition-transform duration-300 group-hover:scale-110"><OptionIcon name={category.icon} class="h-14 w-14 sm:h-16 sm:w-16" /></span>
+										<span>
+											<strong class="block text-xs font-bold leading-tight sm:text-sm">{category.label}</strong>
+											<small class="mt-1 block text-[10px] leading-tight text-ink/65 sm:text-[11px]">({category.detail})</small>
+										</span>
+									</a>
+								))}
+							</div>
 						</div>
-					</div>
-				))
-			}
+					))
+				}
+			</div>
+		</div>
+
+		<div class="mt-12">
+			<h2 class="font-serif text-xl font-bold text-ink sm:text-2xl">Finanzas para empresas</h2>
+			<div class="mt-6 space-y-8">
+				{
+					gruposEmpresas.map((grupo) => (
+						<div>
+							<h3 class="text-sm font-bold uppercase tracking-[0.1em] text-ink/45">{grupo.title}</h3>
+							<div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+								{grupo.items.map((category) => (
+									<a
+										href={category.href}
+										class={`group flex min-h-40 flex-col items-center justify-center gap-3 rounded-2xl ${category.color} p-3 text-center text-ink shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:min-h-44 sm:p-4`}
+									>
+										<span class="opacity-90 transition-transform duration-300 group-hover:scale-110"><OptionIcon name={category.icon} class="h-14 w-14 sm:h-16 sm:w-16" /></span>
+										<span>
+											<strong class="block text-xs font-bold leading-tight sm:text-sm">{category.label}</strong>
+											<small class="mt-1 block text-[10px] leading-tight text-ink/65 sm:text-[11px]">({category.detail})</small>
+										</span>
+									</a>
+								))}
+							</div>
+						</div>
+					))
+				}
+			</div>
 		</div>
 	</section>
 

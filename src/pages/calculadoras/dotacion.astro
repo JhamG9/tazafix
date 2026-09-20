@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import DotacionCalculator from '../../components/calculadoras/DotacionCalculator';
+---
+
+<Layout
+	title="Calculadora de dotación gratis | Cifras y Finanzas"
+	description="Verifica si un trabajador tiene derecho a dotación en Colombia según su salario y su antigüedad continua."
+>
+	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+		<BackLink />
+
+		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+			Calculadora de dotación gratis
+		</h1>
+		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+			Verifica si un trabajador tiene derecho a dotación según su salario y su antigüedad
+			continua en la empresa.
+		</p>
+
+		<DotacionCalculator client:load />
+	</section>
+</Layout>

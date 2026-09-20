@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import LiquidacionLaboralCalculator from '../../components/calculadoras/LiquidacionLaboralCalculator';
+---
+
+<Layout
+	title="Calculadora de liquidación laboral gratis | Cifras y Finanzas"
+	description="Calcula la liquidación de un trabajador en Colombia y lo que le cuesta al empleador cada mes: cesantías, intereses, prima, vacaciones y aportes a seguridad social."
+>
+	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+		<BackLink />
+
+		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+			Calculadora de liquidación laboral gratis
+		</h1>
+		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+			Estima cuánto le corresponde a un trabajador (tiempo completo o por días) al terminar su
+			contrato en Colombia, y cuánto le cuesta al empleador cada mes en prestaciones y aportes a
+			seguridad social.
+		</p>
+
+		<LiquidacionLaboralCalculator client:load />
+	</section>
+</Layout>

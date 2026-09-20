@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import HorasExtraCalculator from '../../components/calculadoras/HorasExtraCalculator';
+---
+
+<Layout
+	title="Calculadora de horas extra y recargos gratis | Cifras y Finanzas"
+	description="Calcula el valor de la hora extra diurna, nocturna, dominical y festiva en Colombia a partir de tu salario mensual."
+>
+	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+		<BackLink />
+
+		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+			Calculadora de horas extra y recargos gratis
+		</h1>
+		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+			Calcula el valor de la hora ordinaria y todos los recargos por horas extra, trabajo nocturno,
+			dominical y festivo en Colombia.
+		</p>
+
+		<HorasExtraCalculator client:load />
+	</section>
+</Layout>
