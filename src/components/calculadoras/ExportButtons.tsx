@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import * as XLSX from 'xlsx';
 
 interface Props {
@@ -87,7 +87,7 @@ export default function ExportButtons({ targetId, title }: Props) {
 
 	const fileName = slugify(title);
 
-	const handleLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleLogoChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const archivo = event.target.files?.[0];
 		if (!archivo) {
 			setLogoEmpresa(null);
@@ -245,6 +245,7 @@ export default function ExportButtons({ targetId, title }: Props) {
 				</style>
 			</head>
 			<body>
+				<div class="pagina">
 				<div class="certificado">
 					<p class="eyebrow">Constancia de cálculo</p>
 					<h1>${title}</h1>
@@ -263,8 +264,11 @@ export default function ExportButtons({ targetId, title }: Props) {
 					<p class="folio">Folio N.° ${folio()}</p>
 					<div class="membrete">
 						${
-							empresaLimpia
-								? `<p class="membrete-empresa">${escapeHtml(empresaLimpia)}</p>`
+							logoEmpresa || empresaLimpia
+								? `<div>
+									${logoEmpresa ? `<img class="logo-empresa" src="${logoEmpresa}" alt="" />` : ''}
+									${empresaLimpia ? `<p class="membrete-empresa">${escapeHtml(empresaLimpia)}</p>` : ''}
+								</div>`
 								: '<div class="membrete-vacio"><span>Espacio para membrete o logo de la empresa</span></div>'
 						}
 					</div>
@@ -273,13 +277,27 @@ export default function ExportButtons({ targetId, title }: Props) {
 						<span>Cifras <em>y Finanzas</em></span>
 					</div>
 				</div>
+				</div>
 			</body>
 			</html>
 		`);
 		printWindow.document.close();
 		printWindow.onafterprint = () => printWindow.close();
 		printWindow.focus();
-		setTimeout(() => printWindow.print(), 300);
+
+		setTimeout(() => {
+			const certificado = printWindow.document.querySelector('.certificado') as HTMLElement | null;
+			const pagina = printWindow.document.querySelector('.pagina') as HTMLElement | null;
+			if (certificado && pagina) {
+				const altoNatural = certificado.scrollHeight;
+				if (altoNatural > ALTO_PAGINA_PX) {
+					const escala = ALTO_PAGINA_PX / altoNatural;
+					certificado.style.transform = `scale(${escala})`;
+					pagina.style.height = `${ALTO_PAGINA_PX}px`;
+				}
+			}
+			printWindow.print();
+		}, 300);
 	};
 
 	const handleExcel = () => {
@@ -336,7 +354,7 @@ export default function ExportButtons({ targetId, title }: Props) {
 				</div>
 				<div>
 					<label htmlFor={`empresa-${targetId}`} className="block text-xs font-medium text-ink/60">
-						Nombre de la empresa (opcional, deja espacio de membrete)
+						Nombre de la empresa (opcional)
 					</label>
 					<input
 						type="text"
@@ -346,6 +364,30 @@ export default function ExportButtons({ targetId, title }: Props) {
 						placeholder="Ej: Mi Empresa S.A.S."
 						className="mt-1 w-full rounded-lg px-3 py-2 text-sm text-ink outline-none ring-1 ring-ink/15 focus:ring-2 focus:ring-primary"
 					/>
+				</div>
+				<div className="sm:col-span-2">
+					<label htmlFor={`logo-${targetId}`} className="block text-xs font-medium text-ink/60">
+						Logo de la empresa (opcional, imagen)
+					</label>
+					<input
+						type="file"
+						accept="image/*"
+						id={`logo-${targetId}`}
+						onChange={handleLogoChange}
+						className="mt-1 w-full text-xs text-ink/70 file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-primary hover:file:bg-primary/15"
+					/>
+					{logoEmpresa && (
+						<div className="mt-2 flex items-center gap-2">
+							<img src={logoEmpresa} alt="" className="h-10 w-auto max-w-[160px] object-contain" />
+							<button
+								type="button"
+								onClick={() => setLogoEmpresa(null)}
+								className="text-xs font-medium text-alert hover:underline"
+							>
+								Quitar logo
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
