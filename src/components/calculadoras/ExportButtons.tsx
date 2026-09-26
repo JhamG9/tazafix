@@ -124,6 +124,9 @@ export default function ExportButtons({ targetId, title }: Props) {
 						background: #ffffff;
 					}
 					body { padding: 0.4in 0.15in; }
+					@media print {
+						body { padding: 0; }
+					}
 					.pagina {
 						max-width: 7.5in;
 						margin: 0 auto;
