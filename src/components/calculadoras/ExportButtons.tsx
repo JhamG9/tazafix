@@ -11,7 +11,7 @@ function getResultClone(targetId: string): HTMLElement | null {
 	if (!target) return null;
 
 	const clone = target.cloneNode(true) as HTMLElement;
-	clone.querySelectorAll('.export-actions').forEach((element) => element.remove());
+	clone.querySelectorAll('.export-actions, .no-imprimir').forEach((element) => element.remove());
 	return clone;
 }
 
@@ -127,12 +127,10 @@ export default function ExportButtons({ targetId, title }: Props) {
 					.pagina {
 						max-width: 7.5in;
 						margin: 0 auto;
-						overflow: hidden;
 					}
 					.certificado {
 						background: #ffffff;
 						padding: 0;
-						transform-origin: top center;
 					}
 					.logo-empresa {
 						max-height: 64px;
@@ -287,13 +285,16 @@ export default function ExportButtons({ targetId, title }: Props) {
 
 		setTimeout(() => {
 			const certificado = printWindow.document.querySelector('.certificado') as HTMLElement | null;
-			const pagina = printWindow.document.querySelector('.pagina') as HTMLElement | null;
-			if (certificado && pagina) {
+			if (certificado) {
 				const altoNatural = certificado.scrollHeight;
 				if (altoNatural > ALTO_PAGINA_PX) {
-					const escala = ALTO_PAGINA_PX / altoNatural;
-					certificado.style.transform = `scale(${escala})`;
-					pagina.style.height = `${ALTO_PAGINA_PX}px`;
+					// `zoom` (a diferencia de `transform: scale`) sí reduce el tamaño real que el
+					// contenido ocupa en el documento, así que la paginación de impresión ve un
+					// bloque más corto en vez de imprimir el sobrante en una segunda hoja. No baja de
+					// 0.6 para que el texto siga siendo legible; si aun así no cabe, se deja pasar a
+					// una segunda página antes que volverlo ilegible.
+					const escala = Math.max(ALTO_PAGINA_PX / altoNatural, 0.6);
+					certificado.style.setProperty('zoom', String(escala));
 				}
 			}
 			printWindow.print();

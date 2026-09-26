@@ -231,21 +231,23 @@ export default function CuotaCreditoCalculator() {
 					</div>
 					<ExportButtons targetId="resultado-cuota-credito" title="Resultado de cuota de crédito" />
 
-					<TablaAmortizacionAbonos
-						resultadoConAbonos={resultadoConAbonos}
-						resultadoSinAbonos={resultadoSinAbonos}
-						abonos={abonos}
-						modoAbono={modoAbono}
-						onModoAbonoChange={setModoAbono}
-						filaEditando={filaEditando}
-						onFilaEditandoChange={setFilaEditando}
-						abonoInputValor={abonoInputValor}
-						onAbonoInputValorChange={setAbonoInputValor}
-						onAgregarAbono={handleAgregarAbono}
-						onAplicarAbonoRango={handleAplicarAbonoRango}
-						onQuitarAbono={handleQuitarAbono}
-						ahorroIntereses={ahorroIntereses}
-					/>
+					<div className="no-imprimir">
+						<TablaAmortizacionAbonos
+							resultadoConAbonos={resultadoConAbonos}
+							resultadoSinAbonos={resultadoSinAbonos}
+							abonos={abonos}
+							modoAbono={modoAbono}
+							onModoAbonoChange={setModoAbono}
+							filaEditando={filaEditando}
+							onFilaEditandoChange={setFilaEditando}
+							abonoInputValor={abonoInputValor}
+							onAbonoInputValorChange={setAbonoInputValor}
+							onAgregarAbono={handleAgregarAbono}
+							onAplicarAbonoRango={handleAplicarAbonoRango}
+							onQuitarAbono={handleQuitarAbono}
+							ahorroIntereses={ahorroIntereses}
+						/>
+					</div>
 				</div>
 			)}
 		</div>

@@ -379,22 +379,24 @@ export default function CreditoHipotecarioCalculator() {
 					</div>
 					<ExportButtons targetId="resultado-credito-hipotecario" title="Resultado de crédito hipotecario" />
 
-					<TablaAmortizacionAbonos
-						resultadoConAbonos={resultadoConAbonos}
-						resultadoSinAbonos={resultadoSinAbonos}
-						abonos={abonos}
-						modoAbono={modoAbono}
-						onModoAbonoChange={setModoAbono}
-						filaEditando={filaEditando}
-						onFilaEditandoChange={setFilaEditando}
-						abonoInputValor={abonoInputValor}
-						onAbonoInputValorChange={setAbonoInputValor}
-						onAgregarAbono={handleAgregarAbono}
-						onAplicarAbonoRango={handleAplicarAbonoRango}
-						onQuitarAbono={handleQuitarAbono}
-						ahorroIntereses={ahorroIntereses}
-						notaPie="Los seguros no afectan el saldo del crédito y no están incluidos en esta tabla."
-					/>
+					<div className="no-imprimir">
+						<TablaAmortizacionAbonos
+							resultadoConAbonos={resultadoConAbonos}
+							resultadoSinAbonos={resultadoSinAbonos}
+							abonos={abonos}
+							modoAbono={modoAbono}
+							onModoAbonoChange={setModoAbono}
+							filaEditando={filaEditando}
+							onFilaEditandoChange={setFilaEditando}
+							abonoInputValor={abonoInputValor}
+							onAbonoInputValorChange={setAbonoInputValor}
+							onAgregarAbono={handleAgregarAbono}
+							onAplicarAbonoRango={handleAplicarAbonoRango}
+							onQuitarAbono={handleQuitarAbono}
+							ahorroIntereses={ahorroIntereses}
+							notaPie="Los seguros no afectan el saldo del crédito y no están incluidos en esta tabla."
+						/>
+					</div>
 				</div>
 			)}
 		</div>
