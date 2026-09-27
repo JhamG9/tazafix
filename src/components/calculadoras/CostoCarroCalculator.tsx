@@ -8,6 +8,7 @@ import ExportButtons from './ExportButtons';
 
 interface FormValues {
 	valorCarro: string;
+	tipoVehiculo: 'gasolina' | 'electrico';
 	formaPago: 'credito' | 'contado';
 	cuotaInicial: string;
 	plazoMeses: number;
@@ -21,6 +22,11 @@ interface FormValues {
 	tecnomecanicaAnual: number;
 	depreciacionAnualPct: number;
 }
+
+const SUGERIDOS_POR_TIPO = {
+	gasolina: { combustibleMensual: 300_000, mantenimientoMensual: 100_000 },
+	electrico: { combustibleMensual: 120_000, mantenimientoMensual: 60_000 },
+} as const;
 
 interface ItemDesglose {
 	label: string;
@@ -46,6 +52,7 @@ export default function CostoCarroCalculator() {
 	const { register, handleSubmit, setValue, watch, formState } = useForm<FormValues>({
 		defaultValues: {
 			valorCarro: '0',
+			tipoVehiculo: 'gasolina',
 			formaPago: 'credito',
 			cuotaInicial: '0',
 			plazoMeses: 60,
@@ -62,9 +69,22 @@ export default function CostoCarroCalculator() {
 	});
 
 	const formaPago = watch('formaPago');
+	const tipoVehiculo = watch('tipoVehiculo');
 
 	const [resultado, setResultado] = useState<Resultado | null>(null);
 	const resultadosRef = useRef<HTMLDivElement>(null);
+
+	// Sugiere combustible/carga y mantenimiento según el tipo de vehículo mientras el usuario no
+	// haya editado esos campos a mano.
+	useEffect(() => {
+		const sugeridos = SUGERIDOS_POR_TIPO[tipoVehiculo];
+		if (!formState.dirtyFields.combustibleMensual) {
+			setValue('combustibleMensual', miles.format(sugeridos.combustibleMensual));
+		}
+		if (!formState.dirtyFields.mantenimientoMensual) {
+			setValue('mantenimientoMensual', miles.format(sugeridos.mantenimientoMensual));
+		}
+	}, [tipoVehiculo]);
 
 	const onSubmit = (data: FormValues) => {
 		const valorCarro = parseMonto(data.valorCarro);
@@ -104,7 +124,10 @@ export default function CostoCarroCalculator() {
 		const items: ItemDesglose[] = [
 			{ label: 'Cuota del crédito', valor: cuotaMensualCredito },
 			{ label: 'Seguro todo riesgo', valor: seguroMensual },
-			{ label: 'Combustible', valor: combustibleMensual },
+			{
+				label: data.tipoVehiculo === 'electrico' ? 'Electricidad o carga' : 'Gasolina',
+				valor: combustibleMensual,
+			},
 			{ label: 'Mantenimiento', valor: mantenimientoMensual },
 			{ label: 'SOAT (mensualizado)', valor: soatMensualizado },
 			{ label: 'Tecnomecánica (mensualizada)', valor: tecnomecanicaMensualizada },
@@ -164,6 +187,35 @@ export default function CostoCarroCalculator() {
 								})}
 							/>
 						</div>
+					</div>
+
+					<div>
+						<span className="block text-sm font-medium text-ink">Tipo de vehículo</span>
+						<div className="mt-1 grid grid-cols-2 gap-2">
+							<label
+								className={`cursor-pointer rounded-lg px-3 py-2.5 text-center text-sm font-medium ring-1 transition-colors ${
+									tipoVehiculo === 'gasolina'
+										? 'bg-primary/10 text-ink ring-primary'
+										: 'text-ink/70 ring-primary/20 hover:bg-primary/5'
+								}`}
+							>
+								<input type="radio" value="gasolina" className="hidden" {...register('tipoVehiculo')} />
+								Gasolina
+							</label>
+							<label
+								className={`cursor-pointer rounded-lg px-3 py-2.5 text-center text-sm font-medium ring-1 transition-colors ${
+									tipoVehiculo === 'electrico'
+										? 'bg-primary/10 text-ink ring-primary'
+										: 'text-ink/70 ring-primary/20 hover:bg-primary/5'
+								}`}
+							>
+								<input type="radio" value="electrico" className="hidden" {...register('tipoVehiculo')} />
+								Eléctrico
+							</label>
+						</div>
+						<p className="mt-1 text-xs text-ink/50">
+							Ajusta los valores sugeridos de carga/combustible y mantenimiento más abajo.
+						</p>
 					</div>
 
 					<div>
@@ -283,7 +335,7 @@ export default function CostoCarroCalculator() {
 
 					<div>
 						<label htmlFor="combustibleMensual" className="block text-sm font-medium text-ink">
-							Combustible (mensual)
+							{tipoVehiculo === 'electrico' ? 'Electricidad o carga (mensual)' : 'Gasolina (mensual)'}
 						</label>
 						<div className="mt-1 flex items-center rounded-lg ring-1 ring-primary/20 focus-within:ring-2 focus-within:ring-primary">
 							<span className="pl-3 text-ink/50">$</span>
