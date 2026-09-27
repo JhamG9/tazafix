@@ -17,13 +17,11 @@ interface FormValues {
 	modalidad: string;
 	seguroVida: string;
 	cuotaManejo: string;
-	otrosGastos: string;
 }
 
 interface OtrosGastosMensuales {
 	seguroVida: number;
 	cuotaManejo: number;
-	otros: number;
 }
 
 const percent = new Intl.NumberFormat('es-CO', {
@@ -44,7 +42,6 @@ export default function CuotaCreditoCalculator() {
 			modalidad: modalidadesCredito[0].id,
 			seguroVida: '',
 			cuotaManejo: '',
-			otrosGastos: '',
 		},
 	});
 
@@ -52,7 +49,6 @@ export default function CuotaCreditoCalculator() {
 	const [otrosGastosMensuales, setOtrosGastosMensuales] = useState<OtrosGastosMensuales>({
 		seguroVida: 0,
 		cuotaManejo: 0,
-		otros: 0,
 	});
 	const [alerta, setAlerta] = useState<string | null>(null);
 	const resultadosRef = useRef<HTMLDivElement>(null);
@@ -87,7 +83,6 @@ export default function CuotaCreditoCalculator() {
 		setOtrosGastosMensuales({
 			seguroVida: Number(data.seguroVida.replace(/\D/g, '')) || 0,
 			cuotaManejo: Number(data.cuotaManejo.replace(/\D/g, '')) || 0,
-			otros: Number(data.otrosGastos.replace(/\D/g, '')) || 0,
 		});
 
 		const modalidad = modalidadesCredito.find((item) => item.id === data.modalidad);
@@ -250,27 +245,6 @@ export default function CuotaCreditoCalculator() {
 									/>
 								</div>
 							</div>
-							<div>
-								<label htmlFor="otrosGastos" className="block text-xs text-ink/60">
-									Otros (avalúos, estudio de crédito, etc.)
-								</label>
-								<div className="mt-1 flex items-center rounded-lg ring-1 ring-primary/20 focus-within:ring-2 focus-within:ring-primary">
-									<span className="pl-3 text-ink/50">$</span>
-									<input
-										type="text"
-										inputMode="numeric"
-										id="otrosGastos"
-										placeholder="0"
-										className="w-full rounded-lg bg-transparent px-2 py-2.5 text-ink outline-none"
-										{...register('otrosGastos', {
-											onChange: (event) => {
-												const digits = event.target.value.replace(/\D/g, '');
-												setValue('otrosGastos', digits ? miles.format(Number(digits)) : '');
-											},
-										})}
-									/>
-								</div>
-							</div>
 						</div>
 						<p className="mt-1 text-xs text-ink/50">
 							Súmalos si tu entidad los cobra por fuera de la cuota de capital e interés.
@@ -295,8 +269,7 @@ export default function CuotaCreditoCalculator() {
 					)}
 
 					{(() => {
-						const totalOtrosGastos =
-							otrosGastosMensuales.seguroVida + otrosGastosMensuales.cuotaManejo + otrosGastosMensuales.otros;
+						const totalOtrosGastos = otrosGastosMensuales.seguroVida + otrosGastosMensuales.cuotaManejo;
 						const cuotaTotalConGastos = resultadoConAbonos.cuotaMensualInicial + totalOtrosGastos;
 						const totalPagadoConGastos = resultadoConAbonos.totalPagado + totalOtrosGastos * baseCredito.n;
 
@@ -325,12 +298,6 @@ export default function CuotaCreditoCalculator() {
 												<div className="flex justify-between">
 													<dt>Cuota de manejo o administración</dt>
 													<dd>{currency.format(otrosGastosMensuales.cuotaManejo)}</dd>
-												</div>
-											)}
-											{otrosGastosMensuales.otros > 0 && (
-												<div className="flex justify-between">
-													<dt>Otros gastos</dt>
-													<dd>{currency.format(otrosGastosMensuales.otros)}</dd>
 												</div>
 											)}
 										</dl>
