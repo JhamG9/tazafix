@@ -15,6 +15,15 @@ interface FormValues {
 	tasaValor: number;
 	tasaTipo: 'EA' | 'MV';
 	modalidad: string;
+	seguroVida: string;
+	cuotaManejo: string;
+	otrosGastos: string;
+}
+
+interface OtrosGastosMensuales {
+	seguroVida: number;
+	cuotaManejo: number;
+	otros: number;
 }
 
 const percent = new Intl.NumberFormat('es-CO', {
@@ -33,10 +42,18 @@ export default function CuotaCreditoCalculator() {
 			tasaValor: 12,
 			tasaTipo: 'EA',
 			modalidad: modalidadesCredito[0].id,
+			seguroVida: '',
+			cuotaManejo: '',
+			otrosGastos: '',
 		},
 	});
 
 	const [baseCredito, setBaseCredito] = useState<BaseCredito | null>(null);
+	const [otrosGastosMensuales, setOtrosGastosMensuales] = useState<OtrosGastosMensuales>({
+		seguroVida: 0,
+		cuotaManejo: 0,
+		otros: 0,
+	});
 	const [alerta, setAlerta] = useState<string | null>(null);
 	const resultadosRef = useRef<HTMLDivElement>(null);
 
@@ -67,6 +84,11 @@ export default function CuotaCreditoCalculator() {
 		const eaEquivalente = data.tasaTipo === 'EA' ? tasaValor : mensualAEA(tasaValor);
 
 		setBaseCredito({ monto, iMensual, n });
+		setOtrosGastosMensuales({
+			seguroVida: Number(data.seguroVida.replace(/\D/g, '')) || 0,
+			cuotaManejo: Number(data.cuotaManejo.replace(/\D/g, '')) || 0,
+			otros: Number(data.otrosGastos.replace(/\D/g, '')) || 0,
+		});
 
 		const modalidad = modalidadesCredito.find((item) => item.id === data.modalidad);
 		if (modalidad && eaEquivalente > modalidad.tasaUsuraEA) {
@@ -88,7 +110,7 @@ export default function CuotaCreditoCalculator() {
 				onSubmit={handleSubmit(onSubmit)}
 				className="h-fit rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-primary/10"
 			>
-				<CalculatorHint>ingresa el monto, plazo y tasa que te ofrecieron. El resultado incluye la cuota, intereses y total pagado.</CalculatorHint>
+				<CalculatorHint>ingresa el monto, plazo y tasa que te ofrecieron. Si quieres, suma seguros y otros cobros mensuales para ver la cuota total real.</CalculatorHint>
 				<div className="space-y-5">
 					<div>
 						<label htmlFor="monto" className="block text-sm font-medium text-ink">
@@ -181,6 +203,80 @@ export default function CuotaCreditoCalculator() {
 						</p>
 					</div>
 
+					<div>
+						<span className="block text-sm font-medium text-ink">
+							Otros gastos mensuales (opcional)
+						</span>
+						<div className="mt-1 grid grid-cols-1 gap-3">
+							<div>
+								<label htmlFor="seguroVida" className="block text-xs text-ink/60">
+									Seguro de vida deudor
+								</label>
+								<div className="mt-1 flex items-center rounded-lg ring-1 ring-primary/20 focus-within:ring-2 focus-within:ring-primary">
+									<span className="pl-3 text-ink/50">$</span>
+									<input
+										type="text"
+										inputMode="numeric"
+										id="seguroVida"
+										placeholder="0"
+										className="w-full rounded-lg bg-transparent px-2 py-2.5 text-ink outline-none"
+										{...register('seguroVida', {
+											onChange: (event) => {
+												const digits = event.target.value.replace(/\D/g, '');
+												setValue('seguroVida', digits ? miles.format(Number(digits)) : '');
+											},
+										})}
+									/>
+								</div>
+							</div>
+							<div>
+								<label htmlFor="cuotaManejo" className="block text-xs text-ink/60">
+									Cuota de manejo o administración
+								</label>
+								<div className="mt-1 flex items-center rounded-lg ring-1 ring-primary/20 focus-within:ring-2 focus-within:ring-primary">
+									<span className="pl-3 text-ink/50">$</span>
+									<input
+										type="text"
+										inputMode="numeric"
+										id="cuotaManejo"
+										placeholder="0"
+										className="w-full rounded-lg bg-transparent px-2 py-2.5 text-ink outline-none"
+										{...register('cuotaManejo', {
+											onChange: (event) => {
+												const digits = event.target.value.replace(/\D/g, '');
+												setValue('cuotaManejo', digits ? miles.format(Number(digits)) : '');
+											},
+										})}
+									/>
+								</div>
+							</div>
+							<div>
+								<label htmlFor="otrosGastos" className="block text-xs text-ink/60">
+									Otros (avalúos, estudio de crédito, etc.)
+								</label>
+								<div className="mt-1 flex items-center rounded-lg ring-1 ring-primary/20 focus-within:ring-2 focus-within:ring-primary">
+									<span className="pl-3 text-ink/50">$</span>
+									<input
+										type="text"
+										inputMode="numeric"
+										id="otrosGastos"
+										placeholder="0"
+										className="w-full rounded-lg bg-transparent px-2 py-2.5 text-ink outline-none"
+										{...register('otrosGastos', {
+											onChange: (event) => {
+												const digits = event.target.value.replace(/\D/g, '');
+												setValue('otrosGastos', digits ? miles.format(Number(digits)) : '');
+											},
+										})}
+									/>
+								</div>
+							</div>
+						</div>
+						<p className="mt-1 text-xs text-ink/50">
+							Súmalos si tu entidad los cobra por fuera de la cuota de capital e interés.
+						</p>
+					</div>
+
 					<button
 						type="submit"
 						className="w-full rounded-lg bg-primary px-4 py-3 font-medium text-surface transition-colors hover:bg-primary/90"
@@ -198,37 +294,74 @@ export default function CuotaCreditoCalculator() {
 						</div>
 					)}
 
-					<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-						<div className="rounded-2xl bg-primary p-6 sm:col-span-3">
-							<p className="text-sm font-medium text-surface/70">Cuota mensual</p>
-							<p className="mt-1 font-serif text-4xl font-semibold text-surface sm:text-5xl">
-								{currency.format(resultadoConAbonos.cuotaMensualInicial)}
-							</p>
-						</div>
+					{(() => {
+						const totalOtrosGastos =
+							otrosGastosMensuales.seguroVida + otrosGastosMensuales.cuotaManejo + otrosGastosMensuales.otros;
+						const cuotaTotalConGastos = resultadoConAbonos.cuotaMensualInicial + totalOtrosGastos;
+						const totalPagadoConGastos = resultadoConAbonos.totalPagado + totalOtrosGastos * baseCredito.n;
 
-						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
-							<p className="text-xs font-medium uppercase tracking-wide text-ink/60">Capital</p>
-							<p className="mt-1 font-serif text-xl font-semibold text-ink">
-								{currency.format(baseCredito.monto)}
-							</p>
-						</div>
-						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
-							<p className="text-xs font-medium uppercase tracking-wide text-ink/60">
-								Interés total
-							</p>
-							<p className="mt-1 font-serif text-xl font-semibold text-alert">
-								{currency.format(resultadoConAbonos.interesTotal)}
-							</p>
-						</div>
-						<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
-							<p className="text-xs font-medium uppercase tracking-wide text-ink/60">
-								Total pagado
-							</p>
-							<p className="mt-1 font-serif text-xl font-semibold text-ink">
-								{currency.format(resultadoConAbonos.totalPagado)}
-							</p>
-						</div>
-					</div>
+						return (
+							<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+								<div className="rounded-2xl bg-primary p-6 sm:col-span-3">
+									<p className="text-sm font-medium text-surface/70">
+										{totalOtrosGastos > 0 ? 'Cuota total con otros gastos' : 'Cuota mensual'}
+									</p>
+									<p className="mt-1 font-serif text-4xl font-semibold text-surface sm:text-5xl">
+										{currency.format(totalOtrosGastos > 0 ? cuotaTotalConGastos : resultadoConAbonos.cuotaMensualInicial)}
+									</p>
+									{totalOtrosGastos > 0 && (
+										<dl className="mt-3 space-y-0.5 text-xs text-surface/80 sm:text-sm">
+											<div className="flex justify-between">
+												<dt>Capital + interés</dt>
+												<dd>{currency.format(resultadoConAbonos.cuotaMensualInicial)}</dd>
+											</div>
+											{otrosGastosMensuales.seguroVida > 0 && (
+												<div className="flex justify-between">
+													<dt>Seguro de vida deudor</dt>
+													<dd>{currency.format(otrosGastosMensuales.seguroVida)}</dd>
+												</div>
+											)}
+											{otrosGastosMensuales.cuotaManejo > 0 && (
+												<div className="flex justify-between">
+													<dt>Cuota de manejo o administración</dt>
+													<dd>{currency.format(otrosGastosMensuales.cuotaManejo)}</dd>
+												</div>
+											)}
+											{otrosGastosMensuales.otros > 0 && (
+												<div className="flex justify-between">
+													<dt>Otros gastos</dt>
+													<dd>{currency.format(otrosGastosMensuales.otros)}</dd>
+												</div>
+											)}
+										</dl>
+									)}
+								</div>
+
+								<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
+									<p className="text-xs font-medium uppercase tracking-wide text-ink/60">Capital</p>
+									<p className="mt-1 font-serif text-xl font-semibold text-ink">
+										{currency.format(baseCredito.monto)}
+									</p>
+								</div>
+								<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
+									<p className="text-xs font-medium uppercase tracking-wide text-ink/60">
+										Interés total
+									</p>
+									<p className="mt-1 font-serif text-xl font-semibold text-alert">
+										{currency.format(resultadoConAbonos.interesTotal)}
+									</p>
+								</div>
+								<div className="rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
+									<p className="text-xs font-medium uppercase tracking-wide text-ink/60">
+										{totalOtrosGastos > 0 ? 'Total pagado con otros gastos' : 'Total pagado'}
+									</p>
+									<p className="mt-1 font-serif text-xl font-semibold text-ink">
+										{currency.format(totalOtrosGastos > 0 ? totalPagadoConGastos : resultadoConAbonos.totalPagado)}
+									</p>
+								</div>
+							</div>
+						);
+					})()}
 					<ExportButtons targetId="resultado-cuota-credito" title="Resultado de cuota de crédito" />
 
 					<div className="no-imprimir">
