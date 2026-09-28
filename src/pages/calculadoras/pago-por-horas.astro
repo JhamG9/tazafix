@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import PagoPorHorasCalculator from '../../components/calculadoras/PagoPorHorasCalculator';
+---
+
+<Layout
+	title="Calculadora de pago por horas gratis | Cifras y Finanzas"
+	description="Calcula cuánto pagar a un trabajador contratado directamente por horas en Colombia, con recargos nocturnos, dominicales y festivos, y el mínimo legal por hora."
+>
+	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+		<BackLink />
+
+		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+			Calculadora de pago por horas gratis
+		</h1>
+		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
+			Para trabajadores pagados directamente por horas: calcula el valor de la hora ordinaria y
+			de cada recargo, y valida que no esté por debajo del mínimo legal.
+		</p>
+
+		<PagoPorHorasCalculator client:load />
+	</section>
+</Layout>

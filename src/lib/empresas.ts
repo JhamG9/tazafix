@@ -28,6 +28,25 @@ const RECARGOS_HORA: { label: string; factor: number }[] = [
 	{ label: 'Hora extra dominical o festiva nocturna', factor: 1.65 },
 ];
 
+// Igual que RECARGOS_HORA, pero con la hora ordinaria diurna al inicio (factor 0): para un
+// trabajador pagado directamente por horas hay que cobrar también las horas ordinarias, no solo
+// los recargos sobre un salario mensual ya existente.
+const TIPOS_HORA_COMPLETO = [{ label: 'Hora ordinaria diurna', factor: 0 }, ...RECARGOS_HORA];
+
+function calcularPagoPorHoraOrdinaria(
+	horaOrdinaria: number,
+	tipos: { label: string; factor: number }[],
+	cantidades: number[]
+): ResultadoHorasExtra {
+	const filas = tipos.map(({ label, factor }, index) => {
+		const valorHora = horaOrdinaria * (1 + factor);
+		const cantidad = cantidades[index] || 0;
+		return { label, valorHora, cantidad, subtotal: valorHora * cantidad };
+	});
+
+	return { horaOrdinaria, filas, total: filas.reduce((suma, fila) => suma + fila.subtotal, 0) };
+}
+
 // A cuántas horas de cada tipo respondió el usuario, en el mismo orden que RECARGOS_HORA.
 export function calcularPagoHorasExtra(
 	salarioMensual: number,
@@ -35,13 +54,138 @@ export function calcularPagoHorasExtra(
 	cantidades: number[]
 ): ResultadoHorasExtra {
 	const horaOrdinaria = salarioMensual / horasMensualesJornada;
-	const filas = RECARGOS_HORA.map(({ label, factor }, index) => {
-		const valorHora = horaOrdinaria * (1 + factor);
-		const cantidad = cantidades[index] || 0;
-		return { label, valorHora, cantidad, subtotal: valorHora * cantidad };
+	return calcularPagoPorHoraOrdinaria(horaOrdinaria, RECARGOS_HORA, cantidades);
+}
+
+// Para un trabajador pagado directamente por horas (no por salario mensual): `horaOrdinaria` es el
+// valor pactado de la hora ordinaria diurna, y `cantidades` cubre también esa hora ordinaria (no
+// solo los recargos), en el mismo orden que TIPOS_HORA_COMPLETO.
+export function calcularPagoPorHoras(horaOrdinaria: number, cantidades: number[]): ResultadoHorasExtra {
+	return calcularPagoPorHoraOrdinaria(horaOrdinaria, TIPOS_HORA_COMPLETO, cantidades);
+}
+
+// Índices de los tipos "extra" dentro de TIPOS_HORA_COMPLETO (la hora ordinaria diurna ocupa el
+// índice 0, así que los extra quedan en 1, 3, 5 y 7).
+const INDICES_HORA_EXTRA_COMPLETO = [1, 3, 5, 7];
+
+// --- Pago por horas a partir de un calendario de días (fecha de inicio y fin) ---
+
+export interface DiaPagoPorHoras {
+	fecha: string; // ISO yyyy-mm-dd
+	esDomingoOFestivo: boolean;
+	horasDiurnas: number;
+	horasExtraDiurnas: number;
+	horasNocturnas: number;
+	horasExtraNocturnas: number;
+}
+
+export const MAX_DIAS_PAGO_POR_HORAS = 31;
+
+function fechaDesdeIso(iso: string): Date {
+	const [year, month, day] = iso.split('-').map(Number);
+	return new Date(year, month - 1, day);
+}
+
+function isoDesdeFecha(date: Date): string {
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+	return `${year}-${month}-${day}`;
+}
+
+// Genera un día por cada fecha entre `inicioIso` y `finIso` (ambas incluidas), marcando cuáles caen
+// domingo o festivo según `esFestivo` (recibe la fecha en ISO y dice si es festivo civil).
+export function generarDiasPeriodo(inicioIso: string, finIso: string, esFestivo: (iso: string) => boolean): DiaPagoPorHoras[] {
+	const dias: DiaPagoPorHoras[] = [];
+	const fin = fechaDesdeIso(finIso);
+	let actual = fechaDesdeIso(inicioIso);
+
+	while (actual <= fin) {
+		const iso = isoDesdeFecha(actual);
+		dias.push({
+			fecha: iso,
+			esDomingoOFestivo: actual.getDay() === 0 || esFestivo(iso),
+			horasDiurnas: 0,
+			horasExtraDiurnas: 0,
+			horasNocturnas: 0,
+			horasExtraNocturnas: 0,
+		});
+		actual = new Date(actual.getFullYear(), actual.getMonth(), actual.getDate() + 1);
+	}
+
+	return dias;
+}
+
+// Un día domingo o festivo activa automáticamente el recargo dominical/festivo (índices 4-7); un día
+// normal usa los índices 0-3. Así el usuario no tiene que elegir el tipo de hora a mano: el
+// calendario ya sabe qué día es.
+function cantidadesDelDia(dia: DiaPagoPorHoras): number[] {
+	const cantidades = Array(8).fill(0);
+	const [diurna, extraDiurna, nocturna, extraNocturna] = dia.esDomingoOFestivo ? [4, 5, 6, 7] : [0, 1, 2, 3];
+	cantidades[diurna] = dia.horasDiurnas;
+	cantidades[extraDiurna] = dia.horasExtraDiurnas;
+	cantidades[nocturna] = dia.horasNocturnas;
+	cantidades[extraNocturna] = dia.horasExtraNocturnas;
+	return cantidades;
+}
+
+function sumarCantidades(a: number[], b: number[]): number[] {
+	return a.map((valor, i) => valor + b[i]);
+}
+
+// Lunes de la semana calendario (lunes a domingo) a la que pertenece `fecha`.
+function lunesDeLaSemana(fecha: Date): Date {
+	const diaSemana = fecha.getDay(); // 0 = domingo
+	const offset = diaSemana === 0 ? -6 : 1 - diaSemana;
+	return new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate() + offset);
+}
+
+// Agrupa los días en semanas de lunes a domingo, aunque el periodo elegido no empiece en lunes ni
+// termine en domingo: el límite legal de 12 horas extra es por semana calendario, no por el periodo
+// completo que el usuario haya elegido.
+export function agruparPorSemanas(dias: DiaPagoPorHoras[]): DiaPagoPorHoras[][] {
+	const grupos = new Map<string, DiaPagoPorHoras[]>();
+	for (const dia of dias) {
+		const clave = isoDesdeFecha(lunesDeLaSemana(fechaDesdeIso(dia.fecha)));
+		const grupo = grupos.get(clave) ?? [];
+		grupo.push(dia);
+		grupos.set(clave, grupo);
+	}
+	return [...grupos.entries()].sort(([a], [b]) => (a < b ? -1 : 1)).map(([, grupo]) => grupo);
+}
+
+export interface SemanaCalendarioHoras extends ResultadoHorasExtra {
+	inicio: string;
+	fin: string;
+	horasExtra: number;
+	superaLimiteSemanal: boolean;
+}
+
+export interface ResultadoPagoPorHorasCalendario {
+	horaOrdinaria: number;
+	semanas: SemanaCalendarioHoras[];
+	total: number;
+}
+
+// El límite legal de horas extra es de 2 al día y 12 a la semana (CST artículo 22, modificado por la
+// Ley 50 de 1990), así que se calcula semana calendario por semana calendario, no sobre todo el
+// periodo elegido.
+export function calcularPagoPorHorasCalendario(horaOrdinaria: number, dias: DiaPagoPorHoras[]): ResultadoPagoPorHorasCalendario {
+	const semanas = agruparPorSemanas(dias).map((diasSemana) => {
+		const cantidades = diasSemana.reduce((suma, dia) => sumarCantidades(suma, cantidadesDelDia(dia)), Array(8).fill(0));
+		const resultado = calcularPagoPorHoraOrdinaria(horaOrdinaria, TIPOS_HORA_COMPLETO, cantidades);
+		const horasExtra = INDICES_HORA_EXTRA_COMPLETO.reduce((suma, i) => suma + cantidades[i], 0);
+
+		return {
+			...resultado,
+			horasExtra,
+			superaLimiteSemanal: horasExtra > 12,
+			inicio: diasSemana[0].fecha,
+			fin: diasSemana[diasSemana.length - 1].fecha,
+		};
 	});
 
-	return { horaOrdinaria, filas, total: filas.reduce((suma, fila) => suma + fila.subtotal, 0) };
+	return { horaOrdinaria, semanas, total: semanas.reduce((suma, semana) => suma + semana.total, 0) };
 }
 
 // --- Indemnización por despido sin justa causa ---

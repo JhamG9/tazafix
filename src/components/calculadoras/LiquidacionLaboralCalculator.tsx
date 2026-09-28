@@ -2,14 +2,17 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
 	AUX_TRANSPORTE_2026,
+	AUX_TRANSPORTE_DIARIO_2026,
 	TOPE_AUX_TRANSPORTE_2026,
 	TOPE_FONDO_SOLIDARIDAD_2026,
+	SMMLV_2026,
 } from '../../data/liquidacionLaboral';
 import { currency, miles } from '../../lib/format';
 import {
 	calcularLiquidacionEmpleado,
-	salarioMensualizado,
+	calcularLiquidacionPorDiasEmpleado,
 	type ResultadoLiquidacionEmpleado,
+	type ResultadoLiquidacionPorDiasEmpleado,
 } from '../../lib/liquidacion';
 import CalculatorHint from './CalculatorHint';
 import ExportButtons from './ExportButtons';
@@ -27,10 +30,15 @@ interface FormValues {
 	auxilioTransporte: boolean;
 }
 
-interface Resultado {
-	salarioBase: number;
-	empleado: ResultadoLiquidacionEmpleado;
-}
+type Resultado =
+	| { modo: 'tiempoCompleto'; salarioBase: number; empleado: ResultadoLiquidacionEmpleado }
+	| {
+			modo: 'porDias';
+			periodoInicio: string;
+			periodoFin: string;
+			salarioDiario: number;
+			porDias: ResultadoLiquidacionPorDiasEmpleado;
+	  };
 
 function parseMonto(value: string): number {
 	return Number(value.replace(/\D/g, ''));
@@ -49,6 +57,12 @@ function formatoFechaLocal(date: Date): string {
 	const month = String(date.getMonth() + 1).padStart(2, '0');
 	const day = String(date.getDate()).padStart(2, '0');
 	return `${year}-${month}-${day}`;
+}
+
+// DD-MM-AAAA, el formato que usa "Mi Calculadora" del Ministerio del Trabajo.
+function formatoFechaCorta(iso: string): string {
+	const [year, month, day] = iso.split('-');
+	return `${day}-${month}-${year}`;
 }
 
 const hoy = formatoFechaLocal(new Date());
@@ -85,23 +99,33 @@ export default function LiquidacionLaboralCalculator() {
 			return;
 		}
 
-		const salarioBase =
-			modo === 'tiempoCompleto'
-				? parseMonto(data.tcSalario)
-				: salarioMensualizado(parseMonto(data.pdSalario), data.pdDias);
-
-		if (!salarioBase) {
-			setError('Ingresa el salario.');
-			setResultado(null);
+		if (modo === 'tiempoCompleto') {
+			const salarioBase = parseMonto(data.tcSalario);
+			if (!salarioBase) {
+				setError('Ingresa el salario.');
+				setResultado(null);
+				return;
+			}
+			setError(null);
+			const auxilio = data.auxilioTransporte ? AUX_TRANSPORTE_2026 : 0;
+			setResultado({ modo, salarioBase, empleado: calcularLiquidacionEmpleado(inicio, fin, salarioBase, auxilio) });
 			return;
 		}
 
+		const salarioDiario = parseMonto(data.pdSalario);
+		if (!salarioDiario) {
+			setError('Ingresa el salario diario.');
+			setResultado(null);
+			return;
+		}
 		setError(null);
-		const auxilio = data.auxilioTransporte ? AUX_TRANSPORTE_2026 : 0;
-
+		const auxilioDiario = data.auxilioTransporte ? AUX_TRANSPORTE_DIARIO_2026 : 0;
 		setResultado({
-			salarioBase,
-			empleado: calcularLiquidacionEmpleado(inicio, fin, salarioBase, auxilio),
+			modo,
+			periodoInicio: data.pdInicio,
+			periodoFin: data.pdFin,
+			salarioDiario,
+			porDias: calcularLiquidacionPorDiasEmpleado(inicio, fin, salarioDiario, data.pdDias, auxilioDiario, SMMLV_2026),
 		});
 	};
 
@@ -140,6 +164,21 @@ export default function LiquidacionLaboralCalculator() {
 						Por días
 					</button>
 				</div>
+
+				{modo === 'porDias' && (
+					<div className="mt-3 space-y-2 text-xs text-ink/50">
+						<p>
+							Para trabajadores dependientes que laboran por periodos inferiores a un mes y cuya
+							remuneración es inferior a un salario mínimo legal vigente, según el Decreto 2616 de
+							2013.
+						</p>
+						<p>
+							En el caso de trabajadores de servicio doméstico que laboren el mes completo, la
+							liquidación de las prestaciones sociales será equivalente a la de un trabajador
+							dependiente de tiempo completo.
+						</p>
+					</div>
+				)}
 
 				<div className="mt-5 space-y-5">
 					{modo === 'tiempoCompleto' ? (
@@ -194,81 +233,108 @@ export default function LiquidacionLaboralCalculator() {
 						</>
 					) : (
 						<>
-							<div className="grid grid-cols-2 gap-3">
-								<div>
-									<label htmlFor="pdInicio" className="block text-sm font-medium text-ink">
-										Fecha inicio
-									</label>
+							<div>
+								<label htmlFor="pdInicio" className="block text-sm font-medium text-ink">
+									1. Fecha de inicio del periodo a liquidar
+								</label>
+								<input
+									type="date"
+									id="pdInicio"
+									className="mt-1 w-full rounded-lg px-3 py-2.5 text-ink outline-none ring-1 ring-primary/20 focus:ring-2 focus:ring-primary"
+									{...register('pdInicio', { required: modo === 'porDias' })}
+								/>
+							</div>
+							<div>
+								<label htmlFor="pdFin" className="block text-sm font-medium text-ink">
+									2. Fecha de finalización del periodo a liquidar
+								</label>
+								<input
+									type="date"
+									id="pdFin"
+									className="mt-1 w-full rounded-lg px-3 py-2.5 text-ink outline-none ring-1 ring-primary/20 focus:ring-2 focus:ring-primary"
+									{...register('pdFin', { required: modo === 'porDias' })}
+								/>
+							</div>
+
+							<div>
+								<label htmlFor="pdSalario" className="block text-sm font-medium text-ink">
+									3. Ingrese su salario diario
+								</label>
+								<div className="mt-1 flex items-center rounded-lg ring-1 ring-primary/20 focus-within:ring-2 focus-within:ring-primary">
+									<span className="pl-3 text-ink/50">$</span>
 									<input
-										type="date"
-										id="pdInicio"
-										className="mt-1 w-full rounded-lg px-3 py-2.5 text-ink outline-none ring-1 ring-primary/20 focus:ring-2 focus:ring-primary"
-										{...register('pdInicio', { required: modo === 'porDias' })}
-									/>
-								</div>
-								<div>
-									<label htmlFor="pdFin" className="block text-sm font-medium text-ink">
-										Fecha fin
-									</label>
-									<input
-										type="date"
-										id="pdFin"
-										className="mt-1 w-full rounded-lg px-3 py-2.5 text-ink outline-none ring-1 ring-primary/20 focus:ring-2 focus:ring-primary"
-										{...register('pdFin', { required: modo === 'porDias' })}
+										type="text"
+										inputMode="numeric"
+										id="pdSalario"
+										placeholder="70.000"
+										className="w-full rounded-lg bg-transparent px-2 py-2.5 text-ink outline-none"
+										{...register('pdSalario', {
+											onChange: (event) => {
+												const digits = event.target.value.replace(/\D/g, '');
+												setValue('pdSalario', digits ? miles.format(Number(digits)) : '');
+											},
+										})}
 									/>
 								</div>
 							</div>
 
-							<div className="grid grid-cols-2 gap-3">
-								<div>
-									<label htmlFor="pdSalario" className="block text-sm font-medium text-ink">
-										Salario diario
-									</label>
-									<div className="mt-1 flex items-center rounded-lg ring-1 ring-primary/20 focus-within:ring-2 focus-within:ring-primary">
-										<span className="pl-3 text-ink/50">$</span>
-										<input
-											type="text"
-											inputMode="numeric"
-											id="pdSalario"
-											placeholder="70.000"
-											className="w-full rounded-lg bg-transparent px-2 py-2.5 text-ink outline-none"
-											{...register('pdSalario', {
-												onChange: (event) => {
-													const digits = event.target.value.replace(/\D/g, '');
-													setValue('pdSalario', digits ? miles.format(Number(digits)) : '');
-												},
-											})}
-										/>
-									</div>
-								</div>
-								<div>
-									<label htmlFor="pdDias" className="block text-sm font-medium text-ink">
-										Días por semana
-									</label>
+							<div>
+								<label htmlFor="pdDias" className="block text-sm font-medium text-ink">
+									4. Días laborados semana
+								</label>
+								<input
+									type="number"
+									min={1}
+									max={6}
+									id="pdDias"
+									className="mt-1 w-full rounded-lg px-3 py-2.5 text-ink outline-none ring-1 ring-primary/20 focus:ring-2 focus:ring-primary"
+									{...register('pdDias', { required: modo === 'porDias', valueAsNumber: true })}
+								/>
+							</div>
+
+							<div>
+								<p className="block text-sm font-medium text-ink">
+									5. ¿Tiene derecho a un auxilio de transporte diario?
+								</p>
+								<label className="mt-1 flex items-start gap-2 text-sm text-ink/70">
 									<input
-										type="number"
-										min={1}
-										max={6}
-										id="pdDias"
-										className="mt-1 w-full rounded-lg px-3 py-2.5 text-ink outline-none ring-1 ring-primary/20 focus:ring-2 focus:ring-primary"
-										{...register('pdDias', { required: modo === 'porDias', valueAsNumber: true })}
+										type="checkbox"
+										className="mt-0.5 accent-primary"
+										{...register('auxilioTransporte')}
 									/>
-								</div>
+									<span>Sí, {currency.format(AUX_TRANSPORTE_DIARIO_2026)}</span>
+								</label>
+								<p className="mt-1 text-xs text-ink/45">
+									Por defecto esta cifra corresponde al auxilio de transporte diario para el año
+									2026.
+								</p>
+							</div>
+
+							<div className="rounded-xl bg-base p-4 text-xs leading-relaxed text-ink/60 ring-1 ring-primary/10">
+								<p className="mb-2 text-sm font-semibold text-ink">Información</p>
+								<p>
+									Esta calculadora es una guía que no reemplaza ni valida los procesos de cada
+									empleador, ni los sistemas o programas contables que implemente en su
+									organización. La información suministrada es ilustrativa y no constituye ningún
+									derecho a favor del trabajador ni la expedición de un acto administrativo.
+								</p>
 							</div>
 						</>
 					)}
 
-					<label className="flex items-start gap-2 text-sm text-ink/70">
-						<input
-							type="checkbox"
-							className="mt-0.5 accent-primary"
-							{...register('auxilioTransporte')}
-						/>
-						<span>
-							Auxilio de transporte (aplica hasta 2 SMMLV, {currency.format(TOPE_AUX_TRANSPORTE_2026)} en
-							2026)
-						</span>
-					</label>
+					{modo === 'tiempoCompleto' && (
+						<label className="flex items-start gap-2 text-sm text-ink/70">
+							<input
+								type="checkbox"
+								className="mt-0.5 accent-primary"
+								{...register('auxilioTransporte')}
+							/>
+							<span>
+								Auxilio de transporte (aplica hasta 2 SMMLV, {currency.format(TOPE_AUX_TRANSPORTE_2026)} en
+								2026)
+							</span>
+						</label>
+					)}
 
 					{error && <p className="text-sm text-alert">{error}</p>}
 
@@ -281,7 +347,7 @@ export default function LiquidacionLaboralCalculator() {
 				</div>
 			</form>
 
-			{resultado && (
+			{resultado && resultado.modo === 'tiempoCompleto' && (
 				<div id="resultado-liquidacion-laboral">
 					<div className="rounded-2xl bg-primary p-6 sm:p-10">
 						<p className="font-serif text-3xl font-semibold leading-tight text-surface sm:text-4xl lg:text-5xl">
@@ -338,6 +404,139 @@ export default function LiquidacionLaboralCalculator() {
 						retención según el caso, lo que esta calculadora no descuenta. No incluye indemnización
 						por despido sin justa causa ni reemplaza los sistemas contables del empleador ni
 						certifica ningún derecho ante la autoridad laboral.
+					</p>
+				</div>
+			)}
+
+			{resultado && resultado.modo === 'porDias' && (
+				<div id="resultado-liquidacion-laboral">
+					<div className="rounded-2xl bg-primary p-6 sm:p-10">
+						<p className="font-serif text-3xl font-semibold leading-tight text-surface sm:text-4xl lg:text-5xl">
+							Liquidación estimada: {currency.format(resultado.porDias.empleado.total)}
+						</p>
+						<p className="mt-4 text-base text-surface/80">
+							Periodo {formatoFechaCorta(resultado.periodoInicio)} al {formatoFechaCorta(resultado.periodoFin)}.
+						</p>
+					</div>
+					<ExportButtons targetId="resultado-liquidacion-laboral" title="Resultado de liquidación laboral" />
+
+					{(() => {
+						const primaPrimero =
+							resultado.porDias.empleado.primaPorSemestre.find((s) => s.label.startsWith('Prima primer'))
+								?.monto ?? 0;
+						const primaSegundo =
+							resultado.porDias.empleado.primaPorSemestre.find((s) => s.label.startsWith('Prima segundo'))
+								?.monto ?? 0;
+
+						return (
+							<>
+								<div className="mt-6 overflow-hidden rounded-2xl ring-1 ring-primary/10">
+									<p className="bg-primary/5 px-5 py-3 text-xs font-bold uppercase tracking-wide text-ink">
+										Datos liquidación
+									</p>
+									<dl className="divide-y divide-primary/10 bg-surface text-sm">
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Periodo (DD-MM-AAAA)</dt>
+											<dd className="text-right text-ink">
+												{formatoFechaCorta(resultado.periodoInicio)} al {formatoFechaCorta(resultado.periodoFin)}
+											</dd>
+										</div>
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Días laborados (mensualizado)</dt>
+											<dd className="text-right text-ink">
+												{resultado.porDias.diasLaboradosMensualizados.toFixed(2).replace('.', ',')}
+											</dd>
+										</div>
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Salario diario</dt>
+											<dd className="text-right text-ink">{miles.format(resultado.salarioDiario)}</dd>
+										</div>
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Salario mensualizado</dt>
+											<dd className="text-right text-ink">{miles.format(Math.round(resultado.porDias.salarioMensualizado))}</dd>
+										</div>
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Transporte</dt>
+											<dd className="text-right text-ink">{miles.format(Math.round(resultado.porDias.transporteMensualizado))}</dd>
+										</div>
+									</dl>
+								</div>
+
+								<div className="mt-4 overflow-hidden rounded-2xl ring-1 ring-primary/10">
+									<div className="bg-primary/5 px-5 py-3">
+										<p className="text-xs font-bold uppercase tracking-wide text-ink">
+											Prestaciones sociales en la liquidación del contrato de trabajo
+										</p>
+										<p className="mt-1 text-xs leading-relaxed text-ink/55">
+											Son los pagos adicionales al salario (cesantías, intereses a las cesantías,
+											prima de servicios y vacaciones) que se reciben efectivamente en la
+											liquidación definitiva del contrato de trabajo por el periodo elegido.
+										</p>
+									</div>
+									<dl className="divide-y divide-primary/10 bg-surface text-sm">
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Prima primer semestre*</dt>
+											<dd className="text-right text-ink">{miles.format(Math.round(primaPrimero))}</dd>
+										</div>
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Prima segundo semestre</dt>
+											<dd className="text-right text-ink">{miles.format(Math.round(primaSegundo))}</dd>
+										</div>
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Cesantías</dt>
+											<dd className="text-right text-ink">{miles.format(Math.round(resultado.porDias.empleado.cesantias))}</dd>
+										</div>
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Intereses sobre cesantías</dt>
+											<dd className="text-right text-ink">
+												{miles.format(Math.round(resultado.porDias.empleado.interesesCesantias))}
+											</dd>
+										</div>
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Vacaciones</dt>
+											<dd className="text-right text-ink">{miles.format(Math.round(resultado.porDias.empleado.vacaciones))}</dd>
+										</div>
+										<div className="flex justify-between gap-2 bg-primary/5 px-5 py-3 font-semibold text-ink">
+											<dt>TOTAL</dt>
+											<dd className="text-right">{miles.format(Math.round(resultado.porDias.empleado.total))}</dd>
+										</div>
+									</dl>
+								</div>
+
+								<div className="mt-4 overflow-hidden rounded-2xl ring-1 ring-primary/10">
+									<p className="bg-primary/5 px-5 py-3 text-xs font-bold uppercase tracking-wide text-ink">
+										Aportes a la seguridad social (valor mensual)
+									</p>
+									<dl className="divide-y divide-primary/10 bg-surface text-sm">
+										<div className="flex justify-between gap-2 px-5 py-3">
+											<dt className="text-ink/60">Pensiones (AFP)</dt>
+											<dd className="text-right text-ink">{miles.format(Math.round(resultado.porDias.pensionTrabajador))}</dd>
+										</div>
+									</dl>
+								</div>
+
+								<p className="mt-3 text-xs text-ink/50">
+									Valores en pesos colombianos.
+									<br />
+									*Recuerde que si ya pagó la prima del semestre anterior debe restarla de este
+									resultado.
+								</p>
+								<p className="mt-2 text-xs text-ink/50">
+									La cifra de "Pensiones (AFP)" corresponde al aporte del trabajador (4%) sobre la
+									base de cotización por semanas del Decreto 2616 de 2013 ({resultado.porDias.semanasCotizadas}{' '}
+									{resultado.porDias.semanasCotizadas === 1 ? 'semana' : 'semanas'} cotizadas). El
+									empleador aporta además un 12% ({miles.format(Math.round(resultado.porDias.pensionEmpleador))} pesos) sobre la misma
+									base.
+								</p>
+							</>
+						);
+					})()}
+
+					<p className="mt-8 text-sm text-ink/60">
+						Cesantías e intereses están exentos de retención en la fuente (artículo 206 del
+						Estatuto Tributario). Esta calculadora es una guía orientativa, no reemplaza ni valida
+						los procesos de cada empleador ni los sistemas o programas contables que implemente en
+						su organización, y no certifica ningún derecho ante la autoridad laboral.
 					</p>
 				</div>
 			)}

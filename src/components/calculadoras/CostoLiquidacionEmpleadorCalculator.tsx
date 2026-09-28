@@ -2,20 +2,27 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
 	AUX_TRANSPORTE_2026,
+	AUX_TRANSPORTE_DIARIO_2026,
 	TOPE_AUX_TRANSPORTE_2026,
 	TOPE_EXONERACION_2026,
+	SMMLV_2026,
 } from '../../data/liquidacionLaboral';
 import { clasesRiesgoArl } from '../../data/parametrosLaborales2026';
 import { currency, miles } from '../../lib/format';
 import {
 	calcularLiquidacionEmpleador,
-	salarioMensualizado,
+	calcularLiquidacionPorDiasEmpleador,
 	type ResultadoLiquidacionEmpleador,
+	type ResultadoLiquidacionPorDiasEmpleador,
 } from '../../lib/liquidacion';
 import CalculatorHint from './CalculatorHint';
 import ExportButtons from './ExportButtons';
 
 type Modo = 'tiempoCompleto' | 'porDias';
+
+type Resultado =
+	| { modo: 'tiempoCompleto'; datos: ResultadoLiquidacionEmpleador }
+	| { modo: 'porDias'; datos: ResultadoLiquidacionPorDiasEmpleador };
 
 interface FormValues {
 	tcInicio: string;
@@ -66,7 +73,7 @@ export default function CostoLiquidacionEmpleadorCalculator() {
 	});
 
 	const [modo, setModo] = useState<Modo>('tiempoCompleto');
-	const [resultado, setResultado] = useState<ResultadoLiquidacionEmpleador | null>(null);
+	const [resultado, setResultado] = useState<Resultado | null>(null);
 	const [error, setError] = useState<string | null>(null);
 
 	const onSubmit = (data: FormValues) => {
@@ -83,24 +90,44 @@ export default function CostoLiquidacionEmpleadorCalculator() {
 			return;
 		}
 
-		const salarioBase =
-			modo === 'tiempoCompleto'
-				? parseMonto(data.tcSalario)
-				: salarioMensualizado(parseMonto(data.pdSalario), data.pdDias);
+		const tasaArl = Number(data.claseRiesgo);
 
-		if (!salarioBase) {
-			setError('Ingresa el salario.');
-			setResultado(null);
+		if (modo === 'tiempoCompleto') {
+			const salarioBase = parseMonto(data.tcSalario);
+			if (!salarioBase) {
+				setError('Ingresa el salario.');
+				setResultado(null);
+				return;
+			}
+			setError(null);
+			const auxilio = data.auxilioTransporte ? AUX_TRANSPORTE_2026 : 0;
+			setResultado({
+				modo,
+				datos: calcularLiquidacionEmpleador(inicio, fin, salarioBase, auxilio, tasaArl, TOPE_EXONERACION_2026),
+			});
 			return;
 		}
 
+		const salarioDiario = parseMonto(data.pdSalario);
+		if (!salarioDiario) {
+			setError('Ingresa el salario diario.');
+			setResultado(null);
+			return;
+		}
 		setError(null);
-		const auxilio = data.auxilioTransporte ? AUX_TRANSPORTE_2026 : 0;
-		const tasaArl = Number(data.claseRiesgo);
-
-		setResultado(
-			calcularLiquidacionEmpleador(inicio, fin, salarioBase, auxilio, tasaArl, TOPE_EXONERACION_2026)
-		);
+		const auxilioDiario = data.auxilioTransporte ? AUX_TRANSPORTE_DIARIO_2026 : 0;
+		setResultado({
+			modo,
+			datos: calcularLiquidacionPorDiasEmpleador(
+				inicio,
+				fin,
+				salarioDiario,
+				data.pdDias,
+				auxilioDiario,
+				SMMLV_2026,
+				tasaArl
+			),
+		});
 	};
 
 	return (
@@ -139,6 +166,13 @@ export default function CostoLiquidacionEmpleadorCalculator() {
 						Por días
 					</button>
 				</div>
+
+				{modo === 'porDias' && (
+					<p className="mt-3 text-xs text-ink/50">
+						Para trabajadores dependientes que laboran por periodos inferiores a un mes y cuya
+						remuneración es inferior a un salario mínimo legal vigente (Decreto 2616 de 2013).
+					</p>
+				)}
 
 				<div className="mt-5 space-y-5">
 					{modo === 'tiempoCompleto' ? (
@@ -281,8 +315,11 @@ export default function CostoLiquidacionEmpleadorCalculator() {
 							{...register('auxilioTransporte')}
 						/>
 						<span>
-							Auxilio de transporte (aplica hasta 2 SMMLV, {currency.format(TOPE_AUX_TRANSPORTE_2026)} en
-							2026)
+							{modo === 'tiempoCompleto' ? (
+								<>Auxilio de transporte (aplica hasta 2 SMMLV, {currency.format(TOPE_AUX_TRANSPORTE_2026)} en 2026)</>
+							) : (
+								<>¿Tiene derecho a un auxilio de transporte diario? ({currency.format(AUX_TRANSPORTE_DIARIO_2026)} en 2026)</>
+							)}
 						</span>
 					</label>
 
@@ -297,15 +334,15 @@ export default function CostoLiquidacionEmpleadorCalculator() {
 				</div>
 			</form>
 
-			{resultado && (
+			{resultado && resultado.modo === 'tiempoCompleto' && (
 				<div id="resultado-costo-liquidacion-empleador">
 					<div className="rounded-2xl bg-primary p-6 sm:p-10">
 						<p className="font-serif text-3xl font-semibold leading-tight text-surface sm:text-4xl lg:text-5xl">
-							Costo total para la empresa: {currency.format(resultado.costoTotal)}
+							Costo total para la empresa: {currency.format(resultado.datos.costoTotal)}
 						</p>
 						<p className="mt-4 text-base text-surface/80">
-							Por {resultado.empleado.dias} días de contrato: {currency.format(resultado.empleado.total)}{' '}
-							para el trabajador + {currency.format(resultado.totalAportesConExoneracion)} en aportes
+							Por {resultado.datos.empleado.dias} días de contrato: {currency.format(resultado.datos.empleado.total)}{' '}
+							para el trabajador + {currency.format(resultado.datos.totalAportesConExoneracion)} en aportes
 							patronales del período.
 						</p>
 					</div>
@@ -319,15 +356,15 @@ export default function CostoLiquidacionEmpleadorCalculator() {
 						<dl className="mt-3 space-y-2 text-sm text-ink/70">
 							<div className="flex justify-between gap-2">
 								<dt>Cesantías</dt>
-								<dd className="text-right text-ink">{currency.format(resultado.empleado.cesantias)}</dd>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.empleado.cesantias)}</dd>
 							</div>
 							<div className="flex justify-between gap-2">
 								<dt>Intereses de cesantías</dt>
 								<dd className="text-right text-ink">
-									{currency.format(resultado.empleado.interesesCesantias)}
+									{currency.format(resultado.datos.empleado.interesesCesantias)}
 								</dd>
 							</div>
-							{resultado.empleado.primaPorSemestre.map((segmento) => (
+							{resultado.datos.empleado.primaPorSemestre.map((segmento) => (
 								<div key={segmento.label} className="flex justify-between gap-2">
 									<dt>{segmento.label}</dt>
 									<dd className="text-right text-ink">{currency.format(segmento.monto)}</dd>
@@ -335,12 +372,12 @@ export default function CostoLiquidacionEmpleadorCalculator() {
 							))}
 							<div className="flex justify-between gap-2">
 								<dt>Vacaciones</dt>
-								<dd className="text-right text-ink">{currency.format(resultado.empleado.vacaciones)}</dd>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.empleado.vacaciones)}</dd>
 							</div>
 						</dl>
 						<div className="mt-3 flex justify-between border-t border-primary/10 pt-3 text-sm font-semibold text-ink">
 							<span>Subtotal trabajador</span>
-							<span>{currency.format(resultado.empleado.total)}</span>
+							<span>{currency.format(resultado.datos.empleado.total)}</span>
 						</div>
 					</div>
 
@@ -349,38 +386,38 @@ export default function CostoLiquidacionEmpleadorCalculator() {
 						<dl className="mt-3 space-y-2 text-sm text-ink/70">
 							<div className="flex justify-between gap-2">
 								<dt>Pensión (12%)</dt>
-								<dd className="text-right text-ink">{currency.format(resultado.pension)}</dd>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.pension)}</dd>
 							</div>
 							<div className="flex justify-between gap-2">
 								<dt>Salud (8.5%)</dt>
-								<dd className="text-right text-ink">{currency.format(resultado.salud)}</dd>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.salud)}</dd>
 							</div>
 							<div className="flex justify-between gap-2">
 								<dt>Riesgos laborales, ARL</dt>
-								<dd className="text-right text-ink">{currency.format(resultado.arl)}</dd>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.arl)}</dd>
 							</div>
 							<div className="flex justify-between gap-2">
 								<dt>Caja de compensación familiar (4%)</dt>
-								<dd className="text-right text-ink">{currency.format(resultado.cajaCompensacion)}</dd>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.cajaCompensacion)}</dd>
 							</div>
 							<div className="flex justify-between gap-2">
 								<dt>ICBF (3%)</dt>
-								<dd className="text-right text-ink">{currency.format(resultado.icbf)}</dd>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.icbf)}</dd>
 							</div>
 							<div className="flex justify-between gap-2">
 								<dt>SENA (2%)</dt>
-								<dd className="text-right text-ink">{currency.format(resultado.sena)}</dd>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.sena)}</dd>
 							</div>
 						</dl>
 						<div className="mt-3 flex justify-between border-t border-primary/10 pt-3 text-sm font-semibold text-ink">
 							<span>Subtotal sin exonerar</span>
-							<span>{currency.format(resultado.totalAportesPatronales)}</span>
+							<span>{currency.format(resultado.datos.totalAportesPatronales)}</span>
 						</div>
 						<div className="mt-2 flex justify-between text-sm font-semibold text-primary">
 							<span>Subtotal con exoneración Ley 1819 de 2016</span>
-							<span>{currency.format(resultado.totalAportesConExoneracion)}</span>
+							<span>{currency.format(resultado.datos.totalAportesConExoneracion)}</span>
 						</div>
-						{!resultado.exonerado && (
+						{!resultado.datos.exonerado && (
 							<p className="mt-3 text-xs text-ink/50">
 								No aplica exoneración: el salario supera los 10 SMMLV.
 							</p>
@@ -389,7 +426,7 @@ export default function CostoLiquidacionEmpleadorCalculator() {
 
 					<div className="mt-6 flex justify-between rounded-2xl bg-surface p-5 text-base font-semibold text-ink ring-1 ring-primary/10">
 						<span>Costo total para la empresa</span>
-						<span>{currency.format(resultado.costoTotal)}</span>
+						<span>{currency.format(resultado.datos.costoTotal)}</span>
 					</div>
 
 					<p className="mt-8 text-sm text-ink/60">
@@ -404,15 +441,125 @@ export default function CostoLiquidacionEmpleadorCalculator() {
 					<p className="mt-4 text-sm text-ink/60">
 						Los aportes a pensión, salud, ARL y parafiscales son tarifas mensuales (se pagan cada
 						mes, sin importar la antigüedad), así que para un período de exactamente 30 días
-						coinciden con "Mi Calculadora" del Ministerio del Trabajo y con Nómina mensual por
-						días. Las prestaciones sociales del trabajador (cesantías, intereses, prima,
-						vacaciones) sí pueden diferir de una provisión mensual genérica, porque aquí se calculan
-						sobre los días reales del período en vez de asumir un mes estándar. Si quieres la
-						provisión mensual estándar de un empleado activo, usa{' '}
-						<a href="/calculadoras/nomina-mensual-dias" className="font-medium text-primary hover:underline">
-							Nómina mensual por días
-						</a>
-						.
+						coinciden con "Mi Calculadora" del Ministerio del Trabajo. Las prestaciones sociales
+						del trabajador (cesantías, intereses, prima, vacaciones) sí pueden diferir de una
+						provisión mensual genérica, porque aquí se calculan sobre los días reales del período
+						en vez de asumir un mes estándar.
+					</p>
+				</div>
+			)}
+
+			{resultado && resultado.modo === 'porDias' && (
+				<div id="resultado-costo-liquidacion-empleador">
+					<div className="rounded-2xl bg-primary p-6 sm:p-10">
+						<p className="font-serif text-3xl font-semibold leading-tight text-surface sm:text-4xl lg:text-5xl">
+							Costo total para la empresa: {currency.format(resultado.datos.costoTotal)}
+						</p>
+						<p className="mt-4 text-base text-surface/80">
+							Por {resultado.datos.dias} días de periodo: {currency.format(resultado.datos.empleado.total)} para
+							el trabajador + {currency.format(resultado.datos.totalAportesPatronales)} en aportes
+							patronales mensuales.
+						</p>
+					</div>
+					<ExportButtons
+						targetId="resultado-costo-liquidacion-empleador"
+						title="Costo de liquidación para el empleador"
+					/>
+
+					<div className="mt-6 rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
+						<p className="text-sm font-semibold text-ink">Datos de la liquidación</p>
+						<dl className="mt-3 space-y-2 text-sm text-ink/70">
+							<div className="flex justify-between gap-2">
+								<dt>Días laborados (mensualizado)</dt>
+								<dd className="text-right text-ink">{resultado.datos.diasLaboradosMensualizados.toFixed(2)}</dd>
+							</div>
+							<div className="flex justify-between gap-2">
+								<dt>Salario mensualizado</dt>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.salarioMensualizado)}</dd>
+							</div>
+							<div className="flex justify-between gap-2">
+								<dt>Transporte proporcional</dt>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.transporteMensualizado)}</dd>
+							</div>
+						</dl>
+					</div>
+
+					<div className="mt-6 rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
+						<p className="text-sm font-semibold text-ink">Lo que recibe el trabajador</p>
+						<dl className="mt-3 space-y-2 text-sm text-ink/70">
+							{resultado.datos.empleado.primaPorSemestre.map((segmento) => (
+								<div key={segmento.label} className="flex justify-between gap-2">
+									<dt>{segmento.label}</dt>
+									<dd className="text-right text-ink">{currency.format(segmento.monto)}</dd>
+								</div>
+							))}
+							<div className="flex justify-between gap-2">
+								<dt>Cesantías</dt>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.empleado.cesantias)}</dd>
+							</div>
+							<div className="flex justify-between gap-2">
+								<dt>Intereses de cesantías</dt>
+								<dd className="text-right text-ink">
+									{currency.format(resultado.datos.empleado.interesesCesantias)}
+								</dd>
+							</div>
+							<div className="flex justify-between gap-2">
+								<dt>Vacaciones</dt>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.empleado.vacaciones)}</dd>
+							</div>
+						</dl>
+						<div className="mt-3 flex justify-between border-t border-primary/10 pt-3 text-sm font-semibold text-ink">
+							<span>Subtotal trabajador</span>
+							<span>{currency.format(resultado.datos.empleado.total)}</span>
+						</div>
+					</div>
+
+					<div className="mt-6 rounded-2xl bg-surface p-5 ring-1 ring-primary/10">
+						<p className="text-sm font-semibold text-ink">Aportes patronales (valor mensual)</p>
+						<dl className="mt-3 space-y-2 text-sm text-ink/70">
+							<div className="flex justify-between gap-2">
+								<dt>Semanas cotizadas</dt>
+								<dd className="text-right text-ink">{resultado.datos.semanasCotizadas}</dd>
+							</div>
+							<div className="flex justify-between gap-2">
+								<dt>Pensión, aporte del empleador (12%)</dt>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.pensionEmpleador)}</dd>
+							</div>
+							<div className="flex justify-between gap-2">
+								<dt>Riesgos laborales, ARL (sobre 1 SMMLV)</dt>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.arl)}</dd>
+							</div>
+							<div className="flex justify-between gap-2">
+								<dt>Caja de compensación familiar (4%)</dt>
+								<dd className="text-right text-ink">{currency.format(resultado.datos.cajaCompensacion)}</dd>
+							</div>
+						</dl>
+						<div className="mt-3 flex justify-between border-t border-primary/10 pt-3 text-sm font-semibold text-ink">
+							<span>Subtotal aportes patronales</span>
+							<span>{currency.format(resultado.datos.totalAportesPatronales)}</span>
+						</div>
+						<p className="mt-3 text-xs text-ink/50">
+							Además se descuenta al trabajador el 4% de pensión ({currency.format(resultado.datos.pensionTrabajador)}
+							) sobre la misma base. Este régimen no exige aportes a salud, SENA ni ICBF a cargo del
+							empleador (Decreto 2616 de 2013): la salud del trabajador queda a cargo del régimen
+							subsidiado mientras gane menos de un SMMLV.
+						</p>
+					</div>
+
+					<div className="mt-6 flex justify-between rounded-2xl bg-surface p-5 text-base font-semibold text-ink ring-1 ring-primary/10">
+						<span>Costo total para la empresa</span>
+						<span>{currency.format(resultado.datos.costoTotal)}</span>
+					</div>
+
+					<p className="mt-8 text-sm text-ink/60">
+						Para trabajadores dependientes que laboran por periodos inferiores a un mes y cuya
+						remuneración es inferior a un salario mínimo legal vigente (Decreto 2616 de 2013,
+						compilado en el Decreto 1072 de 2015, artículo 2.2.1.6.4.1). La base de cotización se
+						calcula por semanas: 1 a 7 días laborados en el mes = 1 semana, 8 a 14 = 2, 15 a 21 = 3,
+						22 o más = 4, sobre una base mínima de ¼ de SMMLV por semana (excepto ARL, que cotiza
+						sobre 1 SMMLV completo). No incluye indemnización por despido sin justa causa ni
+						reemplaza los sistemas contables del empleador. Herramienta orientativa, no un cálculo
+						legal certificado.
 					</p>
 				</div>
 			)}

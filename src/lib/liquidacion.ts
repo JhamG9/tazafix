@@ -44,10 +44,15 @@ export function diasAno360(inicio: Date, fin: Date): number {
 	return anios * 360 + meses * 30 + dias + 1;
 }
 
+// 52 semanas ÷ 12 meses, redondeado a 2 decimales: así mensualiza un valor diario la calculadora
+// oficial "Mi Calculadora" del Ministerio del Trabajo (y la generalidad de las guías de nómina para
+// trabajadores por días), en vez de usar la fracción exacta 52/12 = 4.3333...
+const SEMANAS_POR_MES = 4.33;
+
 // Mensualiza el salario de un trabajador que gana por día: salario diario × días trabajados por
-// semana × 52 semanas al año, prorrateado a 12 meses.
+// semana × 4.33 semanas al mes.
 export function salarioMensualizado(salarioDiario: number, diasPorSemana: number): number {
-	return (salarioDiario * diasPorSemana * 52) / 12;
+	return salarioDiario * diasPorSemana * SEMANAS_POR_MES;
 }
 
 interface Segmento {
@@ -192,5 +197,103 @@ export function calcularLiquidacionEmpleador(
 		totalAportesConExoneracion,
 		exonerado,
 		costoTotal: empleado.total + totalAportesConExoneracion,
+	};
+}
+
+// --- Trabajador por días con remuneración inferior a 1 SMMLV (Decreto 2616 de 2013) ---
+
+export interface ResultadoLiquidacionPorDiasEmpleado {
+	dias: number;
+	diasLaboradosMensualizados: number;
+	salarioMensualizado: number;
+	transporteMensualizado: number;
+	empleado: ResultadoLiquidacionEmpleado;
+	semanasCotizadas: number;
+	ibcPension: number;
+	pensionEmpleador: number;
+	pensionTrabajador: number;
+}
+
+export interface ResultadoLiquidacionPorDiasEmpleador extends ResultadoLiquidacionPorDiasEmpleado {
+	arl: number;
+	cajaCompensacion: number;
+	totalAportesPatronales: number;
+	costoTotal: number;
+}
+
+// El Decreto 2616 de 2013 (compilado en el Decreto 1072 de 2015, artículo 2.2.1.6.4.1 y siguientes)
+// permite afiliar a seguridad social, cotizando por semanas, a trabajadores dependientes que laboran
+// por periodos inferiores a un mes y cuya remuneración es inferior a un SMMLV. Las semanas cotizadas
+// dependen de los días laborados en el mes: 1 a 7 días = 1 semana, 8 a 14 = 2, 15 a 21 = 3, 22 o más
+// = 4 (el máximo).
+export function calcularSemanasCotizadasDecreto2616(diasLaboradosMensuales: number): number {
+	const dias = Math.round(diasLaboradosMensuales);
+	if (dias <= 7) return 1;
+	if (dias <= 14) return 2;
+	if (dias <= 21) return 3;
+	return 4;
+}
+
+// Liquidación (cesantías, intereses, prima, vacaciones) y aporte a pensión de un trabajador que gana
+// por días, por debajo de un SMMLV. El auxilio de transporte también se mensualiza en proporción a
+// los días trabajados a la semana, igual que el salario: un trabajador de 3 días a la semana no tiene
+// derecho al auxilio completo de un trabajador de tiempo completo.
+export function calcularLiquidacionPorDiasEmpleado(
+	inicio: Date,
+	fin: Date,
+	salarioDiario: number,
+	diasPorSemana: number,
+	auxilioDiario: number,
+	smmlv: number
+): ResultadoLiquidacionPorDiasEmpleado {
+	const dias = Math.max(diasAno360(inicio, fin), 0);
+	const diasLaboradosMensualizados = diasPorSemana * SEMANAS_POR_MES;
+	const salarioBase = salarioMensualizado(salarioDiario, diasPorSemana);
+	const transporteMensualizado = salarioMensualizado(auxilioDiario, diasPorSemana);
+	const empleado = calcularLiquidacionEmpleado(inicio, fin, salarioBase, transporteMensualizado);
+
+	// Base mínima de cotización semanal: 1/4 del SMMLV (Decreto 2616 de 2013, artículo 1).
+	const semanasCotizadas = calcularSemanasCotizadasDecreto2616(diasLaboradosMensualizados);
+	const ibcPension = semanasCotizadas * (smmlv / 4);
+
+	return {
+		dias,
+		diasLaboradosMensualizados,
+		salarioMensualizado: salarioBase,
+		transporteMensualizado,
+		empleado,
+		semanasCotizadas,
+		ibcPension,
+		pensionEmpleador: ibcPension * 0.12,
+		pensionTrabajador: ibcPension * 0.04,
+	};
+}
+
+// Igual que calcularLiquidacionPorDiasEmpleado, más los aportes patronales a cargo de la empresa: ARL
+// (sobre 1 SMMLV completo, no sobre el IBC por semanas) y caja de compensación familiar (4% sobre el
+// mismo IBC de pensión). A diferencia de un trabajador de tiempo completo, este régimen no exige
+// aportes a salud, SENA ni ICBF a cargo del empleador: la salud del trabajador queda a cargo del
+// régimen subsidiado mientras gane menos de un SMMLV.
+export function calcularLiquidacionPorDiasEmpleador(
+	inicio: Date,
+	fin: Date,
+	salarioDiario: number,
+	diasPorSemana: number,
+	auxilioDiario: number,
+	smmlv: number,
+	tasaArl: number
+): ResultadoLiquidacionPorDiasEmpleador {
+	const base = calcularLiquidacionPorDiasEmpleado(inicio, fin, salarioDiario, diasPorSemana, auxilioDiario, smmlv);
+
+	const arl = smmlv * tasaArl;
+	const cajaCompensacion = base.ibcPension * 0.04;
+	const totalAportesPatronales = base.pensionEmpleador + arl + cajaCompensacion;
+
+	return {
+		...base,
+		arl,
+		cajaCompensacion,
+		totalAportesPatronales,
+		costoTotal: base.empleado.total + totalAportesPatronales,
 	};
 }
