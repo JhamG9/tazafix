@@ -69,4 +69,4 @@ No necesariamente. Depende de cómo se comporten la inflación y las tasas de in
 
 Por ahora, en Cifras y Finanzas la calculadora de crédito hipotecario está disponible para **créditos en pesos** (no en UVR). Si tu crédito es o será en pesos, puedes simular tu cuota mensual con ella:
 
-[Ir a la calculadora de crédito hipotecario en pesos →](/calculadoras/credito-hipotecario)
+[Ir a la calculadora de crédito hipotecario en pesos →](/calculadoras/credito-hipotecario/)

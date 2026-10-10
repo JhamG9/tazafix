@@ -1,5 +1,4 @@
 import { useState, type ChangeEvent } from 'react';
-import * as XLSX from 'xlsx';
 
 interface Props {
 	targetId: string;
@@ -304,16 +303,18 @@ export default function ExportButtons({ targetId, title }: Props) {
 		}, 300);
 	};
 
-	const handleExcel = () => {
+	const handleExcel = async () => {
 		const clone = getResultClone(targetId);
 		if (!clone) return;
 
 		const rows = getSpreadsheetRows(clone, title, nombre.trim(), empresa.trim());
-		const worksheet = XLSX.utils.aoa_to_sheet(rows);
+		// La librería pesa cerca de 290 KB: se descarga solo cuando el usuario exporta, no al abrir la página.
+		const { utils, writeFile } = await import('xlsx');
+		const worksheet = utils.aoa_to_sheet(rows);
 		worksheet['!cols'] = [{ wch: 34 }, { wch: 22 }, { wch: 22 }, { wch: 22 }, { wch: 22 }, { wch: 22 }, { wch: 22 }];
-		const workbook = XLSX.utils.book_new();
-		XLSX.utils.book_append_sheet(workbook, worksheet, 'Resultado');
-		XLSX.writeFile(workbook, `${fileName}.xlsx`);
+		const workbook = utils.book_new();
+		utils.book_append_sheet(workbook, worksheet, 'Resultado');
+		writeFile(workbook, `${fileName}.xlsx`);
 	};
 
 	return (

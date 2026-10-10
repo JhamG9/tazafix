@@ -6,11 +6,14 @@ import Footer from '../components/Footer.astro';
 interface Props {
 	title?: string;
 	description?: string;
+	// Excluye la página de los buscadores (por ejemplo, la 404).
+	noindex?: boolean;
 }
 
 const {
 	title = 'Cifras y Finanzas: calculadoras financieras de Colombia',
 	description = 'Calculadoras gratis hechas para Colombia: liquidación laboral, horas extras, simulador de crédito, 4x1000, retención en la fuente y más. Cifras claras para decidir.',
+	noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -34,7 +37,7 @@ const schemaSitio = {
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		<link rel="canonical" href={canonical} />
+		{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
 		<meta property="og:type" content="website" />
 		<meta property="og:site_name" content="Cifras y Finanzas" />
 		<meta property="og:locale" content="es_CO" />

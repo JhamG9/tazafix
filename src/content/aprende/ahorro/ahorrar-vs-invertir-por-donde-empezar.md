@@ -36,7 +36,7 @@ Un ejemplo cotidiano: el dinero que guardas "por si acaso" debajo del colchón (
 
 Antes de invertir, tener un colchón de seguridad evita que tengas que salir corriendo a vender una inversión en un mal momento por una urgencia. Si todo tu dinero está invertido y aparece un imprevisto, puede que tengas que retirarlo justo cuando no es el momento ideal, perdiendo parte de lo que ganaste, o incluso más.
 
-Por eso el primer paso lógico no es elegir en qué invertir, sino construir ese colchón de seguridad. Si todavía no tienes uno, puedes calcular cuánto necesitarías ahorrar y en cuánto tiempo con nuestra [calculadora de fondo de emergencia](/calculadoras/fondo-emergencia): defines tu gasto mensual fijo, eliges un nivel de cobertura y la herramienta te dice cuánto ahorrar cada mes para llegar a la meta.
+Por eso el primer paso lógico no es elegir en qué invertir, sino construir ese colchón de seguridad. Si todavía no tienes uno, puedes calcular cuánto necesitarías ahorrar y en cuánto tiempo con nuestra [calculadora de fondo de emergencia](/calculadoras/fondo-emergencia/): defines tu gasto mensual fijo, eliges un nivel de cobertura y la herramienta te dice cuánto ahorrar cada mes para llegar a la meta.
 
 ## Una vez tienes ese colchón, ¿qué sigue?
 
@@ -44,7 +44,7 @@ Con tu fondo de emergencia construido, el siguiente paso natural es pensar en ha
 
 Lo más importante de este concepto no es el monto con el que empiezas, sino el tiempo que le das para crecer. Empezar antes, aunque sea con un aporte pequeño, suele pesar más a largo plazo que empezar después con un monto mayor.
 
-Puedes simular esto con nuestra [calculadora de interés compuesto](/calculadoras/interes-compuesto): defines un monto inicial, un aporte mensual y una rentabilidad esperada, y ves cómo se vería tu dinero creciendo en el tiempo. Como referencia ilustrativa (no una garantía), un fondo de inversión conservador puede rondar 6-8% anual, y uno más agresivo 10-12%. La calculadora te deja ajustar ese número para ver distintos escenarios.
+Puedes simular esto con nuestra [calculadora de interés compuesto](/calculadoras/interes-compuesto/): defines un monto inicial, un aporte mensual y una rentabilidad esperada, y ves cómo se vería tu dinero creciendo en el tiempo. Como referencia ilustrativa (no una garantía), un fondo de inversión conservador puede rondar 6-8% anual, y uno más agresivo 10-12%. La calculadora te deja ajustar ese número para ver distintos escenarios.
 
 Vale la pena aclarar: esto es una simulación educativa, no una recomendación de un producto específico. No te decimos en qué invertir ni prometemos una rentabilidad garantizada. Eso depende de la alternativa que elijas y de las condiciones del mercado.
 
@@ -64,5 +64,5 @@ No, son complementarios y suelen darse en momentos distintos: primero se constru
 
 ## Resumen: tu progresión
 
-1. **Primero, seguridad.** Calcula tu meta de fondo de emergencia: [ir a la calculadora de fondo de emergencia →](/calculadoras/fondo-emergencia)
-2. **Después, crecimiento.** Simula cómo crecería tu dinero con aportes constantes en el tiempo: [ir a la calculadora de interés compuesto →](/calculadoras/interes-compuesto)
+1. **Primero, seguridad.** Calcula tu meta de fondo de emergencia: [ir a la calculadora de fondo de emergencia →](/calculadoras/fondo-emergencia/)
+2. **Después, crecimiento.** Simula cómo crecería tu dinero con aportes constantes en el tiempo: [ir a la calculadora de interés compuesto →](/calculadoras/interes-compuesto/)

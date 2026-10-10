@@ -3,11 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import OptionIcon from '../components/OptionIcon.astro';
 
 const categories = [
-	{ label: 'Comprar vivienda', detail: 'Mi primer techo', icon: 'home', color: 'bg-[#d5e8bd]', href: '/calculadoras/credito-hipotecario' },
-	{ label: 'Préstamo libre', detail: 'Vivir más tranquilo', icon: 'loan', color: 'bg-[#b9dfea]', href: '/calculadoras/cuota-credito' },
-	{ label: 'Comprar carro', detail: 'Rodar en grande', icon: 'car', color: 'bg-[#f6e1a0]', href: '/calculadoras/costo-carro' },
-	{ label: 'Ahorrar', detail: 'Cosechar calma', icon: 'save', color: 'bg-[#d7c0e8]', href: '/calculadoras/fondo-emergencia' },
-	{ label: 'Invertir', detail: 'Ver crecer tu plata', icon: 'invest', color: 'bg-[#efa9a4]', href: '/calculadoras/interes-compuesto' },
+	{ label: 'Comprar vivienda', detail: 'Mi primer techo', icon: 'home', color: 'bg-[#d5e8bd]', href: '/calculadoras/credito-hipotecario/' },
+	{ label: 'Préstamo libre', detail: 'Vivir más tranquilo', icon: 'loan', color: 'bg-[#b9dfea]', href: '/calculadoras/cuota-credito/' },
+	{ label: 'Comprar carro', detail: 'Rodar en grande', icon: 'car', color: 'bg-[#f6e1a0]', href: '/calculadoras/costo-carro/' },
+	{ label: 'Ahorrar', detail: 'Cosechar calma', icon: 'save', color: 'bg-[#d7c0e8]', href: '/calculadoras/fondo-emergencia/' },
+	{ label: 'Invertir', detail: 'Ver crecer tu plata', icon: 'invest', color: 'bg-[#efa9a4]', href: '/calculadoras/interes-compuesto/' },
 ];
 
 const gruposEmpresas = [
@@ -19,14 +19,14 @@ const gruposEmpresas = [
 				detail: 'Cuánto te cuesta cerrar',
 				icon: 'work',
 				color: 'bg-[#e8d4b8]',
-				href: '/calculadoras/costo-liquidacion-empleador',
+				href: '/calculadoras/costo-liquidacion-empleador/',
 			},
 			{
 				label: 'Indemnización',
 				detail: 'Cierre justo y claro',
 				icon: 'balance',
 				color: 'bg-[#a8d8d8]',
-				href: '/calculadoras/indemnizacion-despido',
+				href: '/calculadoras/indemnizacion-despido/',
 			},
 		],
 	},
@@ -38,21 +38,21 @@ const gruposEmpresas = [
 				detail: 'Paga cada recargo bien',
 				icon: 'clock',
 				color: 'bg-[#f6e1a0]',
-				href: '/calculadoras/horas-extra',
+				href: '/calculadoras/horas-extra/',
 			},
 			{
 				label: 'Pago por horas',
 				detail: 'Contratado directo por hora',
 				icon: 'clock',
 				color: 'bg-[#d7eff1]',
-				href: '/calculadoras/pago-por-horas',
+				href: '/calculadoras/pago-por-horas/',
 			},
 			{
 				label: 'Retención en la fuente',
 				detail: 'Sin sorpresas con la DIAN',
 				icon: 'tax',
 				color: 'bg-[#d7eff1]',
-				href: '/calculadoras/retencion-fuente',
+				href: '/calculadoras/retencion-fuente/',
 			},
 		],
 	},
@@ -64,21 +64,21 @@ const gruposEmpresas = [
 				detail: '¿Quién paga cada día?',
 				icon: 'medical',
 				color: 'bg-[#f9d1ce]',
-				href: '/calculadoras/incapacidad-laboral',
+				href: '/calculadoras/incapacidad-laboral/',
 			},
 			{
 				label: 'Dotación',
 				detail: '¿Tiene derecho?',
 				icon: 'save',
 				color: 'bg-[#d5e8bd]',
-				href: '/calculadoras/dotacion',
+				href: '/calculadoras/dotacion/',
 			},
 			{
 				label: 'Licencia de maternidad',
 				detail: 'Recibe a tu bebé tranquilo',
 				icon: 'medical',
 				color: 'bg-[#f0cadb]',
-				href: '/calculadoras/licencia-maternidad-paternidad',
+				href: '/calculadoras/licencia-maternidad-paternidad/',
 			},
 		],
 	},
@@ -89,7 +89,7 @@ const aportesIndependientesCard = {
 	detail: 'Seguridad social al día',
 	icon: 'work',
 	color: 'bg-[#d7c0e8]',
-	href: '/calculadoras/aportes-independientes',
+	href: '/calculadoras/aportes-independientes/',
 };
 
 const liquidacionLaboralCard = {
@@ -97,7 +97,7 @@ const liquidacionLaboralCard = {
 	detail: 'Calcula tu liquidación',
 	icon: 'work',
 	color: 'bg-[#e8d4b8]',
-	href: '/calculadoras/liquidacion-laboral',
+	href: '/calculadoras/liquidacion-laboral/',
 };
 
 const categoryGroups = [
@@ -112,14 +112,14 @@ const popularTools = [
 		description: 'Calcula el gravamen de tus movimientos.',
 		icon: 'tax',
 		tone: 'bg-[#d7eff1] text-[#2b7e95]',
-		href: '/calculadoras/4x1000',
+		href: '/calculadoras/4x1000/',
 	},
 	{
 		title: 'Cuota de crédito',
 		description: 'Simula tu cuota y valida contra la tasa de usura.',
 		icon: 'interest',
 		tone: 'bg-[#f9d1ce] text-[#b94e5d]',
-		href: '/calculadoras/cuota-credito',
+		href: '/calculadoras/cuota-credito/',
 	},
 ];
 
@@ -127,17 +127,17 @@ const learnArticles = [
 	{
 		title: '¿Qué es la UVR y cómo afecta tu crédito hipotecario?',
 		excerpt: 'Entiende cómo se ajusta tu deuda en vivienda mes a mes.',
-		href: '/aprende/vivienda/que-es-la-uvr-y-como-afecta-tu-credito-hipotecario',
+		href: '/aprende/vivienda/que-es-la-uvr-y-como-afecta-tu-credito-hipotecario/',
 	},
 	{
 		title: 'Tasa de usura: el límite legal que pocos revisan',
 		excerpt: 'Aprende a identificar cuándo una tasa de interés es ilegal en Colombia.',
-		href: '/aprende/creditos/tasa-de-usura-el-limite-legal-que-pocos-revisan',
+		href: '/aprende/creditos/tasa-de-usura-el-limite-legal-que-pocos-revisan/',
 	},
 	{
 		title: 'Ahorrar vs. invertir: por dónde empezar',
 		excerpt: 'Una guía práctica para decidir qué hacer con tu primer millón.',
-		href: '/aprende/ahorro/ahorrar-vs-invertir-por-donde-empezar',
+		href: '/aprende/ahorro/ahorrar-vs-invertir-por-donde-empezar/',
 	},
 ];
 ---
@@ -162,7 +162,7 @@ const learnArticles = [
 						<p class="text-sm font-bold uppercase tracking-[0.18em] text-ink/45">Para empezar</p>
 						<h2 class="mt-2 font-serif text-3xl font-bold text-ink sm:text-4xl">Herramientas populares</h2>
 					</div>
-					<a href="/calculadoras" class="hidden text-sm font-bold text-primary hover:underline sm:block">Ver todas →</a>
+					<a href="/calculadoras/" class="hidden text-sm font-bold text-primary hover:underline sm:block">Ver todas →</a>
 				</div>
 
 				<div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">

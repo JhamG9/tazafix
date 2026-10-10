@@ -190,7 +190,7 @@ export default function FondoEmergenciaCalculator() {
 						¿Quieres llegar a tu meta más rápido? Simula cómo el interés compuesto puede ayudarte
 						a que tu ahorro rinda mientras lo construyes:{' '}
 						<a
-							href="/calculadoras/interes-compuesto"
+							href="/calculadoras/interes-compuesto/"
 							className="font-medium text-primary hover:underline"
 						>
 							ir a la calculadora de interés compuesto →

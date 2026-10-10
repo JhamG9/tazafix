@@ -11,7 +11,7 @@ const contenido = contenidoCalculadoras[slug];
 if (!contenido) throw new Error(`No hay contenido para la calculadora "${slug}"`);
 
 const relacionadas = contenido.relacionadas.map((relacionada) => ({
-	href: `/calculadoras/${relacionada}`,
+	href: `/calculadoras/${relacionada}/`,
 	nombre: contenidoCalculadoras[relacionada].nombre,
 	descripcion: contenidoCalculadoras[relacionada].descripcion,
 	icono: contenidoCalculadoras[relacionada].icono,
@@ -110,7 +110,7 @@ const schemas = [
 			))
 		}
 	</ul>
-	<a href="/calculadoras" class="mt-6 inline-flex text-sm font-semibold text-primary hover:underline">
+	<a href="/calculadoras/" class="mt-6 inline-flex text-sm font-semibold text-primary hover:underline">
 		Ver todas las calculadoras →
 	</a>
 </nav>

@@ -1,0 +1,12 @@
+# Cabeceras para Cloudflare Pages.
+
+# Los archivos de /_astro/ llevan un hash en el nombre: si cambian, cambia la URL, así que se pueden
+# cachear un año sin riesgo de servir una versión vieja.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
