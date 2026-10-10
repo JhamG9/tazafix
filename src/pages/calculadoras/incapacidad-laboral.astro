@@ -1,18 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BackLink from '../../components/BackLink.astro';
+import CalculatorContent from '../../components/CalculatorContent.astro';
 import IncapacidadLaboralCalculator from '../../components/calculadoras/IncapacidadLaboralCalculator';
 ---
 
 <Layout
-	title="Calculadora de incapacidad laboral gratis | Cifras y Finanzas"
-	description="Calcula cuánto paga el empleador y cuánto paga la EPS o la ARL durante una incapacidad laboral en Colombia."
+	title="Calculadora de incapacidad médica 2026: cuánto pagan | Cifras y Finanzas"
+	description="Calcula cuánto te pagan por una incapacidad en Colombia: días a cargo del empleador y de la EPS o ARL, por enfermedad general o accidente laboral."
 >
 	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 		<BackLink />
 
 		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-			Calculadora de incapacidad laboral gratis
+			Calculadora de incapacidad médica laboral 2026
 		</h1>
 		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
 			Calcula el pago durante una incapacidad por enfermedad o accidente común, o por accidente o
@@ -20,5 +21,7 @@ import IncapacidadLaboralCalculator from '../../components/calculadoras/Incapaci
 		</p>
 
 		<IncapacidadLaboralCalculator client:load />
+
+		<CalculatorContent slug="incapacidad-laboral" />
 	</section>
 </Layout>

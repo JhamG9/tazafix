@@ -1,18 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BackLink from '../../components/BackLink.astro';
+import CalculatorContent from '../../components/CalculatorContent.astro';
 import CreditoHipotecarioCalculator from '../../components/calculadoras/CreditoHipotecarioCalculator';
 ---
 
 <Layout
-	title="Calculadora de crédito hipotecario gratis | Cifras y Finanzas"
-	description="Calcula la cuota de tu crédito hipotecario en pesos colombianos: capital, interés, seguro de vida y seguro del inmueble, con validación contra la tasa de usura vigente."
+	title="Simulador de crédito hipotecario Colombia 2026 | Cifras y Finanzas"
+	description="Simula la cuota de tu crédito de vivienda en pesos: capital, intereses y seguros. Incluye tabla de amortización y abonos extra a capital para ahorrar intereses."
 >
 	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 		<BackLink />
 
 		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-			Calculadora de crédito hipotecario gratis
+			Simulador de crédito hipotecario
 		</h1>
 		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
 			Simula la cuota de tu crédito de vivienda en pesos, separando la cuota de
@@ -21,5 +22,7 @@ import CreditoHipotecarioCalculator from '../../components/calculadoras/CreditoH
 		</p>
 
 		<CreditoHipotecarioCalculator client:load />
+
+		<CalculatorContent slug="credito-hipotecario" />
 	</section>
 </Layout>

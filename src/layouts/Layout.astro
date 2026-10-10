@@ -9,13 +9,23 @@ interface Props {
 }
 
 const {
-	title = 'Cifras y Finanzas | Claridad financiera para Colombia',
-	description = 'Calculadoras y contenido financiero hechos para las reglas colombianas: UVR, tasas de usura, retención en la fuente y más.',
+	title = 'Cifras y Finanzas: calculadoras financieras de Colombia',
+	description = 'Calculadoras gratis hechas para Colombia: liquidación laboral, horas extras, simulador de crédito, 4x1000, retención en la fuente y más. Cifras claras para decidir.',
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const esInicio = Astro.url.pathname === '/';
+const schemaSitio = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: 'Cifras y Finanzas',
+	url: new URL('/', Astro.site).href,
+	inLanguage: 'es-CO',
+};
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es-CO">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,6 +34,17 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Cifras y Finanzas" />
+		<meta property="og:locale" content="es_CO" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		{esInicio && <script type="application/ld+json" set:html={JSON.stringify(schemaSitio)} />}
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link

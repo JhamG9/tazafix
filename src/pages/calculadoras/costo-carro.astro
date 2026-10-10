@@ -1,18 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BackLink from '../../components/BackLink.astro';
+import CalculatorContent from '../../components/CalculatorContent.astro';
 import CostoCarroCalculator from '../../components/calculadoras/CostoCarroCalculator';
 ---
 
 <Layout
-	title="Costo real mensual de tener un carro: calculadora gratis | Cifras y Finanzas"
-	description="Calcula cuánto te cuesta realmente tu carro al mes, sumando crédito, seguro, combustible, mantenimiento, SOAT, tecnomecánica y depreciación."
+	title="Cuánto cuesta mantener un carro en Colombia 2026 | Cifras y Finanzas"
+	description="Calcula cuánto cuesta tener carro al mes en Colombia: cuota del crédito, seguro, gasolina o carga eléctrica, mantenimiento, SOAT, tecnomecánica y depreciación."
 >
 	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 		<BackLink />
 
 		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-			Costo real mensual de tener un carro: calculadora gratis
+			¿Cuánto cuesta mantener un carro al mes? Calculadora
 		</h1>
 		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
 			La cuota del crédito es solo una parte. Descubre cuánto te cuesta tu carro al mes sumando
@@ -20,5 +21,7 @@ import CostoCarroCalculator from '../../components/calculadoras/CostoCarroCalcul
 		</p>
 
 		<CostoCarroCalculator client:load />
+
+		<CalculatorContent slug="costo-carro" />
 	</section>
 </Layout>

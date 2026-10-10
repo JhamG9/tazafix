@@ -1,0 +1,118 @@
+---
+import OptionIcon from './OptionIcon.astro';
+import { contenidoCalculadoras } from '../data/contenidoCalculadoras';
+
+interface Props {
+	slug: string;
+}
+
+const { slug } = Astro.props;
+const contenido = contenidoCalculadoras[slug];
+if (!contenido) throw new Error(`No hay contenido para la calculadora "${slug}"`);
+
+const relacionadas = contenido.relacionadas.map((relacionada) => ({
+	href: `/calculadoras/${relacionada}`,
+	nombre: contenidoCalculadoras[relacionada].nombre,
+	descripcion: contenidoCalculadoras[relacionada].descripcion,
+	icono: contenidoCalculadoras[relacionada].icono,
+	color: contenidoCalculadoras[relacionada].color,
+}));
+
+const url = new URL(Astro.url.pathname, Astro.site).href;
+const schemas = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebApplication',
+		name: contenido.nombre,
+		url,
+		applicationCategory: 'FinanceApplication',
+		operatingSystem: 'Web',
+		inLanguage: 'es-CO',
+		offers: { '@type': 'Offer', price: '0', priceCurrency: 'COP' },
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Inicio', item: new URL('/', Astro.site).href },
+			{ '@type': 'ListItem', position: 2, name: 'Calculadoras', item: new URL('/calculadoras/', Astro.site).href },
+			{ '@type': 'ListItem', position: 3, name: contenido.nombre, item: url },
+		],
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'FAQPage',
+		mainEntity: contenido.faqs.map((faq) => ({
+			'@type': 'Question',
+			name: faq.question,
+			acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+		})),
+	},
+];
+---
+
+<div class="mt-16 max-w-3xl border-t border-primary/10 pt-12">
+	<h2 class="font-serif text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Cómo se calcula</h2>
+	{contenido.comoSeCalcula.map((parrafo) => <p class="mt-4 leading-7 text-ink/80">{parrafo}</p>)}
+	{
+		contenido.puntos && (
+			<ul class="mt-4 list-disc space-y-2 pl-5 leading-7 text-ink/80">
+				{contenido.puntos.map((punto) => (
+					<li>{punto}</li>
+				))}
+			</ul>
+		)
+	}
+
+	<h2 class="mt-12 font-serif text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Ejemplo</h2>
+	<p class="mt-4 leading-7 text-ink/80">{contenido.ejemplo}</p>
+
+	<h2 class="mt-12 font-serif text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+		Preguntas frecuentes
+	</h2>
+	<div class="mt-4 divide-y divide-primary/10">
+		{
+			contenido.faqs.map((faq) => (
+				<div class="py-5">
+					<h3 class="font-semibold text-ink">{faq.question}</h3>
+					<p class="mt-2 leading-7 text-ink/80">{faq.answer}</p>
+				</div>
+			))
+		}
+	</div>
+
+</div>
+
+<nav aria-labelledby="calculadoras-relacionadas" class="mt-16 border-t border-primary/10 pt-12">
+	<h2
+		id="calculadoras-relacionadas"
+		class="font-serif text-2xl font-semibold tracking-tight text-ink sm:text-3xl"
+	>
+		Calculadoras relacionadas
+	</h2>
+	<p class="mt-2 text-ink/65">Sigue con el siguiente cálculo que suele acompañar a este.</p>
+	<ul class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		{
+			relacionadas.map((relacionada) => (
+				<li>
+					<a
+						href={relacionada.href}
+						class={`group flex h-full flex-col gap-2 rounded-2xl ${relacionada.color} p-5 text-ink shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg`}
+					>
+						<span class="origin-left opacity-90 transition-transform duration-300 group-hover:scale-110">
+							<OptionIcon name={relacionada.icono} class="h-12 w-12" />
+						</span>
+						<h3 class="mt-1 font-bold leading-tight text-ink">{relacionada.nombre}</h3>
+						<p class="text-sm text-ink/70">{relacionada.descripcion}</p>
+						<span class="mt-auto pt-2 text-sm font-bold text-ink">Calcular →</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+	<a href="/calculadoras" class="mt-6 inline-flex text-sm font-semibold text-primary hover:underline">
+		Ver todas las calculadoras →
+	</a>
+</nav>
+
+{schemas.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}

@@ -1,18 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BackLink from '../../components/BackLink.astro';
+import CalculatorContent from '../../components/CalculatorContent.astro';
 import CompararComprarArrendarCalculator from '../../components/calculadoras/CompararComprarArrendarCalculator';
 ---
 
 <Layout
-	title="Comprar vs. arrendar vivienda: calculadora gratis | Cifras y Finanzas"
-	description="Compara el patrimonio que acumularías comprando vivienda con crédito hipotecario frente a arrendar e invertir la diferencia mensual, con tus propios supuestos de valorización y rentabilidad."
+	title="¿Comprar o arrendar vivienda? Calculadora Colombia | Cifras y Finanzas"
+	description="¿Qué es mejor, comprar o arrendar vivienda en Colombia? Compara con tus cifras el patrimonio de comprar con crédito hipotecario frente a arrendar e invertir."
 >
 	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 		<BackLink />
 
 		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-			Comprar vs. arrendar vivienda: calculadora gratis
+			¿Comprar o arrendar vivienda? Calculadora
 		</h1>
 		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
 			Compara cuánto patrimonio acumularías comprando vivienda con crédito hipotecario frente a
@@ -21,5 +22,7 @@ import CompararComprarArrendarCalculator from '../../components/calculadoras/Com
 		</p>
 
 		<CompararComprarArrendarCalculator client:load />
+
+		<CalculatorContent slug="comprar-vs-arrendar" />
 	</section>
 </Layout>

@@ -1,18 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BackLink from '../../components/BackLink.astro';
+import CalculatorContent from '../../components/CalculatorContent.astro';
 import LiquidacionLaboralCalculator from '../../components/calculadoras/LiquidacionLaboralCalculator';
 ---
 
 <Layout
-	title="Calculadora de liquidación laboral gratis | Cifras y Finanzas"
-	description="Calcula la liquidación de un trabajador en Colombia y lo que le cuesta al empleador cada mes: cesantías, intereses, prima, vacaciones y aportes a seguridad social."
+	title="Calculadora de liquidación laboral 2026 Colombia | Cifras y Finanzas"
+	description="Calcula tu liquidación laboral en Colombia 2026: cesantías, intereses de cesantías, prima de servicios y vacaciones. Para contratos de tiempo completo o por días."
 >
 	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 		<BackLink />
 
 		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-			Calculadora de liquidación laboral gratis
+			Calculadora de liquidación laboral 2026
 		</h1>
 		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
 			Estima cuánto le corresponde a un trabajador (tiempo completo o por días) al terminar su
@@ -21,5 +22,7 @@ import LiquidacionLaboralCalculator from '../../components/calculadoras/Liquidac
 		</p>
 
 		<LiquidacionLaboralCalculator client:load />
+
+		<CalculatorContent slug="liquidacion-laboral" />
 	</section>
 </Layout>

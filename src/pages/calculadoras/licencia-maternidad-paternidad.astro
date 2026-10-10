@@ -1,18 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BackLink from '../../components/BackLink.astro';
+import CalculatorContent from '../../components/CalculatorContent.astro';
 import LicenciaMaternidadCalculator from '../../components/calculadoras/LicenciaMaternidadCalculator';
 ---
 
 <Layout
-	title="Calculadora de licencia de maternidad y paternidad gratis | Cifras y Finanzas"
-	description="Calcula las semanas y el valor de la licencia de maternidad o paternidad en Colombia, a cargo de la EPS, incluyendo parto múltiple y parto prematuro."
+	title="Calculadora de licencia de maternidad y paternidad 2026 | Cifras y Finanzas"
+	description="Calcula cuántas semanas dura y cuánto pagan por la licencia de maternidad (18 semanas) o de paternidad (2 semanas) en Colombia, con parto múltiple o prematuro."
 >
 	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 		<BackLink />
 
 		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-			Calculadora de licencia de maternidad y paternidad gratis
+			Calculadora de licencia de maternidad y paternidad 2026
 		</h1>
 		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
 			Calcula las semanas y el valor de la licencia de maternidad o paternidad en Colombia, a
@@ -20,5 +21,7 @@ import LicenciaMaternidadCalculator from '../../components/calculadoras/Licencia
 		</p>
 
 		<LicenciaMaternidadCalculator client:load />
+
+		<CalculatorContent slug="licencia-maternidad-paternidad" />
 	</section>
 </Layout>

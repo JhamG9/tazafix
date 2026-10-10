@@ -1,23 +1,26 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BackLink from '../../components/BackLink.astro';
+import CalculatorContent from '../../components/CalculatorContent.astro';
 import GravamenMovimientosCalculator from '../../components/calculadoras/GravamenMovimientosCalculator';
 ---
 
 <Layout
-	title="Calculadora del 4x1000 gratis | Cifras y Finanzas"
-	description="Calcula cuánto pagas de 4x1000 (Gravamen a los Movimientos Financieros) en un retiro o transferencia, y cuánto te queda neto."
+	title="Calculadora 4x1000 Colombia 2026 | Cifras y Finanzas"
+	description="Calcula gratis cuánto es el 4x1000 de un retiro o transferencia en Colombia. Ingresa el monto y mira el impuesto (GMF) y cuánto te queda neto."
 >
 	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 		<BackLink />
 
 		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-			Calculadora del 4x1000 gratis
+			Calculadora del 4x1000
 		</h1>
 		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
 			Calcula cuánto te cobran de 4x1000 en un retiro o transferencia, y cuánto recibes neto.
 		</p>
 
 		<GravamenMovimientosCalculator client:load />
+
+		<CalculatorContent slug="4x1000" />
 	</section>
 </Layout>

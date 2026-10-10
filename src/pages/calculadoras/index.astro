@@ -3,13 +3,13 @@ import Layout from '../../layouts/Layout.astro';
 
 const destacadas = [
 	{
-		title: 'Calculadora de cuota de crédito',
-		description: 'Simula tu cuota mensual y valida contra la tasa de usura.',
+		title: 'Simulador de crédito',
+		description: 'Calcula la cuota mensual de tu crédito, los intereses y la tabla de amortización.',
 		tone: 'bg-[#d7eff1] text-[#1f3a8a]',
 		href: '/calculadoras/cuota-credito',
 	},
 	{
-		title: 'Comprar vs. arrendar vivienda',
+		title: '¿Comprar o arrendar vivienda?',
 		description: 'Compara el patrimonio que acumularías comprando frente a arrendar e invertir.',
 		tone: 'bg-[#d7c0e8] text-[#4c2a80]',
 		href: '/calculadoras/comprar-vs-arrendar',
@@ -33,8 +33,8 @@ const categorias = [
 		title: 'Créditos y deudas',
 		herramientas: [
 			{
-				title: 'Calculadora de cuota de crédito',
-				description: 'Simula tu cuota mensual y valida contra la tasa de usura.',
+				title: 'Simulador de crédito',
+				description: 'Calcula la cuota mensual de tu crédito, los intereses y la tabla de amortización.',
 				href: '/calculadoras/cuota-credito',
 			},
 			{
@@ -53,12 +53,12 @@ const categorias = [
 		title: 'Vivienda',
 		herramientas: [
 			{
-				title: 'Calculadora de crédito hipotecario',
-				description: 'Calcula tu cuota mensual de crédito hipotecario en pesos, capital e interés.',
+				title: 'Simulador de crédito hipotecario',
+				description: 'Simula la cuota de tu crédito de vivienda en pesos, con seguros y abonos a capital.',
 				href: '/calculadoras/credito-hipotecario',
 			},
 			{
-				title: 'Comprar vs. arrendar vivienda',
+				title: '¿Comprar o arrendar vivienda?',
 				description: 'Compara el patrimonio que acumularías comprando frente a arrendar e invertir.',
 				href: '/calculadoras/comprar-vs-arrendar',
 			},
@@ -88,7 +88,7 @@ const categorias = [
 		title: 'Carro',
 		herramientas: [
 			{
-				title: 'Costo real mensual de tener un carro',
+				title: 'Cuánto cuesta mantener un carro',
 				description: 'Descubre cuánto te cuesta tu carro al mes sumando todos los gastos asociados.',
 				href: '/calculadoras/costo-carro',
 			},
@@ -98,12 +98,12 @@ const categorias = [
 		title: 'Servicios',
 		herramientas: [
 			{
-				title: 'Calculadora de aportes de independientes',
-				description: 'Calcula el IBC y los aportes a salud, pensión y ARL de un contratista.',
+				title: 'Calculadora de seguridad social para independientes',
+				description: 'Calcula cuánto paga un independiente de salud, pensión y ARL en 2026.',
 				href: '/calculadoras/aportes-independientes',
 			},
 			{
-				title: 'Calculadora de liquidación laboral',
+				title: 'Calculadora de liquidación laboral 2026',
 				description: 'Calcula cuánto te corresponde como empleado: cesantías, intereses, prima y vacaciones.',
 				href: '/calculadoras/liquidacion-laboral',
 			},
@@ -113,38 +113,38 @@ const categorias = [
 		title: 'Empresas',
 		herramientas: [
 			{
-				title: 'Calculadora de costo de liquidación para el empleador',
-				description: 'Calcula cuánto le cuesta a la empresa liquidar a un trabajador, con aportes patronales.',
+				title: 'Costo de un empleado para la empresa',
+				description: 'Calcula cuánto le cuesta a la empresa un trabajador: prestaciones y aportes patronales.',
 				href: '/calculadoras/costo-liquidacion-empleador',
 			},
 			{
-				title: 'Calculadora de horas extra y recargos',
-				description: 'Calcula el valor de la hora extra diurna, nocturna, dominical y festiva.',
+				title: 'Calculadora de horas extras y recargos 2026',
+				description: 'Calcula el valor de la hora extra, el recargo nocturno y el dominical o festivo.',
 				href: '/calculadoras/horas-extra',
 			},
 			{
 				title: 'Calculadora de pago por horas',
-				description: 'Calcula cuánto pagar a un trabajador contratado directamente por horas.',
+				description: 'Calcula el valor de la hora de trabajo y el pago por horas con recargos.',
 				href: '/calculadoras/pago-por-horas',
 			},
 			{
-				title: 'Calculadora de indemnización por despido',
-				description: 'Estima la indemnización por terminación de contrato sin justa causa.',
+				title: 'Indemnización por despido sin justa causa',
+				description: 'Calcula la indemnización en contratos a término indefinido o fijo.',
 				href: '/calculadoras/indemnizacion-despido',
 			},
 			{
-				title: 'Calculadora de retención en la fuente',
+				title: 'Calculadora de retención en la fuente 2026',
 				description: 'Calcula la retención sobre salarios, compras, servicios, honorarios y arriendos.',
 				href: '/calculadoras/retencion-fuente',
 			},
 			{
-				title: 'Calculadora de incapacidad laboral',
-				description: 'Calcula quién paga cada día de una incapacidad y cuánto.',
+				title: 'Calculadora de incapacidad médica',
+				description: 'Calcula cuánto pagan por una incapacidad y quién paga cada día.',
 				href: '/calculadoras/incapacidad-laboral',
 			},
 			{
-				title: 'Calculadora de dotación',
-				description: 'Verifica si un trabajador tiene derecho a dotación.',
+				title: 'Dotación laboral: quién tiene derecho',
+				description: 'Verifica si un trabajador tiene derecho a dotación en 2026.',
 				href: '/calculadoras/dotacion',
 			},
 			{
@@ -158,8 +158,8 @@ const categorias = [
 ---
 
 <Layout
-	title="Calculadoras financieras | Cifras y Finanzas"
-	description="Todas las calculadoras de Cifras y Finanzas agrupadas por categoría: créditos, vivienda, ahorro, inversión y carro."
+	title="Calculadoras financieras y laborales gratis (2026) | Cifras y Finanzas"
+	description="Calculadoras gratis para Colombia: liquidación laboral, horas extras, simulador de crédito e hipotecario, 4x1000, retención en la fuente, seguridad social y más."
 >
 	<section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
 		<a href="/" class="inline-flex rounded-full bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/15">← Volver al inicio</a>

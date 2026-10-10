@@ -1,18 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BackLink from '../../components/BackLink.astro';
+import CalculatorContent from '../../components/CalculatorContent.astro';
 import RetencionFuenteCalculator from '../../components/calculadoras/RetencionFuenteCalculator';
 ---
 
 <Layout
-	title="Calculadora de retención en la fuente para empresas gratis | Cifras y Finanzas"
-	description="Calcula la retención en la fuente en Colombia sobre salarios, compras, servicios, honorarios y arrendamientos, con las tarifas y bases vigentes."
+	title="Calculadora de retención en la fuente 2026 Colombia | Cifras y Finanzas"
+	description="Calcula la retención en la fuente 2026 por salarios, honorarios, servicios, compras y arrendamientos, con la UVT, las bases mínimas y las tarifas vigentes."
 >
 	<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 		<BackLink />
 
 		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-			Calculadora de retención en la fuente para empresas gratis
+			Calculadora de retención en la fuente 2026
 		</h1>
 		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">
 			Calcula cuánto debe retener tu empresa según el concepto del pago: salarios, compras,
@@ -20,5 +21,7 @@ import RetencionFuenteCalculator from '../../components/calculadoras/RetencionFu
 		</p>
 
 		<RetencionFuenteCalculator client:load />
+
+		<CalculatorContent slug="retencion-fuente" />
 	</section>
 </Layout>
