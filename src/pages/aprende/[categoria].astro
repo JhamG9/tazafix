@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import CategoryNav from '../../components/CategoryNav.astro';
+import { type CategoriaBlog, articulosDeCategoria, categoriasBlog, getArticulos } from '../../lib/aprende';
+
+export function getStaticPaths() {
+	return categoriasBlog.map((categoria) => ({ params: { categoria: categoria.slug }, props: { categoria } }));
+}
+
+interface Props {
+	categoria: CategoriaBlog;
+}
+
+const { categoria } = Astro.props;
+const todos = await getArticulos();
+const articulos = articulosDeCategoria(todos, categoria.slug);
+const conteo = Object.fromEntries(
+	categoriasBlog.map((otra) => [otra.slug, articulosDeCategoria(todos, otra.slug).length])
+);
+---
+
+<Layout
+	title={`Artículos de ${categoria.nombre.toLowerCase()} | Cifras y Finanzas`}
+	description={`${categoria.descripcion} Artículos prácticos con cifras de 2026 y ejemplos en pesos colombianos.`}
+>
+	<section class="mx-auto max-w-7xl px-5 py-12 sm:px-8 lg:px-10 lg:py-16">
+		<a href="/aprende/" class="text-sm font-medium text-primary hover:underline">Todos los artículos</a>
+
+		<h1 class="mt-6 font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl">{categoria.nombre}</h1>
+		<p class="mt-4 max-w-2xl text-base leading-7 text-ink/65 sm:text-lg">{categoria.descripcion}</p>
+
+		<div class="mt-8">
+			<CategoryNav activa={categoria.slug} conteo={conteo} />
+		</div>
+
+		{
+			articulos.length > 0 ? (
+				<ul class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					{articulos.map((articulo) => (
+						<li>
+							<ArticleCard articulo={articulo} />
+						</li>
+					))}
+				</ul>
+			) : (
+				<p class="mt-10 text-ink/65">Pronto publicaremos artículos en esta categoría.</p>
+			)
+		}
+	</section>
+</Layout>

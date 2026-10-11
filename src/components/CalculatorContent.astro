@@ -1,5 +1,7 @@
 ---
 import OptionIcon from './OptionIcon.astro';
+import ArticleCard from './ArticleCard.astro';
+import { articulosParaCalculadora, getArticulos } from '../lib/aprende';
 import { contenidoCalculadoras } from '../data/contenidoCalculadoras';
 
 interface Props {
@@ -17,6 +19,8 @@ const relacionadas = contenido.relacionadas.map((relacionada) => ({
 	icono: contenidoCalculadoras[relacionada].icono,
 	color: contenidoCalculadoras[relacionada].color,
 }));
+
+const articulosRecomendados = articulosParaCalculadora(await getArticulos(), slug, contenido.relacionadas);
 
 const url = new URL(Astro.url.pathname, Astro.site).href;
 const schemas = [
@@ -114,5 +118,26 @@ const schemas = [
 		Ver todas las calculadoras →
 	</a>
 </nav>
+
+{
+	articulosRecomendados.length > 0 && (
+		<section aria-labelledby="articulos-recomendados" class="mt-16 border-t border-primary/10 pt-12">
+			<h2 id="articulos-recomendados" class="font-serif text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+				Artículos recomendados
+			</h2>
+			<p class="mt-2 text-ink/65">Lo que conviene saber antes de tomar una decisión con este cálculo.</p>
+			<ul class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+				{articulosRecomendados.map((articulo) => (
+					<li>
+						<ArticleCard articulo={articulo} />
+					</li>
+				))}
+			</ul>
+			<a href="/aprende/" class="mt-6 inline-flex text-sm font-semibold text-primary hover:underline">
+				Ver todos los artículos
+			</a>
+		</section>
+	)
+}
 
 {schemas.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}

@@ -1,0 +1,38 @@
+---
+import { type Articulo, tieneImagen, urlArticulo } from '../lib/aprende';
+
+interface Props {
+	articulo: Articulo;
+}
+
+const { articulo } = Astro.props;
+const { title, excerpt, categoryLabel, image, imageAlt } = articulo.data;
+---
+
+<a
+	href={urlArticulo(articulo)}
+	class="group flex h-full flex-col overflow-hidden rounded-2xl bg-surface shadow-sm ring-1 ring-ink/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+>
+	{
+		tieneImagen(articulo) ? (
+			<img
+				src={image}
+				alt={imageAlt ?? ''}
+				width="1200"
+				height="675"
+				loading="lazy"
+				class="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+			/>
+		) : (
+			<div class="flex aspect-[16/9] w-full items-center justify-center bg-primary/10">
+				<span class="font-serif text-2xl font-semibold text-primary/60">{categoryLabel}</span>
+			</div>
+		)
+	}
+	<div class="flex flex-1 flex-col gap-2 p-5">
+		<p class="text-xs font-bold uppercase tracking-[0.12em] text-primary">{categoryLabel}</p>
+		<h3 class="font-semibold leading-snug text-ink group-hover:text-primary">{title}</h3>
+		<p class="line-clamp-3 text-sm text-ink/70">{excerpt}</p>
+		<span class="mt-auto pt-2 text-sm font-semibold text-primary">Leer artículo</span>
+	</div>
+</a>

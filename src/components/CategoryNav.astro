@@ -1,0 +1,51 @@
+---
+import { categoriasBlog, urlCategoria } from '../lib/aprende';
+
+interface Props {
+	// Slug de la categoría activa; sin valor, el activo es "Todos".
+	activa?: string;
+	// Cantidad de artículos por categoría, para mostrarla junto al nombre.
+	conteo?: Record<string, number>;
+	// "claro" para usarlo sobre el fondo morado del inicio.
+	tono?: 'normal' | 'claro';
+}
+
+const { activa, conteo, tono = 'normal' } = Astro.props;
+
+const opciones = [
+	{ slug: undefined, nombre: 'Todos', href: '/aprende/' },
+	...categoriasBlog.map((categoria) => ({ slug: categoria.slug, nombre: categoria.nombre, href: urlCategoria(categoria.slug) })),
+];
+
+const clases = {
+	normal: {
+		activa: 'bg-primary text-surface',
+		inactiva: 'bg-white text-ink/75 ring-1 ring-ink/10 hover:text-primary hover:ring-primary/40',
+	},
+	claro: {
+		activa: 'bg-surface text-primary',
+		inactiva: 'bg-surface/10 text-surface ring-1 ring-surface/25 hover:bg-surface/20',
+	},
+}[tono];
+---
+
+<nav aria-label="Categorías del blog">
+	<ul class="flex flex-wrap gap-2">
+		{
+			opciones.map((opcion) => (
+				<li>
+					<a
+						href={opcion.href}
+						aria-current={opcion.slug === activa ? 'page' : undefined}
+						class={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${opcion.slug === activa ? clases.activa : clases.inactiva}`}
+					>
+						{opcion.nombre}
+						{opcion.slug && conteo?.[opcion.slug] !== undefined && (
+							<span class="text-xs font-medium opacity-70">{conteo[opcion.slug]}</span>
+						)}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>

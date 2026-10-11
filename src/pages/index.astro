@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import OptionIcon from '../components/OptionIcon.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import CategoryNav from '../components/CategoryNav.astro';
+import { getArticulos, mezclarPorCategoria, tieneImagen } from '../lib/aprende';
 
 const categories = [
 	{ label: 'Comprar vivienda', detail: 'Mi primer techo', icon: 'home', color: 'bg-[#d5e8bd]', href: '/calculadoras/credito-hipotecario/' },
@@ -123,23 +126,8 @@ const popularTools = [
 	},
 ];
 
-const learnArticles = [
-	{
-		title: '¿Qué es la UVR y cómo afecta tu crédito hipotecario?',
-		excerpt: 'Entiende cómo se ajusta tu deuda en vivienda mes a mes.',
-		href: '/aprende/vivienda/que-es-la-uvr-y-como-afecta-tu-credito-hipotecario/',
-	},
-	{
-		title: 'Tasa de usura: el límite legal que pocos revisan',
-		excerpt: 'Aprende a identificar cuándo una tasa de interés es ilegal en Colombia.',
-		href: '/aprende/creditos/tasa-de-usura-el-limite-legal-que-pocos-revisan/',
-	},
-	{
-		title: 'Ahorrar vs. invertir: por dónde empezar',
-		excerpt: 'Una guía práctica para decidir qué hacer con tu primer millón.',
-		href: '/aprende/ahorro/ahorrar-vs-invertir-por-donde-empezar/',
-	},
-];
+// Seis artículos con foto, alternando categorías para que el inicio muestre variedad de temas.
+const articulosDestacados = mezclarPorCategoria((await getArticulos()).filter(tieneImagen), 6);
 ---
 
 <Layout>
@@ -245,20 +233,26 @@ const learnArticles = [
 				Contenido práctico, sin relleno, para entender el sistema financiero colombiano.
 			</p>
 
-			<div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+			<div class="mt-8">
+				<CategoryNav tono="claro" />
+			</div>
+
+			<ul class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 				{
-					learnArticles.map((article) => (
-						<a
-							href={article.href}
-							class="flex flex-col gap-3 rounded-2xl bg-surface p-6 transition-all hover:-translate-y-0.5 hover:shadow-md"
-						>
-							<h3 class="font-semibold text-ink">{article.title}</h3>
-							<p class="text-sm text-ink/70">{article.excerpt}</p>
-							<span class="mt-auto text-sm font-medium text-primary">Leer más →</span>
-						</a>
+					articulosDestacados.map((articulo) => (
+						<li>
+							<ArticleCard articulo={articulo} />
+						</li>
 					))
 				}
-			</div>
+			</ul>
+
+			<a
+				href="/aprende/"
+				class="mt-10 inline-flex rounded-full bg-surface px-6 py-3 text-sm font-bold text-primary transition-colors hover:bg-surface/90"
+			>
+				Ver todos los artículos
+			</a>
 		</div>
 	</section>
 </Layout>

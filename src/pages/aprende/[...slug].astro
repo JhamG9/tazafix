@@ -17,7 +17,7 @@ interface Props {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, excerpt, categoryLabel, metaTitle, metaDescription, faqs, image, imageAlt, imageCredit, imageSource } =
+const { title, excerpt, category, categoryLabel, metaTitle, metaDescription, faqs, image, imageAlt, imageCredit, imageSource } =
 	entry.data;
 // Solo mostramos la foto si el archivo ya está en public/, para no dejar imágenes rotas.
 const hasImage = image ? existsSync(`public${image}`) : false;
@@ -38,9 +38,11 @@ const faqSchema =
 
 <Layout title={metaTitle} description={metaDescription}>
 	<article class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
-		<a href="/" class="text-sm font-medium text-primary hover:underline">Volver al inicio</a>
+		<a href="/aprende/" class="text-sm font-medium text-primary hover:underline">Todos los artículos</a>
 
-		<p class="mt-6 text-sm font-medium uppercase tracking-wide text-primary">{categoryLabel}</p>
+		<a href={`/aprende/${category}/`} class="mt-6 inline-block text-sm font-medium uppercase tracking-wide text-primary hover:underline">
+			{categoryLabel}
+		</a>
 		<h1 class="mt-2 font-serif text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
 			{title}
 		</h1>
