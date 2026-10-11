@@ -3,8 +3,8 @@ title: "Ahorrar vs. invertir: por dónde empezar"
 excerpt: "Una guía práctica para decidir qué hacer con tu primer millón."
 category: "ahorro"
 categoryLabel: "Ahorro"
-metaTitle: "Ahorrar o invertir: qué hacer primero y cómo empezar | Cifras y Finanzas"
-metaDescription: "¿Ahorrar o invertir? Conoce la diferencia, por qué el orden importa y cómo empezar en Colombia con un fondo de emergencia y el interés compuesto."
+metaTitle: "Ahorrar vs. invertir: por dónde empezar | Cifras y Finanzas"
+metaDescription: "La diferencia práctica entre ahorrar e invertir, y por qué el orden importa. Con dos herramientas para dar tu primer paso concreto."
 keywords:
   - "ahorrar vs invertir"
   - "diferencia entre ahorrar e invertir"
@@ -64,5 +64,5 @@ No, son complementarios y suelen darse en momentos distintos: primero se constru
 
 ## Resumen: tu progresión
 
-1. **Primero, seguridad.** Calcula tu meta de fondo de emergencia: [ir a la calculadora de fondo de emergencia →](/calculadoras/fondo-emergencia/)
-2. **Después, crecimiento.** Simula cómo crecería tu dinero con aportes constantes en el tiempo: [ir a la calculadora de interés compuesto →](/calculadoras/interes-compuesto/)
+1. **Primero, seguridad.** Calcula tu meta de fondo de emergencia: [ir a la calculadora de fondo de emergencia](/calculadoras/fondo-emergencia/)
+2. **Después, crecimiento.** Simula cómo crecería tu dinero con aportes constantes en el tiempo: [ir a la calculadora de interés compuesto](/calculadoras/interes-compuesto/)

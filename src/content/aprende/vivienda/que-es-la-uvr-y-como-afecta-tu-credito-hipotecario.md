@@ -3,8 +3,8 @@ title: "¿Qué es la UVR y cómo afecta tu crédito hipotecario?"
 excerpt: "Entiende cómo se ajusta tu deuda en vivienda mes a mes."
 category: "vivienda"
 categoryLabel: "Vivienda"
-metaTitle: "¿Qué es la UVR? Crédito en UVR vs. pesos | Cifras y Finanzas"
-metaDescription: "Qué es la UVR, cómo cambia la cuota de tu crédito hipotecario y cuándo conviene UVR o pesos. Explicado simple, con ejemplo numérico."
+metaTitle: "¿Qué es la UVR y cómo afecta tu crédito? | Cifras y Finanzas"
+metaDescription: "Qué es la UVR, en qué se diferencia de un crédito en pesos y cuándo conviene cada uno. Explicado simple, con ejemplo numérico."
 keywords:
   - "qué es la UVR"
   - "crédito hipotecario UVR"
@@ -69,4 +69,4 @@ No necesariamente. Depende de cómo se comporten la inflación y las tasas de in
 
 Por ahora, en Cifras y Finanzas la calculadora de crédito hipotecario está disponible para **créditos en pesos** (no en UVR). Si tu crédito es o será en pesos, puedes simular tu cuota mensual con ella:
 
-[Ir a la calculadora de crédito hipotecario en pesos →](/calculadoras/credito-hipotecario/)
+[Ir a la calculadora de crédito hipotecario en pesos](/calculadoras/credito-hipotecario/)
